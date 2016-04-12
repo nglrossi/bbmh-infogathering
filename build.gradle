@@ -8,12 +8,12 @@ apply plugin: "idea"
 //apply from: "api.gradle"
 
 // define the version for the project when publishing to maven
-group "edu.monument"
-version "1.0-SNAPSHOT"
+group "com.nglrossi"
+version "0.1-SNAPSHOT"
 
 ext {
-  learnVersion = "9.1.120113.0"
-  deployServer = "localhost:8000"
+  learnVersion = "9.1.201410.0"
+  deployServer = "localhost:9876"
   deployInstance = "BBLEARN"
 }
 
@@ -52,7 +52,9 @@ dependencies {
 
 // Add a task to deploy a B2 using starting block
 task deployB2( dependsOn: "war" ) << {
-      ant.taskdef( name: "b2deploy", classname: "org.oscelot.ant.B2DeployTask", classpath: project.configurations.buildUtils.asPath )
+    //println "Deploying \"" + project.war.archivePath + "\""
+ 
+    ant.taskdef( name: "b2deploy", classname: "org.oscelot.ant.B2DeployTask", classpath: project.configurations.buildUtils.asPath )
       ant.b2deploy( localfilepath: project.war.archivePath, host: project.ext.deployServer, courseorgavailable: 'true', clean: 'true', webappName: 'bb-starting-block-' + project.ext.deployInstance )
 }
 
