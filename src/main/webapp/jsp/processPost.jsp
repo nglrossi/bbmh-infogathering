@@ -1,7 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
-<%@ page	language="java" 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<%@ page	language="java"
          import="java.util.*,
          java.util.*,
+         java.io.*,
          java.sql.*,
          blackboard.platform.LicenseUtil,
          blackboard.platform.config.BbConfig,
@@ -22,9 +23,10 @@
          blackboard.platform.tracking.TrackingEventManager,
          blackboard.platform.tracking.data.TrackingEvent,
          org.apache.commons.lang.StringEscapeUtils,
-         blackboard.platform.security.SecurityUtil
-         "           
-         pageEncoding="UTF-8" 
+         blackboard.platform.security.SecurityUtil,
+         blackboard.platform.LicenseComponent
+         "
+         pageEncoding="UTF-8"
          %>
 
 <%@ taglib uri="/bbData" prefix="bbData"%>
@@ -39,14 +41,41 @@ String content = "";
 %>
 
 <%
-// Detect OS
+// Detect OS via API
 // TODO: move code as a method in a JAR
 String osFlavour = "";
 if(blackboard.util.PlatformUtil.osIsWindows()){
     osFlavour = "Windows not yet supported";
 }else{
     osFlavour = "UNIX system";
-}   
+}
+
+// Detect app server OS details via command line
+String appOsDetails = "";
+String baseDIR;
+String command;
+if(blackboard.util.PlatformUtil.osIsWindows()){
+    appOsDetails = "Windows details, not yet supported";
+    baseDIR = ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.BASEDIR_WIN);
+    command = "windows command";
+}else{
+    appOsDetails = "Freebsd 1.2.3.4";
+    baseDIR = ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.BASEDIR);
+    command = "cat /proc/version";
+
+         try
+        {
+            String line;
+            Process p=Runtime.getRuntime().exec(command,null,( new File("/tmp")));
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            appOsDetails = in.readLine();
+            in.close();
+            p.waitFor();
+        } catch(IOException e1) {
+        } catch(InterruptedException e2) {
+        }
+}
 %>
 
 <%
@@ -55,10 +84,32 @@ if(blackboard.util.PlatformUtil.osIsWindows()){
 String learnVersion = "";
 
 learnVersion = blackboard.platform.LicenseUtil.getBuildNumber();
+
 %>
 
 <%
-// Detect whether MSSQL/Oracle/Postgres 
+// Detect licensed platforms
+// TODO: move code as a method in a JAR
+String licensedPlatforms = "<b>needs cleanup and show only the available ones</b>";
+
+//blackboard.platform.LicenseDescriptor ld = new blackboard.platform.LicenseDescriptor("/usr/local/blackboard/system/tooldefs/system/LicenseUpdate/license-handlers/enterprise.contentsystem/license-handler.xml");
+//licensedPlatforms = ld.getTitle();
+
+//if (blackboard.platform.LicenseComponent.isAvailable(blackboard.platform.LicenseComponent.ENTERPRISE_CONTENT_SYSTEM)) {
+//    licensedPlatforms = "content system yes";
+//} else {
+//    licensedPlatforms = "content system no";
+//}
+
+for (blackboard.platform.LicenseComponent c : blackboard.platform.LicenseComponent.values()) {
+    licensedPlatforms += "<br/>" + c;
+
+if (c.isAvailable()) licensedPlatforms += " YES!";
+    }
+%>
+
+<%
+// Detect whether MSSQL/Oracle/Postgres
 // TODO: move code as a method in a JAR
 String dbType = "";
 String dbVersion = "";
@@ -68,20 +119,19 @@ String qrystr = "";
 // Detect db server version
 switch(dbType) {
     case "oracle":
-        dbVersion = "hardcoded Oracle 7a, need to implement the right query";
+        qrystr = "select * from v$version";
         // SELECT version();
         break;
     case "mssqlserver":
         // TODO detect MSSQL version and put the right case label
-        dbVersion = "hardcoded MSSQL 1234, need to implement the right query";
+        qrystr = "Select @@version";
         break;
-    case "pgsql":   
+    case "pgsql":
         // TODO detect ORACLE version and put the right case label
         qrystr = "select version()";
         break;
     default:
         dbVersion = "unable to detect db version";
-    
 }
 
 
@@ -89,60 +139,33 @@ ConnectionManager conman  = null;
 Connection conn = null;
 Statement stmt = null;
 ResultSet rs = null;
-//String strResults = "No Current Resulset";
-
-//String url = "";
-//String handler = "";
-
 try {
+ 
         // Create Conn to correct database
             int j=0;
 
             BbDatabase bbDb = DbUtil.safeGetBbDatabase();
             conman = bbDb.getConnectionManager();
             while(conn == null && j<10){
-               try {
-                      conn = conman.getConnection();
-                  }
-                  catch(ConnectionNotAvailableException cnae){
-                      Thread.sleep(1000);
-                      ++j;
-           }
+                try {
+                    conn = conman.getConnection();
+                }
+                catch(ConnectionNotAvailableException cnae){
+                    Thread.sleep(1000);
+                    ++j;
+                }
             }
 
         stmt = conn.createStatement();
-					
-	 
-        //out.println("Query : " + qrystr + "<br/>");
-	
-        
         boolean wasExecuted = stmt.execute(qrystr);
-        BbSession userSession = BbSessionManagerServiceFactory.getInstance().getSession(request);
-        TrackingEventManager trackingMgr = (TrackingEventManager) BbServiceManager.lookupService(TrackingEventManager.class);
-        if (trackingMgr != null) {
-               TrackingEvent recordedEvent = new TrackingEvent();
-               recordedEvent.setInternalHandle("bbsupport_tool_dbpool");
-               recordedEvent.setType(TrackingEvent.Type.PAGE_ACCESS);
-               recordedEvent.setData("Query: " + qrystr + " Executed");
-               recordedEvent.setSessionId(userSession.getBbSessionId());
-               recordedEvent.setUserId(userSession.getUserId());
-               trackingMgr.postTrackingEvent(recordedEvent);
-        } 
-                if (wasExecuted) {
-                        rs = stmt.getResultSet();
-                        ResultSetMetaData rsMetaData = rs.getMetaData();
-                        //int numberOfColumns = rsMetaData.getColumnCount();
+        if (wasExecuted) {
+                rs = stmt.getResultSet();
+                ResultSetMetaData rsMetaData = rs.getMetaData();
 
-                        while(rs.next()) {
-                            dbVersion = StringEscapeUtils.escapeHtml(rs.getString(1));
-                                }
-                        
-                }else{
-                        int updateCount = stmt.getUpdateCount();
-                        // Success.
-                        out.println("Statement Executed (" + updateCount + ") rows afected<br/>");
+                if (rs.next()) {
+                    dbVersion = rs.getString(1);
                 }
-        
+        }
 
 }catch(Exception e) {
         out.println("query failed<br/>");
@@ -155,15 +178,82 @@ try {
                 stmt.close();
                 }
     if(conman != null){
-             conman.releaseConnection(conn);
-                }
+            conman.releaseConnection(conn);
+            }
         }
-
-
-
-
-
 %>
+
+<%
+// Courses stats
+//TODO: move to a library
+int coursesCount = -1;
+int activeCoursesCount = -1;
+int activeAndAvailCoursesCount = -1;
+
+String qrystrCoursesCount = "select count(*) from course_main";
+String qrystrActiveCoursesCount = "select count(*) from course_main where row_status=0";
+String qrystrActiveAndAvailCoursesCount = "select count(*) from course_main where row_status=0 and available_ind='Y'";
+
+//ConnectionManager conman  = null;
+Connection conn2 = null;
+//Statement stmt = null;
+//ResultSet rs = null;
+try {
+
+    // Create Conn to correct database
+    int j=0;
+
+    BbDatabase bbDb = DbUtil.safeGetBbDatabase();
+    conman = bbDb.getConnectionManager();
+    while(conn2 == null && j<10){
+        try {
+                conn2 = conman.getConnection();
+        }catch(ConnectionNotAvailableException cnae){
+            Thread.sleep(1000);
+            ++j;
+        }
+    }
+
+    stmt = conn2.createStatement();
+    if (stmt.execute(qrystrCoursesCount)) {
+        rs = stmt.getResultSet();
+        ResultSetMetaData rsMetaData = rs.getMetaData();
+        if (rs.next()) {
+            coursesCount = rs.getInt(1);
+        }
+    }
+    if (stmt.execute(qrystrActiveCoursesCount)) {
+        rs = stmt.getResultSet();
+        ResultSetMetaData rsMetaData = rs.getMetaData();
+        if (rs.next()) {
+            activeCoursesCount = rs.getInt(1);
+        }
+    }
+    if (stmt.execute(qrystrActiveAndAvailCoursesCount)) {
+        rs = stmt.getResultSet();
+        ResultSetMetaData rsMetaData = rs.getMetaData();
+        if (rs.next()) {
+            activeAndAvailCoursesCount = rs.getInt(1);
+        }
+    }
+    
+    
+}catch(Exception e) {
+    out.println("query failed<br/>");
+    out.println(e);
+}finally{
+    if(rs != null){
+        rs.close();
+    }
+    if(stmt != null){
+        stmt.close();
+    }
+    if(conman != null){
+        conman.releaseConnection(conn2);
+    }
+}
+%>
+
 
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
@@ -180,11 +270,17 @@ try {
             <bbNG:dataElement label="OS" isRequired="yes" labelFor="OS">
                 <%=osFlavour%>
             </bbNG:dataElement>
+            <bbNG:dataElement label="App OS details" isRequired="yes" labelFor="App OS details">
+                <%=appOsDetails%>
+            </bbNG:dataElement>
         </bbNG:step>
 
         <bbNG:step title="Learn Version">
             <bbNG:dataElement label="Learn Version" isRequired="yes" labelFor="LV">
                 <%=learnVersion%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Licensed Platforms" isRequired="yes" labelFor="licensedPlatforms">
+                <%=licensedPlatforms%>
             </bbNG:dataElement>
         </bbNG:step>
 
@@ -194,6 +290,18 @@ try {
             </bbNG:dataElement>
             <bbNG:dataElement label="Database server version" isRequired="yes" labelFor="dbversion">
                 <%=dbVersion%>
+            </bbNG:dataElement>
+        </bbNG:step>
+
+        <bbNG:step title="Courses information">
+            <bbNG:dataElement label="Courses" isRequired="yes" labelFor="courses">
+                <%=coursesCount%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Courses enabled" isRequired="yes" labelFor="activecourses">
+                <%=activeCoursesCount%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Courses enabled and available" isRequired="yes" labelFor="activeandavailcourses">
+                <%=activeAndAvailCoursesCount%>
             </bbNG:dataElement>
         </bbNG:step>
 

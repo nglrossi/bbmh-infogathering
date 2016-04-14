@@ -131,7 +131,6 @@
             <permission type="attribute" name="user.personalinfo" actions="get,set"/>
             <permission type="attribute" name="user.authinfo" actions="get,set"/>
             <permission type="attribute" name="user.personalinfo" actions="get,set"/>
-            <permission type="java.io.FilePermission" name="&amp;lt;&amp;lt;ALL FILES&amp;gt;&amp;gt;" actions="read,write,delete,execute" />
             <permission type="java.lang.RuntimePermission" name="db.connection.bb_bb60" actions="connect,accept" />
             <permission type="java.lang.RuntimePermission" name="getenv.*"/>
             <permission type="java.lang.reflect.ReflectPermission" name="suppressAccessChecks" />
