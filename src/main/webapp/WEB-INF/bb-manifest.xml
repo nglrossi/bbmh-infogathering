@@ -2,143 +2,153 @@
 <manifest xmlns="http://www.blackboard.com/bb-manifest-plugin"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://www.blackboard.com/bb-manifest-plugin https://maven.blackboard.com/content/repositories/releases/blackboard/platform/bb-manifest-plugin/9.1.110082.0/bb-manifest-plugin-9.1.110082.0.xsd">
-  <plugin>
+    <plugin>
 
-    <name value="b2.name" />
-    <handle value="template" />
-    <description value="b2.description" />
-    <default-locale value="en_US" />
+        <name value="b2.name" />
+        <handle value="info-gathering" />
+        <description value="b2.description" />
+        <default-locale value="en_US" />
 
-    <version value="0.3" />
-    <requires>
-      <bbversion value="9.1.110082.0" />
-    </requires>
+        <version value="0.3" />
+        <requires>
+            <bbversion value="9.1.110082.0" />
+        </requires>
 
-    <vendor>
-      <id value="bbmh" />
-      <name value="Blackboard Inc." />
-      <url value="http://www.blackboard.com/" />
-      <description value="Blackboard Inc." />
-    </vendor>
+        <vendor>
+            <id value="bbmh" />
+            <name value="Blackboard Inc." />
+            <url value="http://www.blackboard.com/" />
+            <description value="Blackboard Inc." />
+        </vendor>
 
 
-    <!-- These two JSPs are displayed when the "remove" and "properties" buttons --> 
-    <!-- are pressed on the Building Blocks administration page. -->
+        <!-- These two JSPs are displayed when the "remove" and "properties" buttons --> 
+        <!-- are pressed on the Building Blocks administration page. -->
     
-    <http-actions>
-      <config value="admin/configure.jsp"/>
-     <!-- <remove value="admin/remove.jsp"/> -->
-    </http-actions>
-
+        <!--
+            <http-actions>
+              <config value="admin/configure.jsp"/>
+              <remove value="admin/remove.jsp"/> 
+            </http-actions>
+        -->
      
-    <application-defs>
-      <application handle="bbmh-infogathering-manage" type="shared"
-                   name="app1.name">
-        <description lang="en_US">bbmh-infogathering-manage</description>
-        <links>
-          <link>
-            <type value="system_tool"/>
-            <name value="tool1.name"/>
-            <url value="system/index.jsp" />
-            <description value="tool1.description" />
-            <handle value="gather stuff" />
-          </link>
-        </links>
-      </application>
-    </application-defs>
+        <application-defs>
+            <application handle="bbmh-infogathering-manage" type="shared"
+                         name="app1.name">
+                <description lang="en_US">bbmh-infogathering-manage</description>
+                <links>
+                    <link>
+                        <type value="system_tool"/>
+                        <name value="tool1.name"/>
+                        <url value="jsp/index.jsp" />
+                        <description value="tool1.description" />
+                        <handle value="gather stuff" />
+                    </link>
+                </links>
+            </application>
+        </application-defs>
    
 
-    <!-- Portal Module Definitions -->
-    <!--
-    <module-defs>
-      <module-type ext-ref="mnmt-module" title="mnmt-module.title" uicreatable="false">
-        <jsp-dir>module</jsp-dir>
-        <jsp>
-          <view>view.jsp</view>
-        </jsp>
-      </module-type>
-      <module type="mnmt-module" isadmin="true" useraddable="true" isdeletable="true" isdetachable="true" title="Monument U.">
-        <description></description>
-        <ExtraInfo>
-          <property key="someKey" type="String"></property>
-        </ExtraInfo>
-        <module-groups>
-          <module-group id="Everyone" />
-        </module-groups>
-      </module>
-    </module-defs>
-    -->
+        <!-- Portal Module Definitions -->
+        <!--
+        <module-defs>
+          <module-type ext-ref="mnmt-module" title="mnmt-module.title" uicreatable="false">
+            <jsp-dir>module</jsp-dir>
+            <jsp>
+              <view>view.jsp</view>
+            </jsp>
+          </module-type>
+          <module type="mnmt-module" isadmin="true" useraddable="true" isdeletable="true" isdetachable="true" title="Monument U.">
+            <description></description>
+            <ExtraInfo>
+              <property key="someKey" type="String"></property>
+            </ExtraInfo>
+            <module-groups>
+              <module-group id="Everyone" />
+            </module-groups>
+          </module>
+        </module-defs>
+        -->
 
-    <!-- Custom Content Types -->
-    <!--
-    <content-handlers>
-      <content-handler>
-        <name value="content_handler.name" />
-        <handle value="resource/x-mnmt-content" />
-        <http-actions>
-          <create value="content/create.jsp" />
-          <modify value="content/edit.jsp" />
-          <view value="content/view.jsp" />
-          <cpview value="content/cpview.jsp" />
-        </http-actions>
-        <application value="mnmt-app1"/>
-        <icons>
-          <listitem value="images/50x50.gif" />
-        </icons>
-        <types>
-          <type>
-            <action-type value="collaborate" />
-          </type>
-        </types>
-      </content-handler>
-    </content-handlers>
-    -->
+        <!-- Custom Content Types -->
+        <!--
+        <content-handlers>
+          <content-handler>
+            <name value="content_handler.name" />
+            <handle value="resource/x-mnmt-content" />
+            <http-actions>
+              <create value="content/create.jsp" />
+              <modify value="content/edit.jsp" />
+              <view value="content/view.jsp" />
+              <cpview value="content/cpview.jsp" />
+            </http-actions>
+            <application value="mnmt-app1"/>
+            <icons>
+              <listitem value="images/50x50.gif" />
+            </icons>
+            <types>
+              <type>
+                <action-type value="collaborate" />
+              </type>
+            </types>
+          </content-handler>
+        </content-handlers>
+        -->
 
-    <!-- Add custom score providers for gradeable items.
-    <score-providers>
-      <score-provider>
-        <name value="example-score-provider" />
-        <handle value="resource/x-mnmt-score" />
-        <review-action value="" />
-        <grade-action value="" />
-        <allow-multiple value="false" />
-        <attempt-based value="false" />
-      </score-provider>
-    </score-providers>
-    -->
+        <!-- Add custom score providers for gradeable items.
+        <score-providers>
+          <score-provider>
+            <name value="example-score-provider" />
+            <handle value="resource/x-mnmt-score" />
+            <review-action value="" />
+            <grade-action value="" />
+            <allow-multiple value="false" />
+            <attempt-based value="false" />
+          </score-provider>
+        </score-providers>
+        -->
 
-    <!-- Add custom schema elements to Learn.
-         http://help.blackboard.com/b2/schema.html
-    <schema-dirs>
-      <schema-dir dir-name="main" />
-    </schema-dirs>
-    -->
+        <!-- Add custom schema elements to Learn.
+             http://help.blackboard.com/b2/schema.html
+        <schema-dirs>
+          <schema-dir dir-name="main" />
+        </schema-dirs>
+        -->
 
-    <!-- Create custom entitlements that are automatically applied to any
-         role that already has the "template" entitlement.
-    <entitlements>
-      <entitlement uid="course.mnmt-app.EXECUTE"
-                   label="course.mnmt-app.EXECUTE.label"
-                   type="Course"
-                   template="course.blog.grade.EXECUTE" />
-    </entitlements>
-    -->
+        <!-- Create custom entitlements that are automatically applied to any
+             role that already has the "template" entitlement.
+        <entitlements>
+          <entitlement uid="course.mnmt-app.EXECUTE"
+                       label="course.mnmt-app.EXECUTE.label"
+                       type="Course"
+                       template="course.blog.grade.EXECUTE" />
+        </entitlements>
+        -->
 
-    <!-- Code permissions required for proper operation -->
-    <permissions>
-      <permission type="attribute" name="user.authinfo" actions="get"/>
-      <permission type="attribute" name="user.personalinfo" actions="get,set"/>
+        <!-- Code permissions required for proper operation -->
+        <permissions>
+            <permission type="attribute" name="user.authinfo" actions="get"/>
+            <permission type="attribute" name="user.personalinfo" actions="get,set"/>
+            <permission type="attribute" name="user.authinfo" actions="get,set"/>
+            <permission type="attribute" name="user.personalinfo" actions="get,set"/>
+            <permission type="java.io.FilePermission" name="&amp;lt;&amp;lt;ALL FILES&amp;gt;&amp;gt;" actions="read,write,delete,execute" />
+            <permission type="java.lang.RuntimePermission" name="db.connection.bb_bb60" actions="connect,accept" />
+            <permission type="java.lang.RuntimePermission" name="getenv.*"/>
+            <permission type="java.lang.reflect.ReflectPermission" name="suppressAccessChecks" />
+            <permission type="java.net.SocketPermission" name="*" actions="listen,connect,resolve,accept"/>   
+            <permission type="attribute" name="Group" actions="get"/>
+            <permission type="attribute" name="GroupMembership" actions="get"/>
       
-      <!-- We need these permissions to allow Spring to auto-discover -->
-      <!-- and wire beans together and Hibernate to interact with objects. -->
-      <!--
-      <permission type="java.lang.reflect.ReflectPermission" name="suppressAccessChecks" />
-      <permission type="java.lang.RuntimePermission" name="accessDeclaredMembers" />
-      <permission type="java.lang.RuntimePermission" name="createClassLoader" />
-      <permission type="java.lang.RuntimePermission" name="setContextClassLoader" />
-      <permission type="java.io.FilePermission" name="${java.home}/lib/*" actions="read" />
-      -->
-    </permissions>
+            <!-- We need these permissions to allow Spring to auto-discover -->
+            <!-- and wire beans together and Hibernate to interact with objects. -->
+            <!--
+            <permission type="java.lang.reflect.ReflectPermission" name="suppressAccessChecks" />
+            <permission type="java.lang.RuntimePermission" name="accessDeclaredMembers" />
+            <permission type="java.lang.RuntimePermission" name="createClassLoader" />
+            <permission type="java.lang.RuntimePermission" name="setContextClassLoader" />
+            <permission type="java.io.FilePermission" name="${java.home}/lib/*" actions="read" />
+            -->
+        </permissions>
 
-  </plugin>
+    </plugin>
 </manifest>
