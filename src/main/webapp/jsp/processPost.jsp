@@ -25,7 +25,9 @@
          blackboard.platform.tracking.data.TrackingEvent,
          org.apache.commons.lang.StringEscapeUtils,
          blackboard.platform.security.SecurityUtil,
-         blackboard.platform.LicenseComponent
+         blackboard.platform.LicenseComponent,
+         java.util.TimeZone,
+         java.text.SimpleDateFormat
          "
          pageEncoding="UTF-8"
          %>
@@ -123,6 +125,20 @@ for (blackboard.platform.LicenseComponent c : blackboard.platform.LicenseCompone
 %>
 
 <%
+// App sever time and timezone
+// TODO: move code as a method in a JAR
+
+String appServerTime = "";
+SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+java.util.Date dtAppServerTime = new java.util.Date();
+TimeZone tz = TimeZone.getDefault();
+
+appServerTime = formatter.format(dtAppServerTime) + " - "  + tz.getID() + " - " + tz.getDisplayName();
+
+%>
+
+<%
 // Detect whether MSSQL/Oracle/Postgres
 // TODO: move code as a method in a JAR
 String dbType = "";
@@ -195,6 +211,8 @@ try {
             }
         }
 %>
+
+
 
 <%
 // Courses stats
@@ -408,6 +426,9 @@ try {
             </bbNG:dataElement>
             <bbNG:dataElement label="Java version" isRequired="yes" labelFor="appJavaVersion">
                 <%=appJavaVersion%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Server time and timezone" isRequired="yes" labelFor="appServerTime">
+                <%=appServerTime%>
             </bbNG:dataElement>
         </bbNG:step>
 
