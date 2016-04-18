@@ -129,12 +129,12 @@ for (blackboard.platform.LicenseComponent c : blackboard.platform.LicenseCompone
 // TODO: move code as a method in a JAR
 
 String appServerTime = "";
-SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+SimpleDateFormat appFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 java.util.Date dtAppServerTime = new java.util.Date();
 TimeZone tz = TimeZone.getDefault();
 
-appServerTime = formatter.format(dtAppServerTime) + " - "  + tz.getID() + " - " + tz.getDisplayName();
+appServerTime = appFormatter.format(dtAppServerTime) + " - "  + tz.getID() + " - " + tz.getDisplayName();
 
 %>
 
@@ -152,7 +152,7 @@ switch(dbType) {
         qrystr = "select * from v$version";
         // SELECT version();
         break;
-    case "mssqlserver":
+    case "mssql":
         // TODO detect MSSQL version and put the right case label
         qrystr = "Select @@version";
         break;
@@ -212,9 +212,86 @@ try {
         }
 %>
 
+<%
+// DB sever time and timezone
+// TODO: move code as a method in a JAR
 
+String tzqrystr = "";
+String dbServerTime = "";
+SimpleDateFormat dbformatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+//java.util.Date dtAppServerTime = new java.util.Date();
+java.util.Date dtDbServerTime = new java.util.Date();
+String dbTzString = "";
+//TimeZone tz = TimeZone.getDefault();
+
+//appServerTime = dbformatter.format(dtAppServerTime) + " - "  + tz.getID() + " - " + tz.getDisplayName();
+
+// Detect db server version
+
+switch(dbType) {
+    case "oracle":
+        tzqrystr = "SELECT TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), TO_CHAR(SYSTIMESTAMP, 'TZH:TZM') FROM DUAL";
+        break;
+    case "mssql":
+        tzqrystr = "Select convert(char, SYSDATETIME()), DATENAME(TZoffset, SYSDATETIMEOffset())";
+        break;
+    case "pgsql":
+        tzqrystr = "SELECT  NOW(), current_setting('TIMEZONE')";
+        break;
+    default:
+        tzqrystr = "unable to detect db version";
+}
+
+//ConnectionManager conman  = null;
+Connection conn4 = null;
+//Statement stmt = null;
+//ResultSet rs = null;
+try {
+
+    // Create Conn to correct database
+    int j=0;
+
+    BbDatabase bbDb = DbUtil.safeGetBbDatabase();
+    conman = bbDb.getConnectionManager();
+    while(conn4 == null && j<10){
+        try {
+                conn4 = conman.getConnection();
+        }catch(ConnectionNotAvailableException cnae){
+            Thread.sleep(1000);
+            ++j;
+        }
+    }
+
+    stmt = conn4.createStatement();
+    if (stmt.execute(tzqrystr)) {
+        rs = stmt.getResultSet();
+        if (rs.next()) {
+            dtDbServerTime = dbformatter.parse(rs.getString(1));
+            dbTzString = rs.getString(2);
+        }
+    }
+}catch(Exception e) {
+    out.println("query failed<br/>");
+    out.println(e);
+}finally{
+    if(rs != null){
+        rs.close();
+    }
+    if(stmt != null){
+        stmt.close();
+    }
+    if(conman != null){
+        conman.releaseConnection(conn4);
+    }
+}
+
+dbServerTime = dbformatter.format(dtDbServerTime) + " " + dbTzString; // + " - "  + tz.getID() + " - " + tz.getDisplayName();
+
+%>
 
 <%
+    
 // Courses stats
 //TODO: move to a library
 int coursesCount = -1;
@@ -283,6 +360,7 @@ try {
 %>
 
 <%
+ 
 // Users stats
 // TODO: move to a library
 
@@ -292,7 +370,6 @@ int i60daysLogins = -1;
 int i120daysLogins = -1;
 int i180daysLogins = -1;
 
-String Blah = "</br>";
 
 String qrystrActiveUsers = "SELECT COUNT(u.user_id) ct FROM users u WHERE EXISTS ( SELECT 'x' FROM course_users cu " +
         "WHERE cu.users_pk1 = u.pk1 AND cu.row_status = 0  AND cu.available_ind='Y' AND crsmain_pk1 in (" +
@@ -307,9 +384,9 @@ switch(ConfigurationServiceFactory.getInstance().getBbProperty( blackboard.platf
         "from activity_accumulator where event_type = 'LOGIN_ATTEMPT' " +
         "and data = 'Login succeeded.' and timestamp >= sysdate-?";
         break;
-    case "mssqlserver":
+    case "mssql":
         // TODO detect MSSQL version and put the right case label
-        qrystr = "blah";
+        qrystr = "select count(*) from course_main";
         break;
     case "pgsql":
         qrystrUniqueLogins = "SELECT count(distinct (user_pk1)) valuen " +
@@ -321,7 +398,7 @@ switch(ConfigurationServiceFactory.getInstance().getBbProperty( blackboard.platf
 }
 
 
-
+/*
 //ConnectionManager conman  = null;
 Connection conn3 = null;
 //Statement stmt = null;
@@ -377,15 +454,7 @@ try {
         i180daysLogins = rs.getInt(1);
     }    
     
-    /*
-    if (stmt.execute(qrystrActiveAndAvailCoursesCount)) {
-        rs = stmt.getResultSet();
-        ResultSetMetaData rsMetaData = rs.getMetaData();
-        if (rs.next()) {
-            activeAndAvailCoursesCount = rs.getInt(1);
-        }
-    }
-    */
+
     
     
 }catch(Exception e) {
@@ -402,6 +471,7 @@ try {
         conman.releaseConnection(conn3);
     }
 }
+*/
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
@@ -447,6 +517,9 @@ try {
             </bbNG:dataElement>
             <bbNG:dataElement label="Database server version" isRequired="yes" labelFor="dbversion">
                 <%=dbVersion%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Server time and timezone" isRequired="yes" labelFor="dbServerTime">
+                <%=dbServerTime%>
             </bbNG:dataElement>
         </bbNG:step>
 
