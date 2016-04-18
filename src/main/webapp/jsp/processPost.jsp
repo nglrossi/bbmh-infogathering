@@ -386,7 +386,10 @@ switch(ConfigurationServiceFactory.getInstance().getBbProperty( blackboard.platf
         break;
     case "mssql":
         // TODO detect MSSQL version and put the right case label
-        qrystr = "select count(*) from course_main";
+        qrystrUniqueLogins = "SELECT count(distinct (user_pk1)) valuen " +
+        "from activity_accumulator where event_type = 'LOGIN_ATTEMPT' " +
+        "and data = 'Login succeeded.' and timestamp >= DATEADD(DAY, -?, GETDATE ())";
+        
         break;
     case "pgsql":
         qrystrUniqueLogins = "SELECT count(distinct (user_pk1)) valuen " +
@@ -398,7 +401,6 @@ switch(ConfigurationServiceFactory.getInstance().getBbProperty( blackboard.platf
 }
 
 
-/*
 //ConnectionManager conman  = null;
 Connection conn3 = null;
 //Statement stmt = null;
@@ -452,11 +454,7 @@ try {
     rs = preStatement.executeQuery();  
     if (rs.next()) {
         i180daysLogins = rs.getInt(1);
-    }    
-    
-
-    
-    
+    }
 }catch(Exception e) {
     out.println("query failed<br/>");
     out.println(e);
@@ -471,7 +469,7 @@ try {
         conman.releaseConnection(conn3);
     }
 }
-*/
+
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
