@@ -101,30 +101,6 @@ learnVersion = blackboard.platform.LicenseUtil.getBuildNumber();
 %>
 
 <%
-// Detect licensed platforms
-// TODO: move code as a method in a JAR
-String licensedPlatforms = "";
-
-//blackboard.platform.LicenseDescriptor ld = new blackboard.platform.LicenseDescriptor("/usr/local/blackboard/system/tooldefs/system/LicenseUpdate/license-handlers/enterprise.contentsystem/license-handler.xml");
-//licensedPlatforms = ld.getTitle();
-
-//if (blackboard.platform.LicenseComponent.isAvailable(blackboard.platform.LicenseComponent.ENTERPRISE_CONTENT_SYSTEM)) {
-//    licensedPlatforms = "content system yes";
-//} else {
-//    licensedPlatforms = "content system no";
-//}
-
-for (blackboard.platform.LicenseComponent c : blackboard.platform.LicenseComponent.values()) {
-    if (c.isAvailable()) {
-        licensedPlatforms += c + ", ";
-    }
-}
-// remove last comma
-//str = str.replace(str.substring(str.length()-2), "");
-
-%>
-
-<%
 // App sever time and timezone
 // TODO: move code as a method in a JAR
 
@@ -504,9 +480,16 @@ try {
             <bbNG:dataElement label="Learn Version" isRequired="yes" labelFor="LV">
                 <%=learnVersion%>
             </bbNG:dataElement>
-            <bbNG:dataElement label="Licensed Platforms" isRequired="yes" labelFor="licensedPlatforms">
-                <%=licensedPlatforms%>
-            </bbNG:dataElement>
+
+            <bbNG:dataElement isSubElement="true" label="Licensed Platforms" isRequired="yes" labelFor="licensedPlatforms2">
+                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_LEARNING">Course Delivery</bbNG:ifLicensed> </bbNG:dataElement>
+                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_CONTENT_SYSTEM">Content Management</bbNG:ifLicensed> </bbNG:dataElement>
+                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_COMMUNITY">Community Engagement</bbNG:ifLicensed> </bbNG:dataElement>
+                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_OUTCOMES">Outcomes Assessment</bbNG:ifLicensed> </bbNG:dataElement>
+            </bbNG:dataElement> 
+            
+            
+            
         </bbNG:step>
 
         <bbNG:step title="Database server backend">
@@ -549,6 +532,7 @@ try {
             <bbNG:dataElement label="180 days unique logins" isRequired="yes" labelFor="i180daysLogins">
                 <%=i180daysLogins%>
             </bbNG:dataElement>
+            
         </bbNG:step>
 
         <bbNG:stepSubmit cancelUrl="<%=cancelUrl%>" />
@@ -556,6 +540,8 @@ try {
     </bbNG:dataCollection>
     <%=content%>
 </bbNG:genericPage>
+
+
 
 <%
    //String returnUrl="index.jsp";
