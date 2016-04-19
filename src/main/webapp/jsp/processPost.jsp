@@ -34,7 +34,7 @@
          blackboard.platform.intl.BbResourceBundle,
          blackboard.platform.intl.BundleManager,
          blackboard.platform.intl.BundleManagerFactory,
-         blackboard.bbmh.B2Helper.*
+         blackboard.bbmh.B2Helper
          "
          pageEncoding="UTF-8"
          %>
@@ -459,12 +459,15 @@ try {
 // List building blocks
 // TODO: move to external JAR
 
-blackboard.bbmh.B2Helper b2local = new blackboard.bbmh.B2Helper();
+//B2Helper b2local = new B2Helper();
 
 String ListOfB2s = "";
-List<String> b2s = new ArrayList<String>();
+//List<String> b2s = new ArrayList<String>();
+List<B2Helper> b2s = new ArrayList<B2Helper>();
 
-String b2qrystr = "select name, vendor_id, handle from plugins";
+SimpleDateFormat anotherdbformatter = new SimpleDateFormat("yyyy-MM-dd");
+
+String b2qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified from plugins";
 
 //BundleManager bm = BundleManagerFactory.getInstance();
 //BbResourceBundle bundle = new BbResourceBundle;
@@ -496,13 +499,16 @@ try {
     if (stmt.execute(b2qrystr)) {
         rs = stmt.getResultSet();
         while (rs.next()) {
-            //ListOfB2s += rs.getString(1) + "</br>";
-            //bundle = bm.getPluginBundle(plugin.getId());
-            //bundle.getStringWithFallback(key, key);
             
-            //b2s.add( rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
-            b2s.add( b2local.getLocalisationString(rs.getString(1), rs.getString(2), rs.getString(3)) );
+            B2Helper b2local = new B2Helper( rs.getString("vendor_id"), rs.getString("handle") );
+            b2local.setName(rs.getString("name"));
+            b2local.setLocalizedName(rs.getString("name"));
+            b2local.setVendorName(rs.getString("vendor_name"));
+            b2local.setVersion( rs.getInt("version_major"), rs.getInt("version_minor"), rs.getInt("version_patch"), rs.getInt("version_build") );
+            b2local.setAvailableFlag(rs.getString("available_flag"));
+            b2local.setDateModified( anotherdbformatter.parse(rs.getString("dtmodified")) );
             
+            b2s.add ( b2local );
         }
     }
     
@@ -615,22 +621,24 @@ ListOfB2s = " " + b2s.size();
         </bbNG:step>
 
         <bbNG:step title="Building Blocks">
-            <bbNG:dataElement label="debug resultset size" isRequired="yes" labelFor="debug">
-                <%=ListOfB2s%>
-            </bbNG:dataElement>
-            
-            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="String" description="List Description" emptyMsg="No plugins found">
+            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="List Description" emptyMsg="No plugins found">
                 <bbNG:listElement isRowHeader="true" label="Name" name="b2Name">
-                    <%=ux.toString()%>
+                    <%=ux.localizedName%>
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Version" name="version">
+                    <%=ux.version%>
                 </bbNG:listElement>
                 <bbNG:listElement isRowHeader="false" label="Vendor" name="b2Vendor">
-                    WIP
+                    <%=ux.vendorName%>
                 </bbNG:listElement>
                 <bbNG:listElement isRowHeader="false" label="Handle" name="b2handle">
-                    WIP
+                    <%=ux.handle%>
                 </bbNG:listElement>
-                <bbNG:listElement isRowHeader="false" label="Status" name="b2Statuse">
-                    WIP
+                <bbNG:listElement isRowHeader="false" label="Status" name="b2Status">
+                    <%=ux.availableFlag%>
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Last Modified" name="lastmodified">
+                    <%=ux.dateModified%>
                 </bbNG:listElement>
             </bbNG:inventoryList>
         </bbNG:step>
