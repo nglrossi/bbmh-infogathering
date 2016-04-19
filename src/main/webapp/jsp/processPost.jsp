@@ -27,7 +27,14 @@
          blackboard.platform.security.SecurityUtil,
          blackboard.platform.LicenseComponent,
          java.util.TimeZone,
-         java.text.SimpleDateFormat
+         java.text.SimpleDateFormat,
+         blackboard.platform.plugin.PlugIn,
+         blackboard.platform.plugin.PlugInManagerFactory,
+         blackboard.platform.plugin.PlugInManager,
+         blackboard.platform.intl.BbResourceBundle,
+         blackboard.platform.intl.BundleManager,
+         blackboard.platform.intl.BundleManagerFactory,
+         blackboard.bbmh.B2Helper.*
          "
          pageEncoding="UTF-8"
          %>
@@ -445,8 +452,81 @@ try {
         conman.releaseConnection(conn3);
     }
 }
+%>
+
+<%    
+    
+// List building blocks
+// TODO: move to external JAR
+
+blackboard.bbmh.B2Helper b2local = new blackboard.bbmh.B2Helper();
+
+String ListOfB2s = "";
+List<String> b2s = new ArrayList<String>();
+
+String b2qrystr = "select name, vendor_id, handle from plugins";
+
+//BundleManager bm = BundleManagerFactory.getInstance();
+//BbResourceBundle bundle = new BbResourceBundle;
+
+String vendor_id = "'";
+String handle = "";
+
+//ConnectionManager conman  = null;
+Connection conn5 = null;
+//Statement stmt = null;
+//ResultSet rs = null;
+try {
+
+    // Create Conn to correct database
+    int j=0;
+
+    BbDatabase bbDb = DbUtil.safeGetBbDatabase();
+    conman = bbDb.getConnectionManager();
+    while(conn5 == null && j<10){
+        try {
+                conn5 = conman.getConnection();
+        }catch(ConnectionNotAvailableException cnae){
+            Thread.sleep(1000);
+            ++j;
+        }
+    }
+
+    stmt = conn5.createStatement();
+    if (stmt.execute(b2qrystr)) {
+        rs = stmt.getResultSet();
+        while (rs.next()) {
+            //ListOfB2s += rs.getString(1) + "</br>";
+            //bundle = bm.getPluginBundle(plugin.getId());
+            //bundle.getStringWithFallback(key, key);
+            
+            //b2s.add( rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
+            b2s.add( b2local.getLocalisationString(rs.getString(1), rs.getString(2), rs.getString(3)) );
+            
+        }
+    }
+    
+}catch(Exception e) {
+    out.println("query failed<br/>");
+    out.println(e);
+}finally{
+    if(rs != null){
+        rs.close();
+    }
+    if(stmt != null){
+        stmt.close();
+    }
+    if(conman != null){
+        conman.releaseConnection(conn5);
+    }
+}
+
+//b2s.add("sdfqwfesd");
+ListOfB2s = " " + b2s.size();
 
 %>
+
+
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
         <bbNG:breadcrumb title="BB Support Tools" href="<%= cancelUrl %>" />
@@ -532,8 +612,29 @@ try {
             <bbNG:dataElement label="180 days unique logins" isRequired="yes" labelFor="i180daysLogins">
                 <%=i180daysLogins%>
             </bbNG:dataElement>
-            
         </bbNG:step>
+
+        <bbNG:step title="Building Blocks">
+            <bbNG:dataElement label="debug resultset size" isRequired="yes" labelFor="debug">
+                <%=ListOfB2s%>
+            </bbNG:dataElement>
+            
+            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="String" description="List Description" emptyMsg="No plugins found">
+                <bbNG:listElement isRowHeader="true" label="Name" name="b2Name">
+                    <%=ux.toString()%>
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Vendor" name="b2Vendor">
+                    WIP
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Handle" name="b2handle">
+                    WIP
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Status" name="b2Statuse">
+                    WIP
+                </bbNG:listElement>
+            </bbNG:inventoryList>
+        </bbNG:step>
+            
 
         <bbNG:stepSubmit cancelUrl="<%=cancelUrl%>" />
 

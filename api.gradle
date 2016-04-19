@@ -1,52 +1,77 @@
+apply plugin: "java"
+apply plugin: "maven"
+//apply plugin: "eclipse"
+
+repositories {
+  mavenCentral()
+  maven {
+    url "https://maven.blackboard.com/content/repositories/releases/"
+  }
+}
 
 configurations {
   // This configuration is used for referencing the API classes from the regular compile
   apiClasses
+      apiCompile {
+        description = 'compile classpath'
+        transitive = true
+        dependencies {
+              apiCompile ('blackboard.platform:bb-platform:9.1.100401.0') { transitive = false }
+
+        }
+        
+    }
 }
 
+
+
+
+
 // Define a "source set" referencing the API source code for the B2.
-sourceSets {
-  api {
-    java {
-      srcDir "src/api/java"
-    }
-    resources {
-      srcDir "src/api/resources"
-    }
-  }
+
+
+// Add the API classes to the main compile classpath
+dependencies {
+  //apiClasses files( sourceSets.api.output.classesDir )
+  compile configurations.apiClasses
+  
+  apiCompile 'blackboard.platform:bb-platform:9.1.100401.0'
+  providedCompile ('blackboard.platform:bb-taglibs:9.1.100401.0') { transitive = false }
+  
+  //  buildDir.mkdirs()
+  //  new File(buildDir, "apiclasspath.txt").text = configurations.runtime.asPath + "\n"
+    
 }
 
 configurations.providedCompile.extendsFrom configurations.apiCompile
-configurations.providedRuntime.extendsFrom configurations.apiRuntime
+//configurations.providedRuntime.extendsFrom configurations.apiRuntime
+
 
 // Build and package the API source code
-task apiJar( type: Jar, dependsOn: tasks.apiClasses ) {
-  from sourceSets.api.output
-  classifier = "api"
-}
+//task apiJar( type: Jar, dependsOn: tasks.apiClasses ) {
+//  from sourceSets.api.output
+//  classifier = "api"  
+//}
 
 // Add the API JAR to the WAR
 war {
-  from( apiJar ) {
-    into "WEB-INF/libext"
-  }
+//  from( apiJar ) {
+//    into "WEB-INF/libext"
+//       
+//  }
 
-  classpath = sourceSets.main.runtimeClasspath.minus( configurations.providedRuntime ).minus( configurations.apiClasses )
+//  classpath = sourceSets.main.runtimeClasspath.minus( configurations.providedRuntime ).minus( configurations.apiClasses )
 }
 
 // Make sure that the API JAR is also uploaded to Maven if you deploy there.
 artifacts {
-  archives apiJar
+//  archives apiJar
 }
 
 // Make sure that the compile job happens after the API job
-project.compileJava.dependsOn project.apiClasses
+//project.compileJava.dependsOn project.apiClasses
 
-// Add the API classes to the main compile classpath
-dependencies {
-  apiClasses files( sourceSets.api.output.classesDir )
-  compile configurations.apiClasses
-}
+
 
 eclipse {
   classpath {

@@ -2,14 +2,15 @@ apply plugin: "java"
 apply plugin: "war"
 apply plugin: "maven"
 apply plugin: "eclipse"
-apply plugin: "idea"
 
 // Uncomment if your project has an API JAR
-//apply from: "api.gradle"
+apply from: "api.gradle"
 
 // define the version for the project when publishing to maven
 group "com.nglrossi"
-version "0.1-SNAPSHOT"
+//version "0.1-SNAPSHOT"
+version = getB2Version()
+
 
 ext {
   learnVersion = "9.1.201410.0"
@@ -24,14 +25,36 @@ repositories {
   }
 }
 
+sourceSets {
+  api {
+    java {
+      srcDir "src/main/java"
+      compileClasspath += api.output
+      runtimeClasspath += api.output
+    }
+    resources {
+      srcDir "src/main/resources"
+    }
+  }
+}
+
+
 configurations {
-  buildUtils
+    compile {
+        description = 'compile classpath'
+        transitive = true
+    }
+    compile.extendsFrom apiCompile
+    runtime.extendsFrom apiRuntime
+    buildUtils
 }
 
 // define the project's dependencies
 dependencies {
-  providedCompile "javax.servlet:servlet-api:2.5",
+    providedCompile "javax.servlet:servlet-api:2.5",
                   "javax.servlet.jsp:jsp-api:2.1"
+    apiCompile 'blackboard.platform:bb-platform:9.1.100401.0'
+
 
   // Dependencies are libraries needed to build, but should not be included in the B2 WAR.
   // You should NEVER include Learn JARs (other than webapis) in your B2.
@@ -47,17 +70,34 @@ dependencies {
   // Dependencies that are only necessary at runtime so should be included in the WAR
   // runtime "org.javassist:javassist:3.17.1-GA"
 
-  buildUtils "org.oscelot:b2deploy-task:0.1.0"
+  
+    buildUtils "org.oscelot:b2deploy-task:0.1.0"
+  
 }
+jar {
+    from sourceSets.api.output
+}
+task apiJar(type: Jar) {
+    appendix = "api"
+    from sourceSets.api.output
+}
+ 
+build.dependsOn apiJar
+
 
 // Add a task to deploy a B2 using starting block
-task deployB2( dependsOn: "war" ) << {
-    //println "Deploying \"" + project.war.archivePath + "\""
- 
+task deployB2( dependsOn: "war" ) << {  
     ant.taskdef( name: "b2deploy", classname: "org.oscelot.ant.B2DeployTask", classpath: project.configurations.buildUtils.asPath )
-      ant.b2deploy( localfilepath: project.war.archivePath, host: project.ext.deployServer, courseorgavailable: 'true', clean: 'true', webappName: 'bb-starting-block-' + project.ext.deployInstance )
+    ant.b2deploy( localfilepath: project.war.archivePath, host: project.ext.deployServer, courseorgavailable: 'true', clean: 'true', webappName: 'bb-starting-block-' + project.ext.deployInstance )
 }
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.6'
+}
+
+
+String getB2Version() {
+  File mfFile = new File(file(webAppDir), 'WEB-INF/bb-manifest.xml');
+  def manifest = new XmlSlurper().parse(mfFile);
+  return manifest.plugin.version['@value'];
 }
