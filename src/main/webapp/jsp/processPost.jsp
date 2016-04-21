@@ -34,7 +34,11 @@
          blackboard.platform.intl.BbResourceBundle,
          blackboard.platform.intl.BundleManager,
          blackboard.platform.intl.BundleManagerFactory,
-         blackboard.bbmh.B2Helper
+         blackboard.bbmh.B2Helper,
+         blackboard.bbmh.Db,
+         blackboard.bbmh.AppServerInfo,
+         blackboard.bbmh.DbServerInfo,
+         blackboard.bbmh.CourseInfo
          "
          pageEncoding="UTF-8"
          %>
@@ -51,244 +55,71 @@ String content = "";
 %>
 
 <%
-// Detect OS via Java API
-// TODO: move code as a method in a JAR
-String appOsName = System.getProperty("os.name");
-String appOsArch = System.getProperty("os.arch");
-String appOsversion = System.getProperty("os.version");
-String appJavaVersion = System.getProperty("java.version");
+// Initialize db
+Db db = new Db();
+Connection conn = Db.getConnection();
+Statement stmt = null;
 
-/*
-if(blackboard.util.PlatformUtil.osIsWindows()){
-    osFlavour = "Windows not yet supported";
-}else{
-    osFlavour = "UNIX system";
-}
-/*
-// Detect app server OS details via command line
-String appOsDetails = "";
-String baseDIR;
-String command;
-if(blackboard.util.PlatformUtil.osIsWindows()){
-    appOsDetails = "Windows details, not yet supported";
-    baseDIR = ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.BASEDIR_WIN);
-    command = "windows command";
-}else{
-    appOsDetails = "Freebsd 1.2.3.4";
-    baseDIR = ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.BASEDIR);
-    command = "cat /proc/version";
+// Detect App server info
+String appOsName = AppServerInfo.getOsName();
+String appOsArch = AppServerInfo.getOsArch();
+String appOsversion = AppServerInfo.getOsVersion();
+String appJavaVersion = AppServerInfo.getJavaVersion();
+String appServerTime = AppServerInfo.getServerTime("yyyy-MM-dd HH:mm:ss");
 
-         try
-        {
-            String line;
-            Process p=Runtime.getRuntime().exec(command,null,( new File("/tmp")));
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-            appOsDetails = in.readLine();
-            in.close();
-            p.waitFor();
-        } catch(IOException e1) {
-        } catch(InterruptedException e2) {
-        }
-}
-
-*/
-
-
-
-%>
-
-<%
 // Detect Learn Version
-// TODO: move code as a method in a JAR
 String learnVersion = "";
-
 learnVersion = blackboard.platform.LicenseUtil.getBuildNumber();
 
-%>
-
-<%
-// App sever time and timezone
-// TODO: move code as a method in a JAR
-
-String appServerTime = "";
-SimpleDateFormat appFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-java.util.Date dtAppServerTime = new java.util.Date();
-TimeZone tz = TimeZone.getDefault();
-
-appServerTime = appFormatter.format(dtAppServerTime) + " - "  + tz.getID() + " - " + tz.getDisplayName();
-
-%>
-
-<%
 // Detect whether MSSQL/Oracle/Postgres
-// TODO: move code as a method in a JAR
-String dbType = "";
 String dbVersion = "";
-dbType = ConfigurationServiceFactory.getInstance().getBbProperty( blackboard.platform.config.BbConfig.DATABASE_TYPE );
-String qrystr = "";
-
-// Detect db server version
-switch(dbType) {
-    case "oracle":
-        qrystr = "select * from v$version";
-        // SELECT version();
-        break;
-    case "mssql":
-        // TODO detect MSSQL version and put the right case label
-        qrystr = "Select @@version";
-        break;
-    case "pgsql":
-        // TODO detect ORACLE version and put the right case label
-        qrystr = "select version()";
-        break;
-    default:
-        dbVersion = "unable to detect db version";
-}
-
-
-ConnectionManager conman  = null;
-Connection conn = null;
-Statement stmt = null;
-ResultSet rs = null;
-try {
- 
-        // Create Conn to correct database
-            int j=0;
-
-            BbDatabase bbDb = DbUtil.safeGetBbDatabase();
-            conman = bbDb.getConnectionManager();
-            while(conn == null && j<10){
-                try {
-                    conn = conman.getConnection();
-                }
-                catch(ConnectionNotAvailableException cnae){
-                    Thread.sleep(1000);
-                    ++j;
-                }
-            }
-
-        stmt = conn.createStatement();
-        boolean wasExecuted = stmt.execute(qrystr);
-        if (wasExecuted) {
-                rs = stmt.getResultSet();
-
-                if (rs.next()) {
-                    dbVersion = rs.getString(1);
-                }
-        }
-
-}catch(Exception e) {
-        out.println("query failed<br/>");
-        out.println(e);
-}finally{
-        if(rs != null){
-                rs.close();
-                }
-        if(stmt != null){
-                stmt.close();
-                }
-    if(conman != null){
-            conman.releaseConnection(conn);
-            }
-        }
-%>
-
-<%
-// DB sever time and timezone
-// TODO: move code as a method in a JAR
-
-String tzqrystr = "";
 String dbServerTime = "";
-SimpleDateFormat dbformatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+String dbType = DbServerInfo.getDatabaseType();
 
-//java.util.Date dtAppServerTime = new java.util.Date();
-java.util.Date dtDbServerTime = new java.util.Date();
-String dbTzString = "";
-//TimeZone tz = TimeZone.getDefault();
+int totalCoursesCount = -1;
+int activeCoursesCount = -1;
+int accessedLastYearCoursesCount = -1;
 
-//appServerTime = dbformatter.format(dtAppServerTime) + " - "  + tz.getID() + " - " + tz.getDisplayName();
-
-// Detect db server version
-
-switch(dbType) {
-    case "oracle":
-        tzqrystr = "SELECT TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), TO_CHAR(SYSTIMESTAMP, 'TZH:TZM') FROM DUAL";
-        break;
-    case "mssql":
-        tzqrystr = "Select convert(char, SYSDATETIME()), DATENAME(TZoffset, SYSDATETIMEOffset())";
-        break;
-    case "pgsql":
-        tzqrystr = "SELECT  NOW(), current_setting('TIMEZONE')";
-        break;
-    default:
-        tzqrystr = "unable to detect db version";
-}
-
-//ConnectionManager conman  = null;
-Connection conn4 = null;
-//Statement stmt = null;
-//ResultSet rs = null;
+// Pull info from the DB and then close connections
 try {
-
-    // Create Conn to correct database
-    int j=0;
-
-    BbDatabase bbDb = DbUtil.safeGetBbDatabase();
-    conman = bbDb.getConnectionManager();
-    while(conn4 == null && j<10){
-        try {
-                conn4 = conman.getConnection();
-        }catch(ConnectionNotAvailableException cnae){
-            Thread.sleep(1000);
-            ++j;
-        }
-    }
-
-    stmt = conn4.createStatement();
-    if (stmt.execute(tzqrystr)) {
-        rs = stmt.getResultSet();
-        if (rs.next()) {
-            dtDbServerTime = dbformatter.parse(rs.getString(1));
-            dbTzString = rs.getString(2);
-        }
-    }
-}catch(Exception e) {
-    out.println("query failed<br/>");
-    out.println(e);
-}finally{
-    if(rs != null){
-        rs.close();
-    }
-    if(stmt != null){
+        // create connection that will be used for all the queries
+        stmt = Db.createStatement(conn);
+        
+        // Db server information
+        DbServerInfo dbInfo = new DbServerInfo();
+        dbVersion = DbServerInfo.getDatabaseVersion(stmt);
+        dbServerTime = DbServerInfo.getDatabaseTimeAndTimezone(stmt, "yyyy-MM-dd HH:mm:ss");
+        
+        // Courses info
+        totalCoursesCount = CourseInfo.getTotalCourses(stmt);
+        activeCoursesCount = CourseInfo.getActiveCourses(stmt);
+        accessedLastYearCoursesCount = CourseInfo.getAccessedSince(stmt, 365);
+        
+} catch(Exception e) {
+        // TODO: write in logs
+}finally {
+    // close connections
+     if(stmt != null){
         stmt.close();
     }
-    if(conman != null){
-        conman.releaseConnection(conn4);
-    }
 }
 
-dbServerTime = dbformatter.format(dtDbServerTime) + " " + dbTzString; // + " - "  + tz.getID() + " - " + tz.getDisplayName();
-
-%>
-
-<%
     
 // Courses stats
 //TODO: move to a library
-int coursesCount = -1;
-int activeCoursesCount = -1;
-int activeAndAvailCoursesCount = -1;
+//int totalCoursesCount = -1;
+//int activeCoursesCount = -1;
+//int activeAndAvailCoursesCount = -1;
 
-String qrystrCoursesCount = "select count(*) from course_main";
-String qrystrActiveCoursesCount = "select count(*) from course_main where row_status=0";
-String qrystrActiveAndAvailCoursesCount = "select count(*) from course_main where row_status=0 and available_ind='Y'";
+//String qrystrCoursesCount = "select count(*) from course_main";
+//String qrystrActiveCoursesCount = "select count(*) from course_main where row_status=0";
+//String qrystrActiveAndAvailCoursesCount = "select count(*) from course_main where row_status=0 and available_ind='Y'";
 
-//ConnectionManager conman  = null;
+ConnectionManager conman  = null;
 Connection conn2 = null;
 //Statement stmt = null;
-//ResultSet rs = null;
+ResultSet rs = null;
+ /*
 try {
 
     // Create Conn to correct database
@@ -306,18 +137,21 @@ try {
     }
 
     stmt = conn2.createStatement();
-    if (stmt.execute(qrystrCoursesCount)) {
+   if (stmt.execute(qrystrCoursesCount)) {
         rs = stmt.getResultSet();
         if (rs.next()) {
             coursesCount = rs.getInt(1);
         }
     }
+
     if (stmt.execute(qrystrActiveCoursesCount)) {
         rs = stmt.getResultSet();
         if (rs.next()) {
             activeCoursesCount = rs.getInt(1);
         }
     }
+
+
     if (stmt.execute(qrystrActiveAndAvailCoursesCount)) {
         rs = stmt.getResultSet();
         if (rs.next()) {
@@ -325,7 +159,7 @@ try {
         }
     }
     
-    
+
 }catch(Exception e) {
     out.println("query failed<br/>");
     out.println(e);
@@ -340,6 +174,7 @@ try {
         conman.releaseConnection(conn2);
     }
 }
+*/
 %>
 
 <%
@@ -527,11 +362,14 @@ try {
     }
 }
 
-//b2s.add("sdfqwfesd");
 ListOfB2s = " " + b2s.size();
-
 %>
 
+
+<%
+// Release db connection
+// TODO: implement and call Db methods
+%>
 
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
@@ -573,9 +411,7 @@ ListOfB2s = " " + b2s.size();
                 <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_COMMUNITY">Community Engagement</bbNG:ifLicensed> </bbNG:dataElement>
                 <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_OUTCOMES">Outcomes Assessment</bbNG:ifLicensed> </bbNG:dataElement>
             </bbNG:dataElement> 
-            
-            
-            
+   
         </bbNG:step>
 
         <bbNG:step title="Database server backend">
@@ -591,14 +427,14 @@ ListOfB2s = " " + b2s.size();
         </bbNG:step>
 
         <bbNG:step title="Courses information">
-            <bbNG:dataElement label="Courses" isRequired="yes" labelFor="courses">
-                <%=coursesCount%>
+            <bbNG:dataElement label=" Total Courses" isRequired="yes" labelFor="totalCourses">
+                <%=totalCoursesCount%>
             </bbNG:dataElement>
-            <bbNG:dataElement label="Courses enabled" isRequired="yes" labelFor="activecourses">
+            <bbNG:dataElement label="Active Courses" isRequired="yes" labelFor="activecourses">
                 <%=activeCoursesCount%>
             </bbNG:dataElement>
-            <bbNG:dataElement label="Courses enabled and available" isRequired="yes" labelFor="activeandavailcourses">
-                <%=activeAndAvailCoursesCount%>
+            <bbNG:dataElement label="Accessed in the last year" isRequired="yes" labelFor="courseAccessedInLastYear">
+                <%=accessedLastYearCoursesCount%>
             </bbNG:dataElement>
         </bbNG:step>
         
@@ -658,4 +494,42 @@ ListOfB2s = " " + b2s.size();
 %>
 <%!
 //code methods in here e.g. private static boolean pingUrl (String address) {....}
+
+/*
+if(blackboard.util.PlatformUtil.osIsWindows()){
+    osFlavour = "Windows not yet supported";
+}else{
+    osFlavour = "UNIX system";
+}
+/*
+// Detect app server OS details via command line
+String appOsDetails = "";
+String baseDIR;
+String command;
+if(blackboard.util.PlatformUtil.osIsWindows()){
+    appOsDetails = "Windows details, not yet supported";
+    baseDIR = ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.BASEDIR_WIN);
+    command = "windows command";
+}else{
+    appOsDetails = "Freebsd 1.2.3.4";
+    baseDIR = ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.BASEDIR);
+    command = "cat /proc/version";
+
+         try
+        {
+            String line;
+            Process p=Runtime.getRuntime().exec(command,null,( new File("/tmp")));
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            appOsDetails = in.readLine();
+            in.close();
+            p.waitFor();
+        } catch(IOException e1) {
+        } catch(InterruptedException e2) {
+        }
+}
+
+*/
+
+
 %>
