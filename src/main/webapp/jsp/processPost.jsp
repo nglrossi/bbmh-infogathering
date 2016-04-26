@@ -58,7 +58,7 @@ String content = "";
 // Initialize db
 Db db = new Db();
 Connection conn = Db.getConnection();
-Statement stmt = null;
+//Statement stmt = null;
 
 // Detect App server info
 String appOsName = AppServerInfo.getOsName();
@@ -83,24 +83,24 @@ int accessedLastYearCoursesCount = -1;
 // Pull info from the DB and then close connections
 try {
         // create connection that will be used for all the queries
-        stmt = Db.createStatement(conn);
+        //stmt = Db.createStatement(conn);
         
         // Db server information
         DbServerInfo dbInfo = new DbServerInfo();
-        dbVersion = DbServerInfo.getDatabaseVersion(stmt);
-        dbServerTime = DbServerInfo.getDatabaseTimeAndTimezone(stmt, "yyyy-MM-dd HH:mm:ss");
+        dbVersion = DbServerInfo.getDatabaseVersion(conn);
+        dbServerTime = DbServerInfo.getDatabaseTimeAndTimezone(conn, "yyyy-MM-dd HH:mm:ss");
         
         // Courses info
-        totalCoursesCount = CourseInfo.getTotalCourses(stmt);
-        activeCoursesCount = CourseInfo.getActiveCourses(stmt);
-        accessedLastYearCoursesCount = CourseInfo.getAccessedSince(stmt, 365);
+        totalCoursesCount = CourseInfo.getTotalCourses(conn);
+        activeCoursesCount = CourseInfo.getActiveCourses(conn);
+        accessedLastYearCoursesCount = CourseInfo.getAccessedSince(conn, 365);
         
 } catch(Exception e) {
         // TODO: write in logs
 }finally {
     // close connections
-     if(stmt != null){
-        stmt.close();
+     if(conn != null){
+        conn.close();
     }
 }
 
