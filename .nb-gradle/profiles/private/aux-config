@@ -6,6 +6,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml</file>
+        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/processPost.jsp</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/index.jsp</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bundles/bb-manifest-en_US.properties</file>
@@ -15,8 +16,10 @@
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
+        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/CourseInfo.java</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java</file>
+        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/Db.java</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/processPost.jsp</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/index.jsp</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bundles/bb-manifest-en_US.properties</file>
