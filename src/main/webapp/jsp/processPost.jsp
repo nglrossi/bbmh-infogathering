@@ -17,9 +17,6 @@ String pageInstructions = "Bbmh tool for gathering information as part of the on
 + "<br/>Report completed";
 %>
 <%
-// Initialize db
-Db db = new Db();
-Connection conn = Db.getConnection();
 
 // Detect App server info
 String appOsName = AppServerInfo.getOsName();
@@ -51,37 +48,28 @@ List<B2Helper> b2s = new ArrayList<B2Helper>();
 
 // Pull info from the DB and then close connections
 try {
-        // create connection that will be used for all the queries
-        //stmt = Db.createStatement(conn);
-        
         // Db server information
-        DbServerInfo dbInfo = new DbServerInfo();
-        dbVersion = DbServerInfo.getDatabaseVersion(conn);
-        dbServerTime = DbServerInfo.getDatabaseTimeAndTimezone(conn, "yyyy-MM-dd HH:mm:ss");
+        dbVersion = DbServerInfo.getDatabaseVersion();
+        dbServerTime = DbServerInfo.getDatabaseTimeAndTimezone("yyyy-MM-dd HH:mm:ss");
         
         // Courses info
-        totalCoursesCount = CourseInfo.getTotalCourses(conn);
-        activeCoursesCount = CourseInfo.getActiveCourses(conn);
-        accessedLastYearCoursesCount = CourseInfo.getAccessedSince(conn, 365);
+        totalCoursesCount = CourseInfo.getTotalCourses();
+        activeCoursesCount = CourseInfo.getActiveCourses();
+        accessedLastYearCoursesCount = CourseInfo.getAccessedSince(365);
         
         // Users info
-        activeUsers = UserInfo.getActiveUsers(conn);
-        i30daysLogins = UserInfo.getUniqueLoginsSince(conn, 30);
-        i60daysLogins = UserInfo.getUniqueLoginsSince(conn, 60);
-        i120daysLogins = UserInfo.getUniqueLoginsSince(conn, 120);
-        i180daysLogins = UserInfo.getUniqueLoginsSince(conn, 180);
+        activeUsers = UserInfo.getActiveUsers();
+        i30daysLogins = UserInfo.getUniqueLoginsSince(30);
+        i60daysLogins = UserInfo.getUniqueLoginsSince(60);
+        i120daysLogins = UserInfo.getUniqueLoginsSince(120);
+        i180daysLogins = UserInfo.getUniqueLoginsSince(180);
         
         // Building Blocks
         B2HelperFactory b2factory = new B2HelperFactory();
-        b2s = b2factory.getB2s(conn);
+        b2s = b2factory.getB2s();
         
 } catch(Exception e) {
         // TODO: write in logs
-}finally {
-    // close connections
-     if(conn != null){
-        conn.close();
-    }
 }
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
