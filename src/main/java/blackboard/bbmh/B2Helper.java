@@ -112,14 +112,4 @@ public class B2Helper {
 
         return bundle.getStringWithFallback(key, key);
     }
-    
-    
-    
- /*   
-    public static String getString() {
-//    PlugInManager pluginMgr = PlugInManagerFactory.getInstance();
-    blackboard.platform.plugin.PlugInManager pluginMgr = blackboard.platform.plugin.PlugInManagerFactory.getInstance();
-        return "Hello World";
-    }
-*/
 }

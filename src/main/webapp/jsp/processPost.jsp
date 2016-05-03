@@ -1,44 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%@ page	language="java"
          import="java.util.*,
-         java.util.*,
-         java.io.*,
          java.sql.*,
-         java.lang.System.*,
-         blackboard.platform.LicenseUtil,
-         blackboard.platform.config.BbConfig,
-         blackboard.platform.config.ConfigurationServiceFactory,
-         blackboard.data.*,
-         blackboard.db.*,
-         blackboard.platform.*,
-         blackboard.platform.db.*,
-         blackboard.base.*,
-         blackboard.data.*,
-         blackboard.data.user.*,
-         blackboard.data.course.*,
-         blackboard.persist.*,
-         blackboard.persist.user.*,
-         blackboard.persist.course.*,
-         blackboard.platform.*,
-         blackboard.platform.session.*,
-         blackboard.platform.tracking.TrackingEventManager,
-         blackboard.platform.tracking.data.TrackingEvent,
-         org.apache.commons.lang.StringEscapeUtils,
-         blackboard.platform.security.SecurityUtil,
-         blackboard.platform.LicenseComponent,
-         java.util.TimeZone,
-         java.text.SimpleDateFormat,
-         blackboard.platform.plugin.PlugIn,
-         blackboard.platform.plugin.PlugInManagerFactory,
-         blackboard.platform.plugin.PlugInManager,
-         blackboard.platform.intl.BbResourceBundle,
-         blackboard.platform.intl.BundleManager,
-         blackboard.platform.intl.BundleManagerFactory,
-         blackboard.bbmh.B2Helper,
-         blackboard.bbmh.Db,
-         blackboard.bbmh.AppServerInfo,
-         blackboard.bbmh.DbServerInfo,
-         blackboard.bbmh.CourseInfo
+         blackboard.bbmh.*
          "
          pageEncoding="UTF-8"
          %>
@@ -51,14 +15,11 @@ String cancelUrl = "index.jsp";
 //String submitUrl = "processPost.jsp";
 String pageInstructions = "Bbmh tool for gathering information as part of the onboarding to managed hosting.\n"
 + "<br/>Report completed";
-String content = "";
 %>
-
 <%
 // Initialize db
 Db db = new Db();
 Connection conn = Db.getConnection();
-//Statement stmt = null;
 
 // Detect App server info
 String appOsName = AppServerInfo.getOsName();
@@ -80,6 +41,14 @@ int totalCoursesCount = -1;
 int activeCoursesCount = -1;
 int accessedLastYearCoursesCount = -1;
 
+int activeUsers = -1;
+int i30daysLogins = -1;
+int i60daysLogins = -1;
+int i120daysLogins = -1;
+int i180daysLogins = -1;
+
+List<B2Helper> b2s = new ArrayList<B2Helper>();
+
 // Pull info from the DB and then close connections
 try {
         // create connection that will be used for all the queries
@@ -95,6 +64,17 @@ try {
         activeCoursesCount = CourseInfo.getActiveCourses(conn);
         accessedLastYearCoursesCount = CourseInfo.getAccessedSince(conn, 365);
         
+        // Users info
+        activeUsers = UserInfo.getActiveUsers(conn);
+        i30daysLogins = UserInfo.getUniqueLoginsSince(conn, 30);
+        i60daysLogins = UserInfo.getUniqueLoginsSince(conn, 60);
+        i120daysLogins = UserInfo.getUniqueLoginsSince(conn, 120);
+        i180daysLogins = UserInfo.getUniqueLoginsSince(conn, 180);
+        
+        // Building Blocks
+        B2HelperFactory b2factory = new B2HelperFactory();
+        b2s = b2factory.getB2s(conn);
+        
 } catch(Exception e) {
         // TODO: write in logs
 }finally {
@@ -103,274 +83,7 @@ try {
         conn.close();
     }
 }
-
-    
-// Courses stats
-//TODO: move to a library
-//int totalCoursesCount = -1;
-//int activeCoursesCount = -1;
-//int activeAndAvailCoursesCount = -1;
-
-//String qrystrCoursesCount = "select count(*) from course_main";
-//String qrystrActiveCoursesCount = "select count(*) from course_main where row_status=0";
-//String qrystrActiveAndAvailCoursesCount = "select count(*) from course_main where row_status=0 and available_ind='Y'";
-
-ConnectionManager conman  = null;
-Connection conn2 = null;
-//Statement stmt = null;
-ResultSet rs = null;
- /*
-try {
-
-    // Create Conn to correct database
-    int j=0;
-
-    BbDatabase bbDb = DbUtil.safeGetBbDatabase();
-    conman = bbDb.getConnectionManager();
-    while(conn2 == null && j<10){
-        try {
-                conn2 = conman.getConnection();
-        }catch(ConnectionNotAvailableException cnae){
-            Thread.sleep(1000);
-            ++j;
-        }
-    }
-
-    stmt = conn2.createStatement();
-   if (stmt.execute(qrystrCoursesCount)) {
-        rs = stmt.getResultSet();
-        if (rs.next()) {
-            coursesCount = rs.getInt(1);
-        }
-    }
-
-    if (stmt.execute(qrystrActiveCoursesCount)) {
-        rs = stmt.getResultSet();
-        if (rs.next()) {
-            activeCoursesCount = rs.getInt(1);
-        }
-    }
-
-
-    if (stmt.execute(qrystrActiveAndAvailCoursesCount)) {
-        rs = stmt.getResultSet();
-        if (rs.next()) {
-            activeAndAvailCoursesCount = rs.getInt(1);
-        }
-    }
-    
-
-}catch(Exception e) {
-    out.println("query failed<br/>");
-    out.println(e);
-}finally{
-    if(rs != null){
-        rs.close();
-    }
-    if(stmt != null){
-        stmt.close();
-    }
-    if(conman != null){
-        conman.releaseConnection(conn2);
-    }
-}
-*/
 %>
-
-<%
- 
-// Users stats
-// TODO: move to a library
-
-int activeUsers = -1;
-int i30daysLogins = -1;
-int i60daysLogins = -1;
-int i120daysLogins = -1;
-int i180daysLogins = -1;
-
-
-String qrystrActiveUsers = "SELECT COUNT(u.user_id) ct FROM users u WHERE EXISTS ( SELECT 'x' FROM course_users cu " +
-        "WHERE cu.users_pk1 = u.pk1 AND cu.row_status = 0  AND cu.available_ind='Y' AND crsmain_pk1 in (" +
-        "select pk1 from course_main where course_main.row_status=0  AND course_main.available_ind='Y' AND course_main.service_level='F' ) ) " +
-        "AND u.row_status = 0 AND u.available_ind = 'Y'";
-String qrystrUniqueLogins = "";
-
-// Detect db server version
-switch(ConfigurationServiceFactory.getInstance().getBbProperty( blackboard.platform.config.BbConfig.DATABASE_TYPE )) {
-    case "oracle":
-        qrystrUniqueLogins = "SELECT count(distinct (user_pk1)) valuen " +
-        "from activity_accumulator where event_type = 'LOGIN_ATTEMPT' " +
-        "and data = 'Login succeeded.' and timestamp >= sysdate-?";
-        break;
-    case "mssql":
-        // TODO detect MSSQL version and put the right case label
-        qrystrUniqueLogins = "SELECT count(distinct (user_pk1)) valuen " +
-        "from activity_accumulator where event_type = 'LOGIN_ATTEMPT' " +
-        "and data = 'Login succeeded.' and timestamp >= DATEADD(DAY, -?, GETDATE ())";
-        
-        break;
-    case "pgsql":
-        qrystrUniqueLogins = "SELECT count(distinct (user_pk1)) valuen " +
-        "from activity_accumulator where event_type = 'LOGIN_ATTEMPT' " +
-        "and data = 'Login succeeded.' and timestamp >= current_date - ( ? * INTERVAL '1' DAY)";
-        break;
-    default:
-        dbVersion = "unable to detect db version";
-}
-
-
-//ConnectionManager conman  = null;
-Connection conn3 = null;
-//Statement stmt = null;
-//ResultSet rs = null;
-try {
-    // Create Conn to correct database
-    int j=0;
-
-    BbDatabase bbDb = DbUtil.safeGetBbDatabase();
-    conman = bbDb.getConnectionManager();
-    while(conn3 == null && j<10){
-        try {
-                conn3 = conman.getConnection();
-        }catch(ConnectionNotAvailableException cnae){
-            Thread.sleep(1000);
-            ++j;
-        }
-    }
-
-    stmt = conn3.createStatement();
-    
-    // active users
-    if (stmt.execute(qrystrActiveUsers)) {
-        rs = stmt.getResultSet();
-        ResultSetMetaData rsMetaData = rs.getMetaData();
-        if (rs.next()) {
-            activeUsers = rs.getInt(1);
-        }
-    }
-    
-    PreparedStatement preStatement=conn3.prepareStatement(qrystrUniqueLogins);
-    
-    preStatement.setInt(1, 30);   
-    rs = preStatement.executeQuery();  
-    if (rs.next()) {
-        i30daysLogins = rs.getInt(1);
-    }
-     preStatement.setInt(1, 60);   
-    rs = preStatement.executeQuery();  
-    if (rs.next()) {
-        i60daysLogins = rs.getInt(1);
-    }   
-    
-    preStatement.setInt(1, 120);   
-    rs = preStatement.executeQuery();  
-    if (rs.next()) {
-        i120daysLogins = rs.getInt(1);
-    }    
-    
-    preStatement.setInt(1, 180);   
-    rs = preStatement.executeQuery();  
-    if (rs.next()) {
-        i180daysLogins = rs.getInt(1);
-    }
-}catch(Exception e) {
-    out.println("query failed<br/>");
-    out.println(e);
-}finally{
-    if(rs != null){
-        rs.close();
-    }
-    if(stmt != null){
-        stmt.close();
-    }
-    if(conman != null){
-        conman.releaseConnection(conn3);
-    }
-}
-%>
-
-<%    
-    
-// List building blocks
-// TODO: move to external JAR
-
-//B2Helper b2local = new B2Helper();
-
-String ListOfB2s = "";
-//List<String> b2s = new ArrayList<String>();
-List<B2Helper> b2s = new ArrayList<B2Helper>();
-
-SimpleDateFormat anotherdbformatter = new SimpleDateFormat("yyyy-MM-dd");
-
-String b2qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified from plugins";
-
-//BundleManager bm = BundleManagerFactory.getInstance();
-//BbResourceBundle bundle = new BbResourceBundle;
-
-String vendor_id = "'";
-String handle = "";
-
-//ConnectionManager conman  = null;
-Connection conn5 = null;
-//Statement stmt = null;
-//ResultSet rs = null;
-try {
-
-    // Create Conn to correct database
-    int j=0;
-
-    BbDatabase bbDb = DbUtil.safeGetBbDatabase();
-    conman = bbDb.getConnectionManager();
-    while(conn5 == null && j<10){
-        try {
-                conn5 = conman.getConnection();
-        }catch(ConnectionNotAvailableException cnae){
-            Thread.sleep(1000);
-            ++j;
-        }
-    }
-
-    stmt = conn5.createStatement();
-    if (stmt.execute(b2qrystr)) {
-        rs = stmt.getResultSet();
-        while (rs.next()) {
-            
-            B2Helper b2local = new B2Helper( rs.getString("vendor_id"), rs.getString("handle") );
-            b2local.setName(rs.getString("name"));
-            b2local.setLocalizedName(rs.getString("name"));
-            b2local.setVendorName(rs.getString("vendor_name"));
-            b2local.setVersion( rs.getInt("version_major"), rs.getInt("version_minor"), rs.getInt("version_patch"), rs.getInt("version_build") );
-            b2local.setAvailableFlag(rs.getString("available_flag"));
-            b2local.setDateModified( anotherdbformatter.parse(rs.getString("dtmodified")) );
-            
-            b2s.add ( b2local );
-        }
-    }
-    
-}catch(Exception e) {
-    out.println("query failed<br/>");
-    out.println(e);
-}finally{
-    if(rs != null){
-        rs.close();
-    }
-    if(stmt != null){
-        stmt.close();
-    }
-    if(conman != null){
-        conman.releaseConnection(conn5);
-    }
-}
-
-ListOfB2s = " " + b2s.size();
-%>
-
-
-<%
-// Release db connection
-// TODO: implement and call Db methods
-%>
-
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
         <bbNG:breadcrumb title="BB Support Tools" href="<%= cancelUrl %>" />
@@ -456,8 +169,8 @@ ListOfB2s = " " + b2s.size();
             </bbNG:dataElement>
         </bbNG:step>
 
-        <bbNG:step title="Building Blocks">
-            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="List Description" emptyMsg="No plugins found">
+        <bbNG:step title="Building Blocks"> 
+            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false" initialSortCol="b2Name">
                 <bbNG:listElement isRowHeader="true" label="Name" name="b2Name">
                     <%=ux.localizedName%>
                 </bbNG:listElement>
@@ -478,12 +191,10 @@ ListOfB2s = " " + b2s.size();
                 </bbNG:listElement>
             </bbNG:inventoryList>
         </bbNG:step>
-            
 
         <bbNG:stepSubmit cancelUrl="<%=cancelUrl%>" />
 
     </bbNG:dataCollection>
-    <%=content%>
 </bbNG:genericPage>
 
 
