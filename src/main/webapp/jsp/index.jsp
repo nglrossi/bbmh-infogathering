@@ -8,72 +8,43 @@ blackboard.platform.config.*
 " pageEncoding="UTF-8" %>
 <%@ taglib prefix="bbNG" uri="/bbNG"%>
 <%
-String pageTitle = "Bb Managed Hosting Info gathering";
-String cancelUrl = "/";
-String submitUrl = "processPost.jsp";
+String pageTitle = "Bb Managed Hosting Info Gathering";
 String pageInstructions = "Bbmh tool for gathering information as part of the onboarding to managed hosting.\n"
-        + "<br/>This tool will produce a report about this system";
+        + "<br/>This tool will produce a report about this system.\n";
+
+String simpleTitle="<a href=\"basicReportConfirm.jsp\">Basic report</a>";
+String simpleInstructions="This report can be ran at any time as it checks basic system settings and is not resource-intensive.\n"
+        +"</br>Customers that are considering moving to Managed Hosting or SaaS can use it to collect basic informationf for Sales."
+        +"<br/>A confirmation will be requested before running any report.";
+
+String advancedTitle="<a href=\"advancedReportConfirm.jsp\">Advanced report</a>";
+String advancedInstruction="This is an advanced report collects information about the system configuraiton and usage that should be provided to Blackboard.\n"
+        +"</br>As it can be resource intensive and can run for several hours it is recommended to start the execution out of busy hours."
+        +"<br/>A confirmation will be requested before running any report.";
 
 %>
+
+
+
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
-	<bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
-		<bbNG:breadcrumb title="BB Support Tools" href="<%= cancelUrl %>" />
-		<bbNG:breadcrumb><%=pageTitle%></bbNG:breadcrumb>
-	</bbNG:breadcrumbBar>
-	<bbNG:pageHeader instructions="<%=pageInstructions%>">
-		<bbNG:pageTitleBar ><%=pageTitle%></bbNG:pageTitleBar>
-	</bbNG:pageHeader>
-        <form action="<%=submitUrl%>" method="post">
-	<bbNG:dataCollection>
-            <bbNG:step title="Run report">
-			<bbNG:dataElement label="Delivery method" isRequired="yes" labelFor="deliveryMethod">
-				<input type="radio" name="deliveryMethod" value="email" <%if ("email".equals(request.getParameter("deliveryMethod"))) out.print("checked"); %>>email
-	 			<input type="radio" name="deliveryMethod" value="screen" <%if ("screen".equals(request.getParameter("deliveryMethod"))) out.print("checked"); %>>screen
-			</bbNG:dataElement>
-	</bbNG:step>
-
-
-<%
+    <bbNG:pageHeader instructions="<%=pageInstructions%>">
+        <bbNG:breadcrumbBar environment="SYS_ADMIN" isContent="true">
+            <bbNG:breadcrumb><%=pageTitle%></bbNG:breadcrumb>
+        </bbNG:breadcrumbBar>
+        <bbNG:pageTitleBar  showTitleBar="true" title="<%=pageTitle%>"/>
+    </bbNG:pageHeader>
     
-String content="";
-String command;
+    <bbNG:landingPage>
+        <bbNG:landingPageColumn>
 
-String baseDIR="";
+            <bbNG:landingPageSection title="<%=simpleTitle%>" instructions="<%=simpleInstructions%>" />
+            <bbNG:landingPageSection title="<%=advancedTitle%>" instructions="<%=advancedInstruction%>" />
 
+        </bbNG:landingPageColumn>
 
-/*
-if ( "Yes".equals(request.getParameter("mh")) ) {
-	baseDIR = "/mnt/asp/utils/app/bbpatch";
-	command = "./bbpatch.sh list";
-}
-
-	 try 
-	{ 
-		String line;
-		Process p=Runtime.getRuntime().exec(command,null,( new File(baseDIR)));
-        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        while ((line = in.readLine()) != null) {
-        	content+=line + "</br>";
-        }
-        BufferedReader er = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-        while ((line = er.readLine()) != null) {
-        	content+=line + "</br>";
-        }    
-        in.close();
-        p.waitFor(); 
-	} catch(IOException e1) {	
-	} catch(InterruptedException e2) {
-	}
-
-
-content+="Done"; 
-*/
-%>
-<%=content%>
-	<bbNG:stepSubmit cancelUrl="<%=cancelUrl%>" />
-</bbNG:dataCollection>
-</form>
+    </bbNG:landingPage>
 </bbNG:genericPage>
+
 <%!
 //code methods in here e.g. private static boolean pingUrl (String address) {....}
 %>

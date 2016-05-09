@@ -10,9 +10,9 @@
 <%@ taglib uri="/bbData" prefix="bbData"%>
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
 <%
-String pageTitle = "Bb Managed Hosting Info gathering";
+String pageTitle = "Bb Managed Hosting Info Gathering - Basic Report";
 String cancelUrl = "index.jsp";
-//String submitUrl = "processPost.jsp";
+//String submitUrl = "../index.jsp";
 String pageInstructions = "Bbmh tool for gathering information as part of the onboarding to managed hosting.\n"
 + "<br/>Report completed";
 %>
