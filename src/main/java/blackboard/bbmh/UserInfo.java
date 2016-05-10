@@ -85,7 +85,7 @@ public class UserInfo {
                 }
                 qrystr += "from activity_accumulator "
                         + "where event_type='LOGIN_ATTEMPT' and data='Login succeeded.' "
-                        + "and timestamp >= DATEADD(DAY, " + maxDays + ", GETDATE ())";
+                        + "and timestamp >= DATEADD(DAY, -" + maxDays + ", GETDATE ())";
                 break;
             case "pgsql":
                 qrystr = "select ";

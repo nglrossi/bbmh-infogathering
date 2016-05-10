@@ -55,7 +55,6 @@ List<B2Helper> b2s = new ArrayList<B2Helper>();
 // test list logins
 String debug = "";
 List<Integer> howManyDays = new ArrayList<Integer>();
-howManyDays.add(1);
 howManyDays.add(30);
 howManyDays.add(60);
 howManyDays.add(90);
