@@ -5,14 +5,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
-<<<<<<< HEAD
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/CourseInfo.java</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2HelperFactory.java</file>
-=======
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml</file>
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java</file>
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/processPost.jsp</file>
->>>>>>> 4190405a3dc37ebd39c2e13f66083d5049599ec1
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/index.jsp</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/CourseHelper.java</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2Helper.java</file>
@@ -23,18 +17,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/CourseInfo.java</file>
-<<<<<<< HEAD
+        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/basicReportConfirm.jsp</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2HelperFactory.java</file>
-=======
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml</file>
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java</file>
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/Db.java</file>
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/processPost.jsp</file>
->>>>>>> 4190405a3dc37ebd39c2e13f66083d5049599ec1
+        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/advancedReportExec.jsp</file>
         <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/index.jsp</file>
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/CourseHelper.java</file>
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2Helper.java</file>
-        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/advancedReport.jsp</file>
+        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/UserInfo.java</file>
+        <file>file:/Users/arossi/docs/devel/bbmh-infogathering/src/main/webapp/jsp/advancedReportConfirm.jsp</file>
       </group>
     </open-files>
   </auxiliary>

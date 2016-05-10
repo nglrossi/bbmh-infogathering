@@ -2,13 +2,15 @@
 <%@ page	language="java"
          import="java.util.*,
          java.sql.*,
+         java.util.*,
          blackboard.bbmh.*
          "
          pageEncoding="UTF-8"
          %>
 
-<%@ taglib uri="/bbData" prefix="bbData"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
+
 <%
 String pageTitle = "Bb Managed Hosting Info Gathering - Advanced Report";
 String cancelUrl = "index.jsp";
@@ -49,6 +51,22 @@ int i180daysLogins = -1;
 
 List<CourseHelper> largeCourses = new ArrayList<CourseHelper>();
 List<B2Helper> b2s = new ArrayList<B2Helper>();
+
+// test list logins
+String debug = "";
+List<Integer> howManyDays = new ArrayList<Integer>();
+howManyDays.add(1);
+howManyDays.add(30);
+howManyDays.add(60);
+howManyDays.add(90);
+howManyDays.add(120);
+howManyDays.add(180);
+
+Map<Integer, Integer> totalLogins = UserInfo.getUniqueLoginsSince(howManyDays);
+// check how to move the code into servlet and remove this
+pageContext.setAttribute("totalLogins", totalLogins);
+
+//debug = UserInfo.getUniqueLoginsSince(howManyDays);
 
 // Pull info from the DB and then close connections
 try {
@@ -140,20 +158,15 @@ try {
         
         <bbNG:step title="Users information">
             <bbNG:dataElement label="Active Users" isRequired="yes" labelFor="activeUsers">
-                <%=activeUsers%>
-            </bbNG:dataElement>
-            <bbNG:dataElement label="30 days unique logins" isRequired="yes" labelFor="i30daysLogins">
-                <%=i30daysLogins%>      
-            </bbNG:dataElement>
-            <bbNG:dataElement label="60 days unique logins" isRequired="yes" labelFor="i60daysLogins">
-                <%=i60daysLogins%>
-            </bbNG:dataElement>
-            <bbNG:dataElement label="120 days unique logins" isRequired="yes" labelFor="i120daysLogins">
-                <%=i120daysLogins%>
-            </bbNG:dataElement>
-            <bbNG:dataElement label="180 days unique logins" isRequired="yes" labelFor="i180daysLogins">
-                <%=i180daysLogins%>
-            </bbNG:dataElement>
+                <%=activeUsers%> 
+           </bbNG:dataElement>
+            
+            <c:forEach items="${totalLogins}" var="quantiLogin">
+                <bbNG:dataElement label="${quantiLogin.key} days unique logins" isRequired="false">
+                    ${quantiLogin.value}
+                </bbNG:dataElement>
+            </c:forEach>
+        
         </bbNG:step>
 
         <bbNG:step title="Courses information">

@@ -96,7 +96,7 @@ public class CourseInfo {
                 qrystr = "select crsmain_pk1, last_access_date from (select crsmain_pk1, max(last_access_date) last_access_date FROM course_users GROUP BY crsmain_pk1) where last_access_date >= sysdate-?";
                 break;
             case "mssql":
-                qrystr = "select crsmain_pk1, last_access_date from (select crsmain_pk1, max(last_access_date) last_access_date FROM course_users GROUP BY crsmain_pk1) where last_access_date >= DATEADD(DAY, -?, GETDATE ())";
+                qrystr = "select count(*) from (select crsmain_pk1, max(last_access_date) last_access_date FROM course_users GROUP BY crsmain_pk1) as derivedTable where last_access_date >= DATEADD(DAY, -?, GETDATE ());";
                 break;
             case "pgsql":
                 qrystr = "select count(*) from (select crsmain_pk1, max(last_access_date) last_access_date FROM course_users GROUP BY crsmain_pk1) as derivedTable where last_access_date >= current_date - ( ? * INTERVAL '1' DAY)";
