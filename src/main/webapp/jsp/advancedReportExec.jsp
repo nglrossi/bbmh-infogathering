@@ -29,31 +29,30 @@ String appServerTime = AppServerInfo.getServerTime("yyyy-MM-dd HH:mm:ss");
 String fullHostname = AppServerInfo.getUrl();
 
 
-// Detect Learn Version
+//  Learn Version
 String learnVersion = "";
 learnVersion = blackboard.platform.LicenseUtil.getBuildNumber();
 
-// Detect whether MSSQL/Oracle/Postgres
+// Db Info
 String dbVersion = "";
 String dbServerTime = "";
 String dbType = DbServerInfo.getDatabaseType();
 String dbSchema = DbServerInfo.getSchemaName();
+double dbSize = -1;
+String debug = "";
 
+// User info
 int totalCoursesCount = -1;
 int activeCoursesCount = -1;
 int accessedLastYearCoursesCount = -1;
-
 int activeUsers = -1;
-int i30daysLogins = -1;
-int i60daysLogins = -1;
-int i120daysLogins = -1;
-int i180daysLogins = -1;
+
 
 List<CourseHelper> largeCourses = new ArrayList<CourseHelper>();
 List<B2Helper> b2s = new ArrayList<B2Helper>();
 
 // test list logins
-String debug = "";
+
 List<Integer> howManyDays = new ArrayList<Integer>();
 howManyDays.add(30);
 howManyDays.add(60);
@@ -61,17 +60,17 @@ howManyDays.add(90);
 howManyDays.add(120);
 howManyDays.add(180);
 
-Map<Integer, Integer> totalLogins = UserInfo.getUniqueLoginsSince(howManyDays);
-// check how to move the code into servlet and remove this
-pageContext.setAttribute("totalLogins", totalLogins);
-
-//debug = UserInfo.getUniqueLoginsSince(howManyDays);
+Map<Integer, Integer> totalLogins = new TreeMap<Integer, Integer>();
+        
 
 // Pull info from the DB and then close connections
 try {
         // Db server information
         dbVersion = DbServerInfo.getDatabaseVersion();
         dbServerTime = DbServerInfo.getDatabaseTimeAndTimezone("yyyy-MM-dd HH:mm:ss");
+        dbSize = DbServerInfo.getDbSize();
+        //debug = DbServerInfo.getDbSize();
+        
         
         // Courses info
         totalCoursesCount = CourseInfo.getTotalCourses();
@@ -81,11 +80,7 @@ try {
         
         // Users info
         activeUsers = UserInfo.getActiveUsers();
-        i30daysLogins = UserInfo.getUniqueLoginsSince(30);
-        i60daysLogins = UserInfo.getUniqueLoginsSince(60);
-        i120daysLogins = UserInfo.getUniqueLoginsSince(120);
-        i180daysLogins = UserInfo.getUniqueLoginsSince(180);
-        
+        totalLogins = UserInfo.getUniqueLoginsSince(howManyDays);
         
         // Building Blocks
         b2s = B2HelperFactory.getB2s();
@@ -93,6 +88,9 @@ try {
 } catch(Exception e) {
         // TODO: write in logs
 }
+// check how to move the code into servlet and remove this
+pageContext.setAttribute("totalLogins", totalLogins);
+
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
@@ -150,6 +148,9 @@ try {
             <bbNG:dataElement label="Database server version" isRequired="yes" labelFor="dbversion">
                 <%=dbVersion%>
             </bbNG:dataElement>
+            <bbNG:dataElement label="Database size" isRequired="yes" labelFor="dbsize">
+                <%=dbSize%> gb </br><%=debug%>
+            </bbNG:dataElement>
             <bbNG:dataElement label="Server time and timezone" isRequired="yes" labelFor="dbServerTime">
                 <%=dbServerTime%>
             </bbNG:dataElement>
@@ -201,7 +202,7 @@ try {
         </bbNG:step>
 
         <bbNG:step title="Building Blocks"> 
-            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false" initialSortCol="b2Name">
+            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false">
                 <bbNG:listElement isRowHeader="true" label="Name" name="b2Name">
                     <%=ux.localizedName%>
                 </bbNG:listElement>

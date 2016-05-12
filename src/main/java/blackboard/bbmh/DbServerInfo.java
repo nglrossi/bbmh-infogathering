@@ -124,6 +124,61 @@ public class DbServerInfo {
         }
         return formatter.format(dtDbServerTime) + " " + dbTzString;
     }
+    
+    public static double getDbSize() {
+        Connection dbConnection = Db.getConnection();
+        ResultSet rs = null;
+        String qrystr = "";
+        Statement dbStatement = Db.createStatement(dbConnection);
+        //String debug = "";
+        double size = -1;
+        switch (ConfigurationServiceFactory.getInstance().getBbProperty(blackboard.platform.config.BbConfig.DATABASE_TYPE)) {
+            case "oracle":
+                qrystr = "SELECT ROUND(A.DATA_SIZE + B.TEMP_SIZE + C.REDO_SIZE + D.CONTROLFILE_SIZE, 2) "
+                        + "FROM (SELECT SUM (BYTES) / 1024 / 1024/1024 DATA_SIZE FROM DBA_DATA_FILES) A, "
+                        + "(SELECT NVL (SUM (BYTES), 0) / 1024 / 1024/1024 TEMP_SIZE "
+                        + "FROM DBA_TEMP_FILES) B, "
+                        + "(SELECT SUM (BYTES) / 1024 / 1024/1024 REDO_SIZE FROM SYS.V_$LOG) C, "
+                        + "(SELECT SUM (BLOCK_SIZE * FILE_SIZE_BLKS) / 1024 / 1024/1024 "
+                        + "CONTROLFILE_SIZE "
+                        + "FROM V$CONTROLFILE) D";
+                break;
+            case "mssql":
+                qrystr = "TODO";
+                break;
+            case "pgsql":
+                qrystr = "select pg_database_size(current_database())/(1024*1024*1024)";
+                break;
+            default:
+                qrystr = "";
+        }
+        try {
+            try {
+                boolean wasExecuted = dbStatement.execute(qrystr);
+                if (wasExecuted) {
+                    rs = dbStatement.getResultSet();
+                    if (rs.next()) {
+                        size = rs.getDouble(1);
+                    }
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (dbStatement != null) {
+                    dbStatement.close();
+                }
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
+            }
+        } catch (Exception e) {
+            // TODO: log in logs
+            //debug = "exception " + e + " " ;
+        }
+        return size;
+        //return debug;
+    }
 }
 
 
