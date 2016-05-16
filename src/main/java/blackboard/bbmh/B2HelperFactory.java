@@ -20,6 +20,11 @@ import blackboard.bbmh.B2Helper;
 public class B2HelperFactory {
     
     public static List<B2Helper> getB2s() {
+        
+        // TODO: refactoring
+        // replacr SQL query with public java.util.List<blackboard.platform.plugin.PlugIn> getPlugIns()
+        // http://library.blackboard.com/ref/16ce28ed-bbca-4c63-8a85-8427e135a710/blackboard/platform/plugin/PlugInManager.html#getPlugIns--
+        
         Connection dbConnection = Db.getConnection();
         List<B2Helper> b2s = new ArrayList<B2Helper>();
         SimpleDateFormat anotherdbformatter = new SimpleDateFormat("yyyy-MM-dd");

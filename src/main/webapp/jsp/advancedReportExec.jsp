@@ -48,8 +48,10 @@ int accessedLastYearCoursesCount = -1;
 int activeUsers = -1;
 
 
+// Building Blocks, large courses and auth providers
 List<CourseHelper> largeCourses = new ArrayList<CourseHelper>();
 List<B2Helper> b2s = new ArrayList<B2Helper>();
+List<AuthHelper> authProviders = new ArrayList<AuthHelper>();
 
 // test list logins
 
@@ -84,6 +86,9 @@ try {
         
         // Building Blocks
         b2s = B2HelperFactory.getB2s();
+        
+        // Auth Providers
+        authProviders = AuthHelperFactory.getAuthProviders();
         
 } catch(Exception e) {
         // TODO: write in logs
@@ -197,6 +202,20 @@ pageContext.setAttribute("totalLogins", totalLogins);
                 </bbNG:listElement>
                 <bbNG:listElement isRowHeader="false" label="Status" name="coursestatus">
                     <%=ux.statusFlag%>
+                </bbNG:listElement>
+            </bbNG:inventoryList>
+        </bbNG:step>
+
+        <bbNG:step title="Authentication"> 
+            <bbNG:inventoryList collection="<%=authProviders%>" objectVar="ux" className="AuthHelper" description="Authentication providers" emptyMsg="No authentication providers found" showAll="true" displayPagingControls="false">
+                <bbNG:listElement isRowHeader="true" label="Name" name="authName">
+                    <%=ux.name%>
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Type" name="authType">
+                    <%=ux.type%>
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="State" name="authState">
+                    <%=ux.availableFlag%>
                 </bbNG:listElement>
             </bbNG:inventoryList>
         </bbNG:step>
