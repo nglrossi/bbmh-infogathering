@@ -9,6 +9,7 @@ package blackboard.bbmh;
 import java.util.Date;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
+import java.io.File;
 import blackboard.platform.config.BbConfig;
 import blackboard.platform.config.ConfigurationServiceFactory;
 
@@ -47,5 +48,25 @@ public class AppServerInfo {
     public static String getUrl() {
         String fullHostName = BbConfig.APPSERVER_FULLHOSTNAME;
         return ConfigurationServiceFactory.getInstance().getBbProperty( fullHostName, fullHostName + " not found in bb-config.properties");
-    }   
+    }  
+
+    public static String getBaseDirPath() {
+        // get either BASEDIR or BASEDIR_WIN
+        return ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.BASEDIR, BbConfig.BASEDIR_WIN);
+    }
+
+    public static String getContentDirPath() {
+        // get either BASE_SHARED_DIR  or BASE_SHARED_DIR_WIN 
+        return ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.BASE_SHARED_DIR, BbConfig.BASE_SHARED_DIR_WIN );
+    }
+    
+    
+    
+    public static long getDiskUsage(String fs) {
+        // all in GB
+        File ff = new File (fs);
+        return (ff.getTotalSpace() - ff.getFreeSpace()) / (1024*1024*1024);
+        //return 2;
+    }
+    
 }

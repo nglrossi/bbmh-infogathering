@@ -27,11 +27,16 @@ String appOsversion = AppServerInfo.getOsVersion();
 String appJavaVersion = AppServerInfo.getJavaVersion();
 String appServerTime = AppServerInfo.getServerTime("yyyy-MM-dd HH:mm:ss");
 String fullHostname = AppServerInfo.getUrl();
+String baseDirLabel = AppServerInfo.getBaseDirPath();
+long baseDirDiskUsage = AppServerInfo.getDiskUsage(baseDirLabel);
 
 
 //  Learn Version
 String learnVersion = "";
 learnVersion = blackboard.platform.LicenseUtil.getBuildNumber();
+String contentDirLabel = AppServerInfo.getContentDirPath();
+long contentDirDiskUsage = AppServerInfo.getDiskUsage(contentDirLabel);
+
 
 // Db Info
 String dbVersion = "";
@@ -127,6 +132,12 @@ pageContext.setAttribute("totalLogins", totalLogins);
             <bbNG:dataElement label="Server time and timezone" isRequired="yes" labelFor="appServerTime">
                 <%=appServerTime%>
             </bbNG:dataElement>
+            <bbNG:dataElement label="Base dir path" isRequired="yes" labelFor="appServerBaseDir">
+                <%=baseDirLabel%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Base dir disk usage" isRequired="yes" labelFor="appServerBaseDirDf">
+                <%=baseDirDiskUsage%> gb
+            </bbNG:dataElement>
         </bbNG:step>
 
         <bbNG:step title="Learn Version">
@@ -139,8 +150,14 @@ pageContext.setAttribute("totalLogins", totalLogins);
                 <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_CONTENT_SYSTEM">Content Management</bbNG:ifLicensed> </bbNG:dataElement>
                 <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_COMMUNITY">Community Engagement</bbNG:ifLicensed> </bbNG:dataElement>
                 <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_OUTCOMES">Outcomes Assessment</bbNG:ifLicensed> </bbNG:dataElement>
-            </bbNG:dataElement> 
-   
+            </bbNG:dataElement>
+                
+            <bbNG:dataElement label="Content dir path" isRequired="yes" labelFor="appServerContentDir">
+                <%=contentDirLabel%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Content disk usage" isRequired="yes" labelFor="appServerontentDirDf">
+                <%=contentDirDiskUsage%> gb
+            </bbNG:dataElement>
         </bbNG:step>
 
         <bbNG:step title="Database server backend">

@@ -127,20 +127,36 @@
 
         <!-- Code permissions required for proper operation -->
         <permissions>
+            <permission type="java.lang.RuntimePermission" name="getenv.*" />
+            
+            
+            
+            
+            
+            <permission type="java.lang.RuntimePermission" name="db.connection.bb_bb60" actions="connect,accept" />
+            
             <permission type="attribute" name="user.authinfo" actions="get"/>
             <permission type="attribute" name="user.personalinfo" actions="get,set"/>
             <permission type="attribute" name="user.authinfo" actions="get,set"/>
             <permission type="attribute" name="user.personalinfo" actions="get,set"/>
-            <permission type="java.lang.RuntimePermission" name="db.connection.bb_bb60" actions="connect,accept" />
-            <permission type="java.lang.RuntimePermission" name="getenv.*"/>
+            
+            <permission type="java.io.FilePermission" name="&amp;lt;&amp;lt;ALL FILES&amp;gt;&amp;gt;" actions="read,write" />
+            <permission type="java.lang.RuntimePermission" name="getFileSystemAttributes" />
+            <permission type="java.lang.RuntimePermission" name="java.io.getFileSystemAttributes" />
+            <permission type="java.lang.RuntimePermission" name="*" />
+            
+            <!-- Trying to fox getFileSystemAttributes missing permission
+            -->
+            
+            <!--
             <permission type="java.lang.reflect.ReflectPermission" name="suppressAccessChecks" />
-            <permission type="java.net.SocketPermission" name="*" actions="listen,connect,resolve,accept"/>   
-            <permission type="attribute" name="Group" actions="get"/>
-            <permission type="attribute" name="GroupMembership" actions="get"/>
+            <permission type="java.net.SocketPermission" name="*" actions="listen,connect,resolve,accept"/>  
+            -->
       
             <!-- We need these permissions to allow Spring to auto-discover -->
             <!-- and wire beans together and Hibernate to interact with objects. -->
             <!--
+            
             <permission type="java.lang.reflect.ReflectPermission" name="suppressAccessChecks" />
             <permission type="java.lang.RuntimePermission" name="accessDeclaredMembers" />
             <permission type="java.lang.RuntimePermission" name="createClassLoader" />

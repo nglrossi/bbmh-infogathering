@@ -126,6 +126,8 @@ public class DbServerInfo {
     }
     
     public static double getDbSize() {
+        // Size in GB
+        
         Connection dbConnection = Db.getConnection();
         ResultSet rs = null;
         String qrystr = "";
