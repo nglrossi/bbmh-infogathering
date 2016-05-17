@@ -44,7 +44,9 @@ public class DbServerInfo {
                 qrystr = "Select @@version";
                 break;
             case "pgsql":
-                qrystr = "select version()";
+                //qrystr = "select version()";
+                // broke on purpose, testing exceptions logging
+                qrystr = "select versions()";
                 break;
             default:
                 dbVersion = "unable to detect db version";

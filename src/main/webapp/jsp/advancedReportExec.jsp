@@ -260,6 +260,12 @@ pageContext.setAttribute("totalLogins", totalLogins);
             </bbNG:inventoryList>
         </bbNG:step>
 
+        <bbNG:step title="Additional Comments" instructions="expected usage growth, major changes occurring during the next 12 months or any comments relevant to a transition to Managed Hosting or Saas">
+            <bbNG:dataElement label="Comments" isRequired="yes" labelFor="comments">
+                <bbNG:textbox name="comments" label="comments"  />
+            </bbNG:dataElement>
+        </bbNG:step>
+                
         <bbNG:stepSubmit showCancelButton="false">
             <bbNG:stepSubmitButton label="OK" url="index.jsp"/>
         </bbNG:stepSubmit>

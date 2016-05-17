@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import blackboard.platform.config.BbConfig;
 import blackboard.platform.config.ConfigurationServiceFactory;
 
@@ -64,9 +66,16 @@ public class AppServerInfo {
     
     public static long getDiskUsage(String fs) {
         // all in GB
-        File ff = new File (fs);
-        return (ff.getTotalSpace() - ff.getFreeSpace()) / (1024*1024*1024);
-        //return 2;
+        File ff = new File ("xx" + fs);
+        long du = -1;
+        try {
+            du = (ff.getTotalSpace() - ff.getFreeSpace()) / (1024*1024*1024);
+        } catch (Exception e) {
+            //Logger.getLogger(AppServerInfo.class.getName()).log(Level.SEVERE, null, e);
+            //throw new RuntimeException("Problem while trying to get Building Block Config Directory", e);
+        }
+        return du;
     }
+    
     
 }
