@@ -66,6 +66,3 @@ public class B2HelperFactory {
         return b2s;
     }
 }
-        
-    
-

@@ -42,9 +42,10 @@ long contentDirDiskUsage = AppServerInfo.getDiskUsage(contentDirLabel);
 String dbVersion = "";
 String dbServerTime = "";
 String dbType = DbServerInfo.getDatabaseType();
-String dbSchema = DbServerInfo.getSchemaName();
+String dbMainSchema = DbServerInfo.getMainSchema();
 double dbSize = -1;
 String debug = "";
+List<String> dbListSchemas = DbServerInfo.getAllSchemas();
 
 // User info
 int totalCoursesCount = -1;
@@ -100,6 +101,7 @@ try {
 }
 // check how to move the code into servlet and remove this
 pageContext.setAttribute("totalLogins", totalLogins);
+pageContext.setAttribute("dbListSchemas", dbListSchemas);
 
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
@@ -164,9 +166,18 @@ pageContext.setAttribute("totalLogins", totalLogins);
             <bbNG:dataElement label="Database server type" isRequired="yes" labelFor="dbtype">
                 <%=dbType%>
             </bbNG:dataElement>
-            <bbNG:dataElement label="Database schema" isRequired="yes" labelFor="dbschema">
-                <%=dbSchema%>
+            <bbNG:dataElement label="Database main schema" isRequired="yes" labelFor="dbMainSchema">
+                <%=dbMainSchema%>
             </bbNG:dataElement>
+            
+            <bbNG:dataElement isSubElement="true" label="Database schemas" isRequired="yes" labelFor="dbListSchemas">
+                 <c:forEach items="${dbListSchemas}" var="theSchemas">
+                     <bbNG:dataElement isSubElement="true">
+                         ${theSchemas}
+                     </bbNG:dataElement>
+                 </c:forEach>
+            </bbNG:dataElement>
+                
             <bbNG:dataElement label="Database server version" isRequired="yes" labelFor="dbversion">
                 <%=dbVersion%>
             </bbNG:dataElement>

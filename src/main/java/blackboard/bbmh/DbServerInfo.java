@@ -11,6 +11,8 @@ import blackboard.platform.config.BbConfig;
 import blackboard.platform.config.ConfigurationServiceFactory;
 import java.text.SimpleDateFormat;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -26,7 +28,7 @@ public class DbServerInfo {
         return ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.DATABASE_TYPE);
     }
     
-    public static String getSchemaName() {
+    public static String getMainSchema() {
         return ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.DATABASE_IDENTIFIER);
     }   
     
@@ -44,9 +46,7 @@ public class DbServerInfo {
                 qrystr = "Select @@version";
                 break;
             case "pgsql":
-                //qrystr = "select version()";
-                // broke on purpose, testing exceptions logging
-                qrystr = "select versions()";
+                qrystr = "select version()";
                 break;
             default:
                 dbVersion = "unable to detect db version";
@@ -76,6 +76,52 @@ public class DbServerInfo {
             //dbVersion = "exception " + e + " " ;
         }
         return dbVersion;
+    }
+    
+        public static List<String> getAllSchemas() {
+        Connection dbConnection = Db.getConnection();
+        Statement dbStatement = Db.createStatement(dbConnection);
+        ResultSet rs = null;
+        String qrystr = "";
+        List<String> schemas = new ArrayList<String>();
+        switch (getDatabaseType()) {
+            case "oracle":
+                qrystr = "select * from dba_users";
+                break;
+            case "mssql":
+                qrystr = "select * from sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb')";
+                break;
+            case "pgsql":
+                qrystr = "SELECT usename FROM pg_user order by pg_user";
+                break;
+            default:
+                // nothing to do
+        }
+        try {
+            try {
+                boolean wasExecuted = dbStatement.execute(qrystr);
+                if (wasExecuted) {
+                    rs = dbStatement.getResultSet();
+                    while (rs.next()) {
+                        schemas.add( rs.getString(1) );
+                    }
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (dbStatement != null) {
+                    dbStatement.close();
+                }
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
+            }
+        } catch (Exception e) {
+            // TODO: log in logs
+            //dbVersion = "exception " + e + " " ;
+        }
+        return schemas;
     }
     
     public static String getDatabaseTimeAndTimezone(String format) {
