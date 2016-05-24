@@ -30,12 +30,9 @@ public class B2Helper {
     public String vendorName = "";
     public String handle = "";    
     public String status = "";
-    
     public String availableFlag = "";    
-    
     public String version = "";
-    
-    //public Date dateModified = new Date();
+    public int hits = -1;
     public String dateModified = "";
     
     public B2Helper(String vendor_id, String handle)
@@ -89,6 +86,10 @@ public class B2Helper {
         this.version = major + "." + minor;
         if ( patch != -1 ) this.version += "." + patch;
         if ( build != -1 ) this.version += "." + build;
+    }
+    
+    public void setHits(int hits) {
+        this.hits = hits;
     }
     
     public String getLocalisationString(String key) {

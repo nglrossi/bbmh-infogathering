@@ -268,6 +268,9 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
                 <bbNG:listElement isRowHeader="false" label="Last Modified" name="lastmodified">
                     <%=ux.dateModified%>
                 </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Hits Last Year" name="hitslastyear">
+                    <%=ux.hits%>
+                </bbNG:listElement>
             </bbNG:inventoryList>
         </bbNG:step>
 
