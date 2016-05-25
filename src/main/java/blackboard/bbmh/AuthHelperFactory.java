@@ -20,7 +20,7 @@ import blackboard.bbmh.B2Helper;
  */
 public class AuthHelperFactory {
     public static List<AuthHelper> getAuthProviders() {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getAuthProviders");
         Connection dbConnection = Db.getConnection();
         List<AuthHelper> authList = new ArrayList<AuthHelper>();
         //SimpleDateFormat anotherdbformatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -61,7 +61,7 @@ public class AuthHelperFactory {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getAuthProviders");
         return authList;
     }
 }

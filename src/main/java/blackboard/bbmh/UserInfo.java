@@ -16,7 +16,7 @@ import blackboard.platform.config.ConfigurationServiceFactory;
  */
 public class UserInfo {
     public static int getActiveUsers() {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getActiveUsers");
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -50,12 +50,12 @@ public class UserInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getActiveUsers");
         return count;
     }
 
     public static Map<Integer, Integer> getUniqueLoginsSince(List<Integer> howManyDays) {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getUniqueLoginsSince");
         Map<Integer, Integer> dic = new TreeMap<Integer, Integer>();
         Integer maxDays = Collections.max(howManyDays);
 
@@ -135,12 +135,12 @@ public class UserInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getUniqueLoginsSince");
         return dic;
     }
     
     public static int getUniqueLoginsSince(int howmanydays) {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getUniqueLoginsSince");
         Connection dbConnection = Db.getConnection();
         ResultSet rs = null;
         String qrystr = "";
@@ -188,7 +188,7 @@ public class UserInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getUniqueLoginsSince");
         return count;
     }
     

@@ -21,7 +21,7 @@ import java.util.List;
 public class CourseInfo {
     
     public static int getTotalCourses() {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getTotalCourses");
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -51,11 +51,11 @@ public class CourseInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getTotalCourses");
         return count;
     }
     public static int getActiveCourses() {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getActiveCourses");
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -85,12 +85,12 @@ public class CourseInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getActiveCourses");
         return count;
     }
 
     public static int getAccessedSince(int howmanydays) {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getActiveCourses");
         Connection dbConnection = Db.getConnection();
         ResultSet rs = null;
         String qrystr = "";
@@ -132,12 +132,12 @@ public class CourseInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("End: getActiveCourses");
         return count;
     }
     
     public static List<CourseHelper> getLargeCourses() {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getLargeCourses");
         Connection dbConnection = Db.getConnection();
         List<CourseHelper> largeCourses = new ArrayList<CourseHelper>();
         String qrystr = "select c.pk1,c.course_id,c.course_name,c.available_ind,c.row_status,count(*) howmany from course_main c left join course_users e on c.pk1=e.crsmain_pk1 group by c.pk1,c.course_id,c.course_name,c.available_ind,c.row_status having count(*)>0 order by count(*) desc";
@@ -176,7 +176,7 @@ public class CourseInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getLargeCourses");
         return largeCourses;
     }
 }

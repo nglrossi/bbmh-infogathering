@@ -33,7 +33,7 @@ public class DbServerInfo {
     }
 
     public static String getDatabaseVersion() {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getDatabaseVersion");
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -76,12 +76,12 @@ public class DbServerInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getDatabaseVersion");
         return dbVersion;
     }
 
     public static List<String> getAllSchemas() {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getAllSchemas");
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -124,12 +124,12 @@ public class DbServerInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getAllSchemas");
         return schemas;
     }
 
     public static String getDatabaseTimeAndTimezone(String format) {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getDatabaseTimeAndTimezone");
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -175,13 +175,13 @@ public class DbServerInfo {
         } catch (Exception e) {
             // TODO: log in logs
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getDatabaseTimeAndTimezone");
         return formatter.format(dtDbServerTime) + " " + dbTzString;
     }
 
     public static double getDbSize() {
         // Size in GB
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getDbSize");
         Connection dbConnection = Db.getConnection();
         ResultSet rs = null;
         String qrystr = "";
@@ -232,7 +232,7 @@ public class DbServerInfo {
             // TODO: log in logs
             //debug = "exception " + e + " " ;
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getDbSize");
         return size;
     }
 }

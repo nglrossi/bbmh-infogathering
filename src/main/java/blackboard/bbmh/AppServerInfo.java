@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import blackboard.platform.config.BbConfig;
 import blackboard.platform.config.ConfigurationServiceFactory;
 
@@ -65,7 +65,7 @@ public class AppServerInfo {
     
     
     public static long getDiskUsage(String fs) {
-        Logging.writeLog("Start: " + Logging.getMethodName());
+        Logging.writeLog("Start: getDiskUsage");
         // all in GB
         File ff = new File ("xx" + fs);
         long du = -1;
@@ -75,7 +75,7 @@ public class AppServerInfo {
             //Logger.getLogger(AppServerInfo.class.getName()).log(Level.SEVERE, null, e);
             //throw new RuntimeException("Problem while trying to get Building Block Config Directory", e);
         }
-        Logging.writeLog("End: " + Logging.getMethodName());
+        Logging.writeLog("End: getDiskUsage");
         return du;
     }
     
