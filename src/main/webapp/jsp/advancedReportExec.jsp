@@ -3,13 +3,19 @@
          import="java.util.*,
          java.sql.*,
          java.util.*,
-         blackboard.bbmh.*
-         "
+         blackboard.bbmh.*"
          pageEncoding="UTF-8"
          %>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
+
+<%
+// Test logging
+String debug = Logging.getLogFile() + "<br>";
+debug += Logging.getSeverity();
+ 
+%>
 
 <%
 String pageTitle = "Bb Managed Hosting Info Gathering - Advanced Report";
@@ -44,7 +50,6 @@ String dbServerTime = "";
 String dbType = DbServerInfo.getDatabaseType();
 String dbMainSchema = DbServerInfo.getMainSchema();
 double dbSize = -1;
-String debug = "";
 List<String> dbListSchemas = DbServerInfo.getAllSchemas();
 
 // User info
@@ -76,9 +81,7 @@ try {
         // Db server information
         dbVersion = DbServerInfo.getDatabaseVersion();
         dbServerTime = DbServerInfo.getDatabaseTimeAndTimezone("yyyy-MM-dd HH:mm:ss");
-        dbSize = DbServerInfo.getDbSize();
-        //debug = DbServerInfo.getDbSize();
-        
+        dbSize = DbServerInfo.getDbSize();        
         
         // Courses info
         totalCoursesCount = CourseInfo.getTotalCourses();
@@ -114,7 +117,13 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
     </bbNG:pageHeader>
 
     <bbNG:dataCollection>
-
+<!--
+        <bbNG:step title="Debug">
+            <bbNG:dataElement label="debug" isRequired="yes" labelFor="debug">
+                <%=debug%>
+            </bbNG:dataElement>
+        </bbNG:step>
+-->        
         <bbNG:step title="Application server">
             <bbNG:dataElement label="Full Hostname" isRequired="yes" labelFor="fullhostname">
                 <%=fullHostname%>
@@ -182,7 +191,7 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
                 <%=dbVersion%>
             </bbNG:dataElement>
             <bbNG:dataElement label="Database size" isRequired="yes" labelFor="dbsize">
-                <%=dbSize%> gb </br><%=debug%>
+                <%=dbSize%> gb
             </bbNG:dataElement>
             <bbNG:dataElement label="Server time and timezone" isRequired="yes" labelFor="dbServerTime">
                 <%=dbServerTime%>

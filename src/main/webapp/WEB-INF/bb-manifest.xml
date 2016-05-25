@@ -140,10 +140,11 @@
             <permission type="attribute" name="user.authinfo" actions="get,set"/>
             <permission type="attribute" name="user.personalinfo" actions="get,set"/>
             
-            <permission type="java.io.FilePermission" name="&amp;lt;&amp;lt;ALL FILES&amp;gt;&amp;gt;" actions="read,write" />
             <permission type="java.lang.RuntimePermission" name="getFileSystemAttributes" />
             <permission type="java.lang.RuntimePermission" name="java.io.getFileSystemAttributes" />
             <permission type="java.lang.RuntimePermission" name="*" />
+            
+            <permission type="java.io.FilePermission" name="BB_HOME/logs/-" actions="read,write,delete"/>
             
             <!-- Trying to fox getFileSystemAttributes missing permission
             -->

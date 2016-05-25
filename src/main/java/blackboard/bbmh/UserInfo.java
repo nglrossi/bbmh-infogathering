@@ -16,6 +16,7 @@ import blackboard.platform.config.ConfigurationServiceFactory;
  */
 public class UserInfo {
     public static int getActiveUsers() {
+        Logging.writeLog("Start: " + Logging.getMethodName());
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -49,11 +50,12 @@ public class UserInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
+        Logging.writeLog("End: " + Logging.getMethodName());
         return count;
     }
 
     public static Map<Integer, Integer> getUniqueLoginsSince(List<Integer> howManyDays) {
-    //public static String getUniqueLoginsSince(List<Integer> howManyDays) {
+        Logging.writeLog("Start: " + Logging.getMethodName());
         Map<Integer, Integer> dic = new TreeMap<Integer, Integer>();
         Integer maxDays = Collections.max(howManyDays);
 
@@ -133,11 +135,12 @@ public class UserInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
-//        return qrystr;
+        Logging.writeLog("End: " + Logging.getMethodName());
         return dic;
     }
     
     public static int getUniqueLoginsSince(int howmanydays) {
+        Logging.writeLog("Start: " + Logging.getMethodName());
         Connection dbConnection = Db.getConnection();
         ResultSet rs = null;
         String qrystr = "";
@@ -185,6 +188,7 @@ public class UserInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
+        Logging.writeLog("End: " + Logging.getMethodName());
         return count;
     }
     

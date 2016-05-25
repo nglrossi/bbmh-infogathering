@@ -20,6 +20,7 @@ import blackboard.bbmh.B2Helper;
 public class B2HelperFactory {
     
     public static List<B2Helper> getB2s() {
+        Logging.writeLog("Start: " + Logging.getMethodName());
         
         // TODO: refactoring
         // replacr SQL query with public java.util.List<blackboard.platform.plugin.PlugIn> getPlugIns()
@@ -90,6 +91,7 @@ public class B2HelperFactory {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
+        Logging.writeLog("End: " + Logging.getMethodName());
         return b2s;
     }
 }

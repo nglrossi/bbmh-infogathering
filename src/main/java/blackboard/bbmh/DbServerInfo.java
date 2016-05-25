@@ -22,25 +22,26 @@ import java.util.TimeZone;
 
 
 public class DbServerInfo {
-    //public String osName = "";
     
+    //public String osName = "";
     public static String getDatabaseType() {
         return ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.DATABASE_TYPE);
     }
-    
+
     public static String getMainSchema() {
         return ConfigurationServiceFactory.getInstance().getBbProperty(BbConfig.DATABASE_IDENTIFIER);
-    }   
-    
+    }
+
     public static String getDatabaseVersion() {
+        Logging.writeLog("Start: " + Logging.getMethodName());
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
         String qrystr = "";
         String dbVersion = "";
-        switch(getDatabaseType()) {
+        switch (getDatabaseType()) {
             case "oracle":
-               qrystr = "select * from v$version";
+                qrystr = "select * from v$version";
                 break;
             case "mssql":
                 qrystr = "Select @@version";
@@ -61,24 +62,26 @@ public class DbServerInfo {
                     }
                 }
             } finally {
-                if(rs != null){
+                if (rs != null) {
                     rs.close();
                 }
-                if(dbStatement != null){
+                if (dbStatement != null) {
                     dbStatement.close();
                 }
-                if(dbConnection != null){
+                if (dbConnection != null) {
                     dbConnection.close();
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
+        Logging.writeLog("End: " + Logging.getMethodName());
         return dbVersion;
     }
-    
-        public static List<String> getAllSchemas() {
+
+    public static List<String> getAllSchemas() {
+        Logging.writeLog("Start: " + Logging.getMethodName());
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -95,7 +98,7 @@ public class DbServerInfo {
                 qrystr = "SELECT usename FROM pg_user order by pg_user";
                 break;
             default:
-                // nothing to do
+            // nothing to do
         }
         try {
             try {
@@ -103,7 +106,7 @@ public class DbServerInfo {
                 if (wasExecuted) {
                     rs = dbStatement.getResultSet();
                     while (rs.next()) {
-                        schemas.add( rs.getString(1) );
+                        schemas.add(rs.getString(1));
                     }
                 }
             } finally {
@@ -121,10 +124,12 @@ public class DbServerInfo {
             // TODO: log in logs
             //dbVersion = "exception " + e + " " ;
         }
+        Logging.writeLog("End: " + Logging.getMethodName());
         return schemas;
     }
-    
+
     public static String getDatabaseTimeAndTimezone(String format) {
+        Logging.writeLog("Start: " + Logging.getMethodName());
         Connection dbConnection = Db.getConnection();
         Statement dbStatement = Db.createStatement(dbConnection);
         ResultSet rs = null;
@@ -163,19 +168,20 @@ public class DbServerInfo {
                 if (dbStatement != null) {
                     dbStatement.close();
                 }
-                if(dbConnection != null){
+                if (dbConnection != null) {
                     dbConnection.close();
                 }
             }
         } catch (Exception e) {
             // TODO: log in logs
         }
+        Logging.writeLog("End: " + Logging.getMethodName());
         return formatter.format(dtDbServerTime) + " " + dbTzString;
     }
-    
+
     public static double getDbSize() {
         // Size in GB
-        
+        Logging.writeLog("Start: " + Logging.getMethodName());
         Connection dbConnection = Db.getConnection();
         ResultSet rs = null;
         String qrystr = "";
@@ -226,11 +232,7 @@ public class DbServerInfo {
             // TODO: log in logs
             //debug = "exception " + e + " " ;
         }
+        Logging.writeLog("End: " + Logging.getMethodName());
         return size;
-        //return debug;
     }
 }
-
-
-
-

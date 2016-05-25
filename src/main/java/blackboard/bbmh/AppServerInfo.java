@@ -65,6 +65,7 @@ public class AppServerInfo {
     
     
     public static long getDiskUsage(String fs) {
+        Logging.writeLog("Start: " + Logging.getMethodName());
         // all in GB
         File ff = new File ("xx" + fs);
         long du = -1;
@@ -74,6 +75,7 @@ public class AppServerInfo {
             //Logger.getLogger(AppServerInfo.class.getName()).log(Level.SEVERE, null, e);
             //throw new RuntimeException("Problem while trying to get Building Block Config Directory", e);
         }
+        Logging.writeLog("End: " + Logging.getMethodName());
         return du;
     }
     
