@@ -105,7 +105,6 @@ try {
 // check how to move the code into servlet and remove this
 pageContext.setAttribute("totalLogins", totalLogins);
 pageContext.setAttribute("dbListSchemas", dbListSchemas);
-
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
@@ -117,13 +116,7 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
     </bbNG:pageHeader>
 
     <bbNG:dataCollection>
-<!--
-        <bbNG:step title="Debug">
-            <bbNG:dataElement label="debug" isRequired="yes" labelFor="debug">
-                <%=debug%>
-            </bbNG:dataElement>
-        </bbNG:step>
--->        
+
         <bbNG:step title="Application server">
             <bbNG:dataElement label="Full Hostname" isRequired="yes" labelFor="fullhostname">
                 <%=fullHostname%>

@@ -12,12 +12,12 @@ String pageTitle = "Bb Managed Hosting Info Gathering";
 String pageInstructions = "Bbmh tool for gathering information as part of the onboarding to managed hosting.\n"
         + "<br/>This tool will produce a report about this system.\n";
 
-String simpleTitle="<a href=\"basicReportConfirm.jsp\">Basic report</a>";
+String simpleTitle="<a href=\"advancedReportExec.jsp\">Basic report</a>";
 String simpleInstructions="This report can be ran at any time as it checks basic system settings and is not resource-intensive.\n"
         +"</br>Customers that are considering moving to Managed Hosting or SaaS can use it to collect basic informationf for Sales."
         +"<br/>A confirmation will be requested before running any report.";
 
-String advancedTitle="<a href=\"advancedReportConfirm.jsp\">Advanced report</a>";
+String advancedTitle="<a href=\"advancedReportExec.jsp\">Advanced report</a>";
 String advancedInstruction="This is an advanced report collects information about the system configuraiton and usage that should be provided to Blackboard.\n"
         +"</br>As it can be resource intensive and can run for several hours it is recommended to start the execution out of busy hours."
         +"<br/>A confirmation will be requested before running any report.";
