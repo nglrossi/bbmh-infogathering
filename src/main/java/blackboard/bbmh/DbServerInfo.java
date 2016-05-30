@@ -203,7 +203,7 @@ public class DbServerInfo {
                 qrystr = "TODO";
                 break;
             case "pgsql":
-                qrystr = "select pg_database_size(current_database())/(1024*1024*1024)";
+                qrystr = "select round(pg_database_size(current_database())/(1024*1024*1024), 2)";
                 break;
             default:
                 qrystr = "";
