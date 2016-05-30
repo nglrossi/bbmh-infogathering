@@ -21,8 +21,6 @@ import java.text.SimpleDateFormat;
  * @author arossi
  */
 public class B2Helper {
-    //public static String VENDOR_ID = "oslt";
-    //public static String HANDLE = "jshack";
     
     public String name = "";
     public String localizedName = "";
@@ -32,8 +30,9 @@ public class B2Helper {
     public String status = "";
     public String availableFlag = "";    
     public String version = "";
-    public int hits = -1;
     public String dateModified = "";
+   
+
     
     public B2Helper(String vendor_id, String handle)
     {
@@ -53,13 +52,6 @@ public class B2Helper {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         this.dateModified = formatter.format(dateModified);
     }
-   
-    /*
-    public String getDateModified() {
-        
-        return dateModified.toString();
-    }
-    */
     
     public void setAvailableFlag(String availableFlag) {
         switch(availableFlag) {
@@ -86,10 +78,6 @@ public class B2Helper {
         this.version = major + "." + minor;
         if ( patch != -1 ) this.version += "." + patch;
         if ( build != -1 ) this.version += "." + build;
-    }
-    
-    public void setHits(int hits) {
-        this.hits = hits;
     }
     
     public String getLocalisationString(String key) {

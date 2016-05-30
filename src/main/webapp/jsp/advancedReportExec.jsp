@@ -61,7 +61,7 @@ int activeUsers = -1;
 
 // Building Blocks, large courses and auth providers
 List<CourseHelper> largeCourses = new ArrayList<CourseHelper>();
-List<B2Helper> b2s = new ArrayList<B2Helper>();
+List<B2HelperAdvanced> b2s = new ArrayList<B2HelperAdvanced>();
 List<AuthHelper> authProviders = new ArrayList<AuthHelper>();
 
 // test list logins
@@ -94,7 +94,7 @@ try {
         totalLogins = UserInfo.getUniqueLoginsSince(howManyDays);
         
         // Building Blocks
-        b2s = B2HelperFactory.getB2s();
+        b2s = B2HelperFactoryAdvanced.getB2s();
         
         // Auth Providers
         authProviders = AuthHelperFactory.getAuthProviders();
@@ -251,7 +251,7 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
         </bbNG:step>
 
         <bbNG:step title="Building Blocks"> 
-            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false">
+            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2HelperAdvanced" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false">
                 <bbNG:listElement isRowHeader="true" label="Name" name="b2Name">
                     <%=ux.localizedName%>
                 </bbNG:listElement>

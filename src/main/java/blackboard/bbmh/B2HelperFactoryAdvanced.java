@@ -9,17 +9,16 @@ package blackboard.bbmh;
 import java.sql.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
-//import blackboard.bbmh.B2Helper;
-//import blackboard.bbmh.*;
+//import blackboard.bbmh.B2HelperAdvanced;
 
 
 /**
  *
  * @author arossi
  */
-public class B2HelperFactory {
+public class B2HelperFactoryAdvanced {
     
-    public static List<B2Helper> getB2s() {
+    public static List<B2HelperAdvanced> getB2s() {
         Logging.writeLog("Start: getB2s");
         
         // TODO: refactoring
@@ -27,20 +26,31 @@ public class B2HelperFactory {
         // http://library.blackboard.com/ref/16ce28ed-bbca-4c63-8a85-8427e135a710/blackboard/platform/plugin/PlugInManager.html#getPlugIns--
         
         Connection dbConnection = Db.getConnection();
-        List<B2Helper> b2s = new ArrayList<B2Helper>();
+        List<B2HelperAdvanced> b2s = new ArrayList<B2HelperAdvanced>();
         SimpleDateFormat anotherdbformatter = new SimpleDateFormat("yyyy-MM-dd");
         String qrystr = "";
         switch (DbServerInfo.getDatabaseType()) {
             case "oracle":
-                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified " +
-"  FROM plugins "  +
+                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified, " +
+"  NVL(mycount,0) hits_last_year " +
+"FROM plugins " +
+"LEFT OUTER JOIN " +
+"  (SELECT COUNT(1) mycount, " +
+"    SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) mydata " +
+"  FROM activity_accumulator " +
+"  WHERE TIMESTAMP >= sysdate -365 " +
+"  AND data LIKE '/webapps/%-%/%' " +
+"  GROUP BY SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) " +
+"  ) aa " +
+"ON aa.mydata= '/webapps/' " +
+"  || Vendor_ID  || '-'  || Handle " +
 "ORDER BY Name";
                 break;
             case "mssql":
-                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified from plugins order by name";
+                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified, 1 as hits_last_year from plugins order by name";
                 break;
             case "pgsql":
-                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified from plugins order by name";
+                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified, 1 as hits_last_year from plugins order by name";
                 break;
             default:
             // nothing to do
@@ -53,13 +63,14 @@ public class B2HelperFactory {
                 if (wasExecuted) {
                     rs = dbStatement.getResultSet();
                     while (rs.next()) {
-                        B2Helper b2local = new B2Helper(rs.getString("vendor_id"), rs.getString("handle"));
+                        B2HelperAdvanced b2local = new B2HelperAdvanced(rs.getString("vendor_id"), rs.getString("handle"));
                         b2local.setName(rs.getString("name"));
                         b2local.setLocalizedName(rs.getString("name"));
                         b2local.setVendorName(rs.getString("vendor_name"));
                         b2local.setVersion(rs.getInt("version_major"), rs.getInt("version_minor"), rs.getInt("version_patch"), rs.getInt("version_build"));
                         b2local.setAvailableFlag(rs.getString("available_flag"));
                         b2local.setDateModified(anotherdbformatter.parse(rs.getString("dtmodified")));
+                        b2local.setHits(rs.getInt("hits_last_year"));
 
                         b2s.add(b2local);
                     }

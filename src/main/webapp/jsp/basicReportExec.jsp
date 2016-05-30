@@ -2,13 +2,21 @@
 <%@ page	language="java"
          import="java.util.*,
          java.sql.*,
-         blackboard.bbmh.*
-         "
+         java.util.*,
+         blackboard.bbmh.*"
          pageEncoding="UTF-8"
          %>
 
-<%@ taglib uri="/bbData" prefix="bbData"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
+
+<%
+// Test logging
+String debug = Logging.getLogFile() + "<br>";
+debug += Logging.getSeverity();
+ 
+%>
+
 <%
 String pageTitle = "Bb Managed Hosting Info Gathering - Basic Report";
 String cancelUrl = "index.jsp";
@@ -25,36 +33,55 @@ String appOsversion = AppServerInfo.getOsVersion();
 String appJavaVersion = AppServerInfo.getJavaVersion();
 String appServerTime = AppServerInfo.getServerTime("yyyy-MM-dd HH:mm:ss");
 String fullHostname = AppServerInfo.getUrl();
+String baseDirLabel = AppServerInfo.getBaseDirPath();
+long baseDirDiskUsage = AppServerInfo.getDiskUsage(baseDirLabel);
 
 
-// Detect Learn Version
+//  Learn Version
 String learnVersion = "";
 learnVersion = blackboard.platform.LicenseUtil.getBuildNumber();
+String contentDirLabel = AppServerInfo.getContentDirPath();
+long contentDirDiskUsage = AppServerInfo.getDiskUsage(contentDirLabel);
 
-// Detect whether MSSQL/Oracle/Postgres
+
+// Db Info
 String dbVersion = "";
 String dbServerTime = "";
 String dbType = DbServerInfo.getDatabaseType();
-String dbSchema = DbServerInfo.getSchemaName();
+String dbMainSchema = DbServerInfo.getMainSchema();
+double dbSize = -1;
+List<String> dbListSchemas = DbServerInfo.getAllSchemas();
 
+// User info
 int totalCoursesCount = -1;
 int activeCoursesCount = -1;
 int accessedLastYearCoursesCount = -1;
-
 int activeUsers = -1;
-int i30daysLogins = -1;
-int i60daysLogins = -1;
-int i120daysLogins = -1;
-int i180daysLogins = -1;
 
+
+// Building Blocks, large courses and auth providers
 List<CourseHelper> largeCourses = new ArrayList<CourseHelper>();
 List<B2Helper> b2s = new ArrayList<B2Helper>();
+List<AuthHelper> authProviders = new ArrayList<AuthHelper>();
+
+// test list logins
+
+List<Integer> howManyDays = new ArrayList<Integer>();
+howManyDays.add(30);
+howManyDays.add(60);
+howManyDays.add(90);
+howManyDays.add(120);
+howManyDays.add(180);
+
+Map<Integer, Integer> totalLogins = new TreeMap<Integer, Integer>();
+        
 
 // Pull info from the DB and then close connections
 try {
         // Db server information
         dbVersion = DbServerInfo.getDatabaseVersion();
         dbServerTime = DbServerInfo.getDatabaseTimeAndTimezone("yyyy-MM-dd HH:mm:ss");
+        dbSize = DbServerInfo.getDbSize();        
         
         // Courses info
         totalCoursesCount = CourseInfo.getTotalCourses();
@@ -64,18 +91,20 @@ try {
         
         // Users info
         activeUsers = UserInfo.getActiveUsers();
-        i30daysLogins = UserInfo.getUniqueLoginsSince(30);
-        i60daysLogins = UserInfo.getUniqueLoginsSince(60);
-        i120daysLogins = UserInfo.getUniqueLoginsSince(120);
-        i180daysLogins = UserInfo.getUniqueLoginsSince(180);
-        
+        totalLogins = UserInfo.getUniqueLoginsSince(howManyDays);
         
         // Building Blocks
         b2s = B2HelperFactory.getB2s();
         
+        // Auth Providers
+        authProviders = AuthHelperFactory.getAuthProviders();
+        
 } catch(Exception e) {
         // TODO: write in logs
 }
+// check how to move the code into servlet and remove this
+pageContext.setAttribute("totalLogins", totalLogins);
+pageContext.setAttribute("dbListSchemas", dbListSchemas);
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
@@ -107,6 +136,12 @@ try {
             <bbNG:dataElement label="Server time and timezone" isRequired="yes" labelFor="appServerTime">
                 <%=appServerTime%>
             </bbNG:dataElement>
+            <bbNG:dataElement label="Base dir path" isRequired="yes" labelFor="appServerBaseDir">
+                <%=baseDirLabel%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Base dir disk usage" isRequired="yes" labelFor="appServerBaseDirDf">
+                <%=baseDirDiskUsage%> gb
+            </bbNG:dataElement>
         </bbNG:step>
 
         <bbNG:step title="Learn Version">
@@ -119,19 +154,37 @@ try {
                 <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_CONTENT_SYSTEM">Content Management</bbNG:ifLicensed> </bbNG:dataElement>
                 <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_COMMUNITY">Community Engagement</bbNG:ifLicensed> </bbNG:dataElement>
                 <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_OUTCOMES">Outcomes Assessment</bbNG:ifLicensed> </bbNG:dataElement>
-            </bbNG:dataElement> 
-   
+            </bbNG:dataElement>
+                
+            <bbNG:dataElement label="Content dir path" isRequired="yes" labelFor="appServerContentDir">
+                <%=contentDirLabel%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Content disk usage" isRequired="yes" labelFor="appServerontentDirDf">
+                <%=contentDirDiskUsage%> gb
+            </bbNG:dataElement>
         </bbNG:step>
 
         <bbNG:step title="Database server backend">
             <bbNG:dataElement label="Database server type" isRequired="yes" labelFor="dbtype">
                 <%=dbType%>
             </bbNG:dataElement>
-            <bbNG:dataElement label="Database schema" isRequired="yes" labelFor="dbschema">
-                <%=dbSchema%>
+            <bbNG:dataElement label="Database main schema" isRequired="yes" labelFor="dbMainSchema">
+                <%=dbMainSchema%>
             </bbNG:dataElement>
+            
+            <bbNG:dataElement isSubElement="true" label="Database schemas" isRequired="yes" labelFor="dbListSchemas">
+                 <c:forEach items="${dbListSchemas}" var="theSchemas">
+                     <bbNG:dataElement isSubElement="true">
+                         ${theSchemas}
+                     </bbNG:dataElement>
+                 </c:forEach>
+            </bbNG:dataElement>
+                
             <bbNG:dataElement label="Database server version" isRequired="yes" labelFor="dbversion">
                 <%=dbVersion%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Database size" isRequired="yes" labelFor="dbsize">
+                <%=dbSize%> gb
             </bbNG:dataElement>
             <bbNG:dataElement label="Server time and timezone" isRequired="yes" labelFor="dbServerTime">
                 <%=dbServerTime%>
@@ -140,20 +193,15 @@ try {
         
         <bbNG:step title="Users information">
             <bbNG:dataElement label="Active Users" isRequired="yes" labelFor="activeUsers">
-                <%=activeUsers%>
-            </bbNG:dataElement>
-            <bbNG:dataElement label="30 days unique logins" isRequired="yes" labelFor="i30daysLogins">
-                <%=i30daysLogins%>      
-            </bbNG:dataElement>
-            <bbNG:dataElement label="60 days unique logins" isRequired="yes" labelFor="i60daysLogins">
-                <%=i60daysLogins%>
-            </bbNG:dataElement>
-            <bbNG:dataElement label="120 days unique logins" isRequired="yes" labelFor="i120daysLogins">
-                <%=i120daysLogins%>
-            </bbNG:dataElement>
-            <bbNG:dataElement label="180 days unique logins" isRequired="yes" labelFor="i180daysLogins">
-                <%=i180daysLogins%>
-            </bbNG:dataElement>
+                <%=activeUsers%> 
+           </bbNG:dataElement>
+            
+            <c:forEach items="${totalLogins}" var="quantiLogin">
+                <bbNG:dataElement label="${quantiLogin.key} days unique logins" isRequired="false">
+                    ${quantiLogin.value}
+                </bbNG:dataElement>
+            </c:forEach>
+        
         </bbNG:step>
 
         <bbNG:step title="Courses information">
@@ -188,8 +236,22 @@ try {
             </bbNG:inventoryList>
         </bbNG:step>
 
+        <bbNG:step title="Authentication"> 
+            <bbNG:inventoryList collection="<%=authProviders%>" objectVar="ux" className="AuthHelper" description="Authentication providers" emptyMsg="No authentication providers found" showAll="true" displayPagingControls="false">
+                <bbNG:listElement isRowHeader="true" label="Name" name="authName">
+                    <%=ux.name%>
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Type" name="authType">
+                    <%=ux.type%>
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="State" name="authState">
+                    <%=ux.availableFlag%>
+                </bbNG:listElement>
+            </bbNG:inventoryList>
+        </bbNG:step>
+
         <bbNG:step title="Building Blocks"> 
-            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false" initialSortCol="b2Name">
+            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false">
                 <bbNG:listElement isRowHeader="true" label="Name" name="b2Name">
                     <%=ux.localizedName%>
                 </bbNG:listElement>
@@ -211,8 +273,14 @@ try {
             </bbNG:inventoryList>
         </bbNG:step>
 
+        <bbNG:step title="Additional Comments" instructions="expected usage growth, major changes occurring during the next 12 months or any comments relevant to a transition to Managed Hosting or Saas">
+            <bbNG:dataElement label="Comments" isRequired="yes" labelFor="comments">
+                <bbNG:textbox name="comments" label="comments"  />
+            </bbNG:dataElement>
+        </bbNG:step>
+                
         <bbNG:stepSubmit showCancelButton="false">
-            <bbNG:stepSubmitButton label="OK" />
+            <bbNG:stepSubmitButton label="OK" url="index.jsp"/>
         </bbNG:stepSubmit>
             
 
