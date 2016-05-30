@@ -68,6 +68,15 @@ public class Logging {
         verb = theLog.getVerbosityLevel().toExternalString();
         return verb;
     }
+    /*
+    This method was causing memory leaks
+    no time to investigate on this now so I stopped using it
+    it's a handy functionality that we might want to re-add in the future
+    but it will need some investigation
+    
+    INFO   | jvm 1    | 2016/05/25 23:22:36 | SEVERE: The web application [/webapps/bbmh-info-gathering-BBLEARN] appears to have started a thread named [LogMonitorImpl (bbmhdebug) thread-1] but has failed to stop it. This is very likely to create a memory leak.
+    
+    Doesn't seem to have anything to do with the StackTrace, most likely with writeog below.
     
     public static String getMethodName() {
         StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
@@ -75,17 +84,25 @@ public class Logging {
         String methodName = e.getMethodName();
         return (methodName);
     }
+    */
     
     public static void writeLog(String message) {
+        /*
+        
+        !!! potential memory leak, leaving this off for now
+        
         Log theLog;
+        
+        LogService ls = LogServiceFactory.getInstance();
         try {
-            LogServiceFactory.getInstance().defineNewFileLog("bbmhdebug", getLogFile(), LogService.Verbosity.WARNING, false);
+            ls.defineNewFileLog("bbmhdebug", getLogFile(), LogService.Verbosity.WARNING, false);
         } catch (BbServiceException ex) {
             
         }
-        theLog = LogServiceFactory.getInstance().getConfiguredLog("bbmhdebug");
+        theLog = ls.getConfiguredLog("bbmhdebug");
         theLog.logWarning("DEBUG: " + message);
-    }
+        */
+}
     
     
 }

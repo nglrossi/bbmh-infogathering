@@ -67,7 +67,7 @@ public class AppServerInfo {
     public static long getDiskUsage(String fs) {
         Logging.writeLog("Start: getDiskUsage");
         // all in GB
-        File ff = new File ("xx" + fs);
+        File ff = new File (fs);
         long du = -1;
         try {
             du = (ff.getTotalSpace() - ff.getFreeSpace()) / (1024*1024*1024);
