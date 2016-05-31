@@ -18,11 +18,12 @@ debug += Logging.getSeverity();
 %>
 
 <%
-String pageTitle = "Bb Managed Hosting Info Gathering - Advanced Report";
 String cancelUrl = "index.jsp";
 //String submitUrl = "../index.jsp";
-String pageInstructions = "Bbmh tool for gathering information as part of the onboarding to managed hosting.\n"
-+ "<br/>Report completed";
+String pageTitle = "Blackboard Cloud Services Information Gathering - Main Report";
+String pageInstructionsBottom = "Please use your browser's print/save to PDF feature to save a copy of this page then send the PDF, along with the corresponding Word document, to your Blackboard representative.";
+String pageInstructionsTop = "Results of the report are shown below. Please review the results carefully, adding any comments or clarifications at the end. <br />"
+                             +pageInstructionsBottom;
 %>
 <%
 
@@ -61,7 +62,7 @@ int activeUsers = -1;
 
 // Building Blocks, large courses and auth providers
 List<CourseHelper> largeCourses = new ArrayList<CourseHelper>();
-List<B2HelperAdvanced> b2s = new ArrayList<B2HelperAdvanced>();
+List<B2Helper> b2s = new ArrayList<B2Helper>();
 List<AuthHelper> authProviders = new ArrayList<AuthHelper>();
 
 // test list logins
@@ -94,7 +95,7 @@ try {
         totalLogins = UserInfo.getUniqueLoginsSince(howManyDays);
         
         // Building Blocks
-        b2s = B2HelperFactoryAdvanced.getB2s();
+        b2s = B2HelperFactory.getB2s();
         
         // Auth Providers
         authProviders = AuthHelperFactory.getAuthProviders();
@@ -108,10 +109,10 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
-        <bbNG:breadcrumb title="BB Support Tools" href="<%= cancelUrl %>" />
+        <bbNG:breadcrumb title="Bb Managed Hosting Info Gathering" href="<%= cancelUrl %>" />
         <bbNG:breadcrumb><%=pageTitle%></bbNG:breadcrumb>
     </bbNG:breadcrumbBar>
-    <bbNG:pageHeader instructions="<%=pageInstructions%>">
+    <bbNG:pageHeader instructions="<%=pageInstructionsTop%>">
         <bbNG:pageTitleBar ><%=pageTitle%></bbNG:pageTitleBar>
     </bbNG:pageHeader>
 
@@ -251,7 +252,7 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
         </bbNG:step>
 
         <bbNG:step title="Building Blocks"> 
-            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2HelperAdvanced" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false">
+            <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false">
                 <bbNG:listElement isRowHeader="true" label="Name" name="b2Name">
                     <%=ux.localizedName%>
                 </bbNG:listElement>
@@ -270,18 +271,15 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
                 <bbNG:listElement isRowHeader="false" label="Last Modified" name="lastmodified">
                     <%=ux.dateModified%>
                 </bbNG:listElement>
-                <bbNG:listElement isRowHeader="false" label="Hits Last Year" name="hitslastyear">
-                    <%=ux.hits%>
-                </bbNG:listElement>
             </bbNG:inventoryList>
         </bbNG:step>
-
+<% /* commenting out for now, until we remove the word doc entirely
         <bbNG:step title="Additional Comments" instructions="expected usage growth, major changes occurring during the next 12 months or any comments relevant to a transition to Managed Hosting or Saas">
             <bbNG:dataElement label="Comments" isRequired="yes" labelFor="comments">
                 <bbNG:textbox name="comments" label="comments"  />
             </bbNG:dataElement>
         </bbNG:step>
-                
+ */ %>               
         <bbNG:stepSubmit showCancelButton="false">
             <bbNG:stepSubmitButton label="OK" url="index.jsp"/>
         </bbNG:stepSubmit>
