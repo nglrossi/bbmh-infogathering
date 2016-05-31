@@ -8,20 +8,17 @@ blackboard.platform.config.*
 " pageEncoding="UTF-8" %>
 <%@ taglib prefix="bbNG" uri="/bbNG"%>
 <%
-String pageTitle = "Bb Managed Hosting Info Gathering";
-String pageInstructions = "Bbmh tool for gathering information as part of the onboarding to managed hosting.\n"
-        + "<br/>This tool will produce a report about this system.\n";
 
-String simpleTitle="<a href=\"basicReportExec.jsp\">Basic report</a>";
-String simpleInstructions="This report can be ran at any time as it checks basic system settings and is not resource-intensive.\n"
-        +"</br>Customers that are considering moving to Managed Hosting or SaaS can use it to collect basic informationf for Sales."
-        +"<br/>A confirmation will be requested before running any report.";
+String pageTitle = "Blackboard Cloud Services Information Gathering";
+String pageInstructions = "This tool will gather statistical data about your Blackboard Learn environment for use by you and Blackboard as a baseline for scoping and planning a potential move to Blackboard Managed Hosting or SaaS.\n"
+                        + "<br /><br />You will have an opportunity to review the results after running the report, no data is automatically sent to Blackboard.  In this initial version, you can manually save the output to send to your Blackboard representative.";
+String mainTitle="<a href=\"mainReport.jsp\">Main report - Information Gathering</a>";
+String mainInstructions="This report can be run at any time as it checks basic system settings and is not resource-intensive.\n"
+        +"</br>Customers that are considering moving to Managed Hosting or SaaS can use it to collect basic information for Sales, to go along with the Requirements Gathering document";
 
-String advancedTitle="<a href=\"advancedReportExec.jsp\">Advanced report</a>";
-String advancedInstruction="This is an advanced report collects information about the system configuraiton and usage that should be provided to Blackboard.\n"
-        +"</br>As it can be resource intensive and can run for several hours it is recommended to start the execution out of busy hours."
-        +"<br/>A confirmation will be requested before running any report.";
-
+String b2Title="<a href=\"b2UsageReport.jsp\">Building Block Usage Report</a>";
+String b2Instruction="This report lists all installed Building Blocks, with an extra column to indicate usage - based on the number of hits recorded in activity accumulator in the last year.\n"
+        +"</br>Note: As it can be resource intensive and can run for several hours on a system with a lot of data it is recommended to start the execution out of busy hours.";
 %>
 
 
@@ -37,14 +34,10 @@ String advancedInstruction="This is an advanced report collects information abou
     <bbNG:landingPage>
         <bbNG:landingPageColumn>
 
-            <bbNG:landingPageSection title="<%=simpleTitle%>" instructions="<%=simpleInstructions%>" />
-            <bbNG:landingPageSection title="<%=advancedTitle%>" instructions="<%=advancedInstruction%>" />
+            <bbNG:landingPageSection title="<%=mainTitle%>" instructions="<%=mainInstructions%>" />
+            <bbNG:landingPageSection title="<%=b2Title%>" instructions="<%=b2Instruction%>" />
 
         </bbNG:landingPageColumn>
 
     </bbNG:landingPage>
 </bbNG:genericPage>
-
-<%!
-//code methods in here e.g. private static boolean pingUrl (String address) {....}
-%>
