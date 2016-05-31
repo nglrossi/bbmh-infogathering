@@ -18,11 +18,12 @@ debug += Logging.getSeverity();
 %>
 
 <%
-String pageTitle = "Bb Managed Hosting Info Gathering - Basic Report";
 String cancelUrl = "index.jsp";
 //String submitUrl = "../index.jsp";
-String pageInstructions = "Bbmh tool for gathering information as part of the onboarding to managed hosting.\n"
-+ "<br/>Report completed";
+String pageTitle = "Blackboard Cloud Services Information Gathering - Main Report";
+String pageInstructionsBottom = "Please use your browser's print/save to PDF feature to save a copy of this page then send the PDF, along with the corresponding Word document, to your Blackboard representative.";
+String pageInstructionsTop = "Results of the report are shown below. Please review the results carefully, adding any comments or clarifications at the end. <br />"
+                             +pageInstructionsBottom;
 %>
 <%
 
@@ -108,10 +109,10 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
-        <bbNG:breadcrumb title="BB Support Tools" href="<%= cancelUrl %>" />
+        <bbNG:breadcrumb title="Bb Managed Hosting Info Gathering" href="<%= cancelUrl %>" />
         <bbNG:breadcrumb><%=pageTitle%></bbNG:breadcrumb>
     </bbNG:breadcrumbBar>
-    <bbNG:pageHeader instructions="<%=pageInstructions%>">
+    <bbNG:pageHeader instructions="<%=pageInstructionsTop%>">
         <bbNG:pageTitleBar ><%=pageTitle%></bbNG:pageTitleBar>
     </bbNG:pageHeader>
 
@@ -272,13 +273,13 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
                 </bbNG:listElement>
             </bbNG:inventoryList>
         </bbNG:step>
-
+<% /* commenting out for now, until we remove the word doc entirely
         <bbNG:step title="Additional Comments" instructions="expected usage growth, major changes occurring during the next 12 months or any comments relevant to a transition to Managed Hosting or Saas">
             <bbNG:dataElement label="Comments" isRequired="yes" labelFor="comments">
                 <bbNG:textbox name="comments" label="comments"  />
             </bbNG:dataElement>
         </bbNG:step>
-                
+ */ %>               
         <bbNG:stepSubmit showCancelButton="false">
             <bbNG:stepSubmitButton label="OK" url="index.jsp"/>
         </bbNG:stepSubmit>
