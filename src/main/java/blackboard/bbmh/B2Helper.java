@@ -63,6 +63,9 @@ public class B2Helper {
             case "U":
                 this.availableFlag = "Unavailable";
                 break;
+            case "C":
+                this.availableFlag = "Corrupt";
+                break;
             default:
                 this.availableFlag = "Unrecognized Status";
                 break;
