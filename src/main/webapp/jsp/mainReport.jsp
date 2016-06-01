@@ -63,19 +63,7 @@ int activeUsers = -1;
 // Building Blocks, large courses and auth providers
 List<CourseHelper> largeCourses = new ArrayList<CourseHelper>();
 List<B2Helper> b2s = new ArrayList<B2Helper>();
-List<AuthHelper> authProviders = new ArrayList<AuthHelper>();
-
-// test list logins
-
-List<Integer> howManyDays = new ArrayList<Integer>();
-howManyDays.add(30);
-howManyDays.add(60);
-howManyDays.add(90);
-howManyDays.add(120);
-howManyDays.add(180);
-
-Map<Integer, Integer> totalLogins = new TreeMap<Integer, Integer>();
-        
+List<AuthHelper> authProviders = new ArrayList<AuthHelper>();        
 
 // Pull info from the DB and then close connections
 try {
@@ -92,7 +80,6 @@ try {
         
         // Users info
         activeUsers = UserInfo.getActiveUsers();
-        totalLogins = UserInfo.getUniqueLoginsSince(howManyDays);
         
         // Building Blocks
         b2s = B2HelperFactory.getB2s();
@@ -104,7 +91,6 @@ try {
         // TODO: write in logs
 }
 // check how to move the code into servlet and remove this
-pageContext.setAttribute("totalLogins", totalLogins);
 pageContext.setAttribute("dbListSchemas", dbListSchemas);
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
@@ -196,12 +182,6 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
             <bbNG:dataElement label="Active Users" isRequired="yes" labelFor="activeUsers">
                 <%=activeUsers%> 
            </bbNG:dataElement>
-            
-            <c:forEach items="${totalLogins}" var="quantiLogin">
-                <bbNG:dataElement label="${quantiLogin.key} days unique logins" isRequired="false">
-                    ${quantiLogin.value}
-                </bbNG:dataElement>
-            </c:forEach>
         
         </bbNG:step>
 

@@ -10,7 +10,6 @@ import blackboard.platform.log.Log;
 import blackboard.platform.log.LogService;
 import blackboard.platform.log.LogServiceFactory;
 import blackboard.platform.plugin.PlugInUtil;
-import blackboard.platform.plugin.PlugInException;
 import blackboard.platform.plugin.PlugInManager;
 import blackboard.platform.plugin.PlugInManagerFactory;
 import blackboard.platform.plugin.PlugIn;
@@ -102,6 +101,7 @@ public class Logging {
         theLog = ls.getConfiguredLog("bbmhdebug");
         theLog.logWarning("DEBUG: " + message);
         */
+        
 }
     
     

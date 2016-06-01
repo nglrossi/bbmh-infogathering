@@ -8,8 +8,6 @@ package blackboard.bbmh;
 
 import java.sql.*;
 import blackboard.db.*;
-import blackboard.platform.*;
-import blackboard.platform.db.*;
 /**
  *
  * @author arossi

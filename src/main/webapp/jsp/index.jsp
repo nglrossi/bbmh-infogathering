@@ -19,6 +19,11 @@ String mainInstructions="This report can be run at any time as it checks basic s
 String b2Title="<a href=\"b2UsageReport.jsp\">Building Block Usage Report</a>";
 String b2Instruction="This report lists all installed Building Blocks, with an extra column to indicate usage - based on the number of hits recorded in activity accumulator in the last year.\n"
         +"</br>Note: As it can be resource intensive and can run for several hours on a system with a lot of data it is recommended to start the execution out of busy hours.";
+
+String uniqueLoginsTitle="<a href=\"uniqueLoginsReport.jsp\">Unique Logins Report</a>";
+String uniqueLoginsInstruction="This report lists unique logins on the system during the past few months - based on the number of hits recorded in activity accumulator in the last year.\n"
+        +"</br>Note: As it can be resource intensive and can run for several hours on a system with a lot of data it is recommended to start the execution out of busy hours.";
+
 %>
 
 
@@ -30,12 +35,13 @@ String b2Instruction="This report lists all installed Building Blocks, with an e
         </bbNG:breadcrumbBar>
         <bbNG:pageTitleBar  showTitleBar="true" title="<%=pageTitle%>"/>
     </bbNG:pageHeader>
-    
+
     <bbNG:landingPage>
         <bbNG:landingPageColumn>
 
             <bbNG:landingPageSection title="<%=mainTitle%>" instructions="<%=mainInstructions%>" />
             <bbNG:landingPageSection title="<%=b2Title%>" instructions="<%=b2Instruction%>" />
+            <bbNG:landingPageSection title="<%=uniqueLoginsTitle%>" instructions="<%=uniqueLoginsInstruction%>" />
 
         </bbNG:landingPageColumn>
 

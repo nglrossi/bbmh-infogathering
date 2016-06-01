@@ -5,7 +5,6 @@
  */
 package blackboard.bbmh;
 
-import blackboard.platform.*;
 import blackboard.platform.intl.BundleManager;
 import blackboard.platform.intl.BundleManagerFactory;
 import blackboard.platform.intl.BbResourceBundle;

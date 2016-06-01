@@ -3,10 +3,8 @@ package blackboard.bbmh;
 
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import blackboard.bbmh.B2Helper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

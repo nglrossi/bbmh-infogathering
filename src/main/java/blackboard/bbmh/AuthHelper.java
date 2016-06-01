@@ -5,7 +5,6 @@
  */
 package blackboard.bbmh;
 
-import blackboard.platform.authentication.*;
 /**
  *
  * @author arossi

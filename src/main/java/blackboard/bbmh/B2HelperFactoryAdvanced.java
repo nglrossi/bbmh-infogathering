@@ -9,7 +9,6 @@ package blackboard.bbmh;
 import java.sql.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
-//import blackboard.bbmh.B2HelperAdvanced;
 
 
 /**

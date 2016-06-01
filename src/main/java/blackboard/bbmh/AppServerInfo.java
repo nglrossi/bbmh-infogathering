@@ -6,12 +6,9 @@
 
 package blackboard.bbmh;
 
-import java.util.Date;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 import java.io.File;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import blackboard.platform.config.BbConfig;
 import blackboard.platform.config.ConfigurationServiceFactory;
 
