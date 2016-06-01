@@ -43,7 +43,7 @@ public class B2HelperFactoryAdvanced {
 "  ) aa " +
 "ON aa.mydata= '/webapps/' " +
 "  || Vendor_ID  || '-'  || Handle " +
-"ORDER BY Name";
+"ORDER BY hits_last_year desc";
                 break;
             case "mssql":
                 qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified, 1 as hits_last_year from plugins order by name";
