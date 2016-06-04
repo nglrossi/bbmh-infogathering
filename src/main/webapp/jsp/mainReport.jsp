@@ -20,7 +20,8 @@ debug += Logging.getSeverity();
 <%
 String cancelUrl = "index.jsp";
 //String submitUrl = "../index.jsp";
-String pageTitle = "Blackboard Cloud Services Information Gathering - Main Report";
+String thisPage = "Main Report";
+String pageTitle = "Learn Migration Information Gathering - "+thisPage;
 String pageInstructionsBottom = "Please use your browser's print/save to PDF feature to save a copy of this page then send the PDF, along with the corresponding Word document, to your Blackboard representative.";
 String pageInstructionsTop = "Results of the report are shown below. Please review the results carefully, adding any comments or clarifications at the end. <br />"
                              +pageInstructionsBottom;
@@ -95,8 +96,8 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
-        <bbNG:breadcrumb title="Bb Managed Hosting Info Gathering" href="<%= cancelUrl %>" />
-        <bbNG:breadcrumb><%=pageTitle%></bbNG:breadcrumb>
+        <bbNG:breadcrumb title="Learn Migration Information Gathering" href="<%= cancelUrl %>" />
+        <bbNG:breadcrumb><%=thisPage%></bbNG:breadcrumb>
     </bbNG:breadcrumbBar>
     <bbNG:pageHeader instructions="<%=pageInstructionsTop%>">
         <bbNG:pageTitleBar ><%=pageTitle%></bbNG:pageTitleBar>
@@ -104,7 +105,49 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
 
     <bbNG:dataCollection>
 
-        <bbNG:step title="Application server">
+        <bbNG:step title="Summary">
+            <bbNG:dataElement label="Learn Version" isRequired="yes" labelFor="LV">
+                <%=learnVersion%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Active Users" isRequired="yes" labelFor="activeUsers">
+                <%=activeUsers%>
+           </bbNG:dataElement>
+                <bbNG:dataElement label="Total Courses" isRequired="yes" labelFor="totalCourses">
+                    <%=totalCoursesCount%>
+                </bbNG:dataElement>
+            <bbNG:dataElement isSubElement="true" label="Licensed Platforms" isRequired="yes" labelFor="licensedPlatforms2">
+                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_LEARNING">Course Delivery</bbNG:ifLicensed> </bbNG:dataElement>
+                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_CONTENT_SYSTEM">Content Management</bbNG:ifLicensed> </bbNG:dataElement>
+                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_COMMUNITY">Community Engagement</bbNG:ifLicensed> </bbNG:dataElement>
+                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_OUTCOMES">Outcomes Assessment</bbNG:ifLicensed> </bbNG:dataElement>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Database server type" isRequired="yes" labelFor="dbtype">
+                <%=dbType%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Database main schema" isRequired="yes" labelFor="dbMainSchema">
+                <%=dbMainSchema%>
+            </bbNG:dataElement>
+
+        </bbNG:step>
+
+
+        <bbNG:step title="Storage Usage">
+            <bbNG:dataElement label="Base dir disk usage" isRequired="yes" labelFor="appServerBaseDirDf">
+                <%=baseDirDiskUsage%> GB
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Content dir path" isRequired="yes" labelFor="appServerContentDir">
+                <%=contentDirLabel%>
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Content disk usage" isRequired="yes" labelFor="appServerontentDirDf">
+                <%=contentDirDiskUsage%> GB
+            </bbNG:dataElement>
+            <bbNG:dataElement label="Database size" isRequired="yes" labelFor="dbsize">
+                <%=dbSize%> GB
+            </bbNG:dataElement>
+
+        </bbNG:step>
+
+        <bbNG:step title="Application Server Detail">
             <bbNG:dataElement label="Full Hostname" isRequired="yes" labelFor="fullhostname">
                 <%=fullHostname%>
             </bbNG:dataElement>
@@ -126,39 +169,13 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
             <bbNG:dataElement label="Base dir path" isRequired="yes" labelFor="appServerBaseDir">
                 <%=baseDirLabel%>
             </bbNG:dataElement>
-            <bbNG:dataElement label="Base dir disk usage" isRequired="yes" labelFor="appServerBaseDirDf">
-                <%=baseDirDiskUsage%> gb
-            </bbNG:dataElement>
+
         </bbNG:step>
 
-        <bbNG:step title="Learn Version">
-            <bbNG:dataElement label="Learn Version" isRequired="yes" labelFor="LV">
-                <%=learnVersion%>
-            </bbNG:dataElement>
 
-            <bbNG:dataElement isSubElement="true" label="Licensed Platforms" isRequired="yes" labelFor="licensedPlatforms2">
-                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_LEARNING">Course Delivery</bbNG:ifLicensed> </bbNG:dataElement>
-                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_CONTENT_SYSTEM">Content Management</bbNG:ifLicensed> </bbNG:dataElement>
-                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_COMMUNITY">Community Engagement</bbNG:ifLicensed> </bbNG:dataElement>
-                <bbNG:dataElement isSubElement="true"><bbNG:ifLicensed component="ENTERPRISE_OUTCOMES">Outcomes Assessment</bbNG:ifLicensed> </bbNG:dataElement>
-            </bbNG:dataElement>
-                
-            <bbNG:dataElement label="Content dir path" isRequired="yes" labelFor="appServerContentDir">
-                <%=contentDirLabel%>
-            </bbNG:dataElement>
-            <bbNG:dataElement label="Content disk usage" isRequired="yes" labelFor="appServerontentDirDf">
-                <%=contentDirDiskUsage%> gb
-            </bbNG:dataElement>
-        </bbNG:step>
 
-        <bbNG:step title="Database server backend">
-            <bbNG:dataElement label="Database server type" isRequired="yes" labelFor="dbtype">
-                <%=dbType%>
-            </bbNG:dataElement>
-            <bbNG:dataElement label="Database main schema" isRequired="yes" labelFor="dbMainSchema">
-                <%=dbMainSchema%>
-            </bbNG:dataElement>
-            
+        <bbNG:step title="Database Server Detail">
+
             <bbNG:dataElement isSubElement="true" label="Database schemas" isRequired="yes" labelFor="dbListSchemas">
                  <c:forEach items="${dbListSchemas}" var="theSchemas">
                      <bbNG:dataElement isSubElement="true">
@@ -170,20 +187,12 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
             <bbNG:dataElement label="Database server version" isRequired="yes" labelFor="dbversion">
                 <%=dbVersion%>
             </bbNG:dataElement>
-            <bbNG:dataElement label="Database size" isRequired="yes" labelFor="dbsize">
-                <%=dbSize%> gb
-            </bbNG:dataElement>
+
             <bbNG:dataElement label="Server time and timezone" isRequired="yes" labelFor="dbServerTime">
                 <%=dbServerTime%>
             </bbNG:dataElement>
         </bbNG:step>
         
-        <bbNG:step title="Users information">
-            <bbNG:dataElement label="Active Users" isRequired="yes" labelFor="activeUsers">
-                <%=activeUsers%> 
-           </bbNG:dataElement>
-        
-        </bbNG:step>
 
         <bbNG:step title="Courses information">
             <bbNG:dataElement label=" Total Courses" isRequired="yes" labelFor="totalCourses">
