@@ -18,7 +18,8 @@ debug += Logging.getSeverity();
 %>
 
 <%
-String pageTitle = "Bb Managed Hosting Info Gathering - Unique Logins";
+String thisPage = "Unique Logins";
+String pageTitle = "Learn Migration Information Gathering - "+thisPage;
 String cancelUrl = "index.jsp";
 //String submitUrl = "../index.jsp";
 String pageInstructionsBottom = "Please use your browser's print/save to PDF feature to save a copy of this page then send the PDF, along with the corresponding Word document, to your Blackboard representative.";
@@ -61,8 +62,8 @@ pageContext.setAttribute("totalLogins", totalLogins);
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
-        <bbNG:breadcrumb title="Bb Managed Hosting Info Gathering" href="<%= cancelUrl %>" />
-        <bbNG:breadcrumb><%=pageTitle%></bbNG:breadcrumb>
+        <bbNG:breadcrumb title="Learn Migration Information Gathering" href="<%= cancelUrl %>" />
+        <bbNG:breadcrumb><%=thisPage%></bbNG:breadcrumb>
     </bbNG:breadcrumbBar>
     <bbNG:pageHeader instructions="<%=pageInstructionsTop%>">
         <bbNG:pageTitleBar ><%=pageTitle%></bbNG:pageTitleBar>

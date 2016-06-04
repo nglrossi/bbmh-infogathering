@@ -18,8 +18,8 @@ debug += Logging.getSeverity();
 %>
 
 <%
-String pageTitle = "Bb Managed Hosting Info Gathering - Building Block Usage";
-String cancelUrl = "index.jsp";
+String thisPage = "Building Block Usage Report";
+String pageTitle = "Learn Migration Information Gathering - "+thisPage;String cancelUrl = "index.jsp";
 //String submitUrl = "../index.jsp";
 String pageInstructionsBottom = "Please use your browser's print/save to PDF feature to save a copy of this page then send the PDF, along with the corresponding Word document, to your Blackboard representative.";
 String pageInstructionsTop = "Results of the report are shown below. Please review the results carefully, adding any comments or clarifications at the end. <br />"
@@ -58,8 +58,8 @@ try {
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
-        <bbNG:breadcrumb title="Bb Managed Hosting Info Gathering" href="<%= cancelUrl %>" />
-        <bbNG:breadcrumb><%=pageTitle%></bbNG:breadcrumb>
+        <bbNG:breadcrumb title="Learn Migration Information Gathering" href="<%= cancelUrl %>" />
+        <bbNG:breadcrumb><%=thisPage%></bbNG:breadcrumb>
     </bbNG:breadcrumbBar>
     <bbNG:pageHeader instructions="<%=pageInstructionsTop%>">
         <bbNG:pageTitleBar ><%=pageTitle%></bbNG:pageTitleBar>
