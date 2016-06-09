@@ -26,6 +26,7 @@ String pageInstructionsBottom = "Please use your browser's print/save to PDF fea
 String pageInstructionsTop = "Results of the report are shown below. Please review the results carefully, adding any comments or clarifications at the end. <br />"
                              +pageInstructionsBottom;
 %>
+<c:set var="dbType2" value="unknown"/>
 <%
 
 // Detect App server info
@@ -50,6 +51,9 @@ long contentDirDiskUsage = AppServerInfo.getDiskUsage(contentDirLabel);
 String dbVersion = "";
 String dbServerTime = "";
 String dbType = DbServerInfo.getDatabaseType();
+// also declaring dbType for jstl (see set earlier too)
+pageContext.setAttribute("dbType2", dbType);
+
 String dbMainSchema = DbServerInfo.getMainSchema();
 double dbSize = -1;
 List<String> dbListSchemas = DbServerInfo.getAllSchemas();
@@ -142,8 +146,15 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
                 <%=contentDirDiskUsage%> GB
             </bbNG:dataElement>
             <bbNG:dataElement label="Database size" isRequired="yes" labelFor="dbsize">
-                <%=dbSize%> GB
-            </bbNG:dataElement>
+            <c:choose>
+                <c:when test="${dbType2 == 'oracle'}">
+                    <%=dbSize%> GB
+                </c:when> 
+                <c:otherwise>
+                    Unknown
+                </c:otherwise>
+             </c:choose>
+           </bbNG:dataElement>
 
         </bbNG:step>
 

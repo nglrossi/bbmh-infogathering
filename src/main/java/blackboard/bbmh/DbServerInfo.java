@@ -202,6 +202,8 @@ public class DbServerInfo {
                 qrystr = "TODO";
                 break;
             case "pgsql":
+                // TODO: query below is main database only. dgapitts provided new query which will get all databases (should test):
+                // select round(SUM(pg_database_size(datname))/(1024*1024*1024), 2) FROM pg_database;
                 qrystr = "select round(pg_database_size(current_database())/(1024*1024*1024), 2)";
                 break;
             default:
