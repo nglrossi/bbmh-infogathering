@@ -9,7 +9,7 @@
         <description value="b2.description" />
         <default-locale value="en_US" />
 
-        <version value="0.95" />
+        <version value="0.95.1" />
         <requires>
             <bbversion value="9.1.110082.0" />
         </requires>
@@ -145,7 +145,10 @@
             <permission type="java.lang.RuntimePermission" name="*" />
             
             <permission type="java.io.FilePermission" name="BB_HOME/logs/-" actions="read,write,delete"/>
-            
+
+	<!-- adding for SP14/SP13 support -->
+              <permission type="java.lang.RuntimePermission" name="setContextClassLoader" />
+          
             <!-- Trying to fox getFileSystemAttributes missing permission
             -->
             
