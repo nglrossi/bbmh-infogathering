@@ -94,7 +94,7 @@ public class DbServerInfo {
                 qrystr = "select * from sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb')";
                 break;
             case "pgsql":
-                qrystr = "SELECT usename FROM pg_user order by pg_user";
+                qrystr = "SELECT username FROM pg_user order by pg_user";
                 break;
             default:
             // nothing to do
@@ -202,9 +202,7 @@ public class DbServerInfo {
                 qrystr = "TODO";
                 break;
             case "pgsql":
-                // TODO: query below is main database only. dgapitts provided new query which will get all databases (should test):
-                // select round(SUM(pg_database_size(datname))/(1024*1024*1024), 2) FROM pg_database;
-                qrystr = "select round(pg_database_size(current_database())/(1024*1024*1024), 2)";
+                qrystr = "select round(SUM(pg_database_size(datname))/(1024*1024*1024), 2) FROM pg_database";
                 break;
             default:
                 qrystr = "";

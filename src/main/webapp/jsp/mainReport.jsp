@@ -147,7 +147,7 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
             </bbNG:dataElement>
             <bbNG:dataElement label="Database size" isRequired="yes" labelFor="dbsize">
             <c:choose>
-                <c:when test="${dbType2 == 'oracle'}">
+                <c:when test="${dbType2 != 'mssql'}">
                     <%=dbSize%> GB
                 </c:when> 
                 <c:otherwise>
