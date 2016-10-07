@@ -9,7 +9,7 @@
         <description value="b2.description" />
         <default-locale value="en_US" />
 
-        <version value="0.95.1" />
+        <version value="0.96.5" />
         <requires>
             <bbversion value="9.1.110082.0" />
         </requires>
@@ -127,24 +127,26 @@
 
         <!-- Code permissions required for proper operation -->
         <permissions>
-            <permission type="java.lang.RuntimePermission" name="getenv.*" />
-            
-            
-            
-            
-            
-            <permission type="java.lang.RuntimePermission" name="db.connection.bb_bb60" actions="connect,accept" />
-            
+           <!--
+            Remove one by one
             <permission type="attribute" name="user.authinfo" actions="get"/>
             <permission type="attribute" name="user.personalinfo" actions="get,set"/>
             <permission type="attribute" name="user.authinfo" actions="get,set"/>
             <permission type="attribute" name="user.personalinfo" actions="get,set"/>
-            
-            <permission type="java.lang.RuntimePermission" name="getFileSystemAttributes" />
+            <permission type="java.lang.RuntimePermission" name="getenv.*" />
+            <permission type="java.lang.RuntimePermission" name="db.connection.bb_bb60" actions="connect,accept" />
+            <permission type="java.io.FilePermission" name="BB_HOME/logs/-" actions="read,write,delete"/>
             <permission type="java.lang.RuntimePermission" name="java.io.getFileSystemAttributes" />
             <permission type="java.lang.RuntimePermission" name="*" />
-            
-            <permission type="java.io.FilePermission" name="BB_HOME/logs/-" actions="read,write,delete"/>
+
+
+            -->
+
+            <!-- REQUIRED -->
+            <permission type="java.lang.RuntimePermission" name="getFileSystemAttributes" />
+
+            <!-- checking -->
+
 
 	<!-- adding for SP14/SP13 support -->
               <permission type="java.lang.RuntimePermission" name="setContextClassLoader" />
