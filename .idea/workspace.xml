@@ -2,23 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61ee5658-ab07-40cf-8ab6-6a3aacee3ca4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/gradle/wrapper/gradle-wrapper.jar" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/gradle/wrapper/gradle-wrapper.jar" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/gradle.xml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/libraries/Gradle__blackboard_platform_bb_platform_9_1_100401_0.xml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/libraries/Gradle__blackboard_platform_bb_platform_9_1_100401_0.xml" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/libraries/Gradle__blackboard_platform_bb_taglibs_9_1_100401_0.xml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/libraries/Gradle__blackboard_platform_bb_taglibs_9_1_100401_0.xml" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/libraries/Gradle__javax_servlet_jsp_jsp_api_2_1.xml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/libraries/Gradle__javax_servlet_jsp_jsp_api_2_1.xml" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/libraries/Gradle__javax_servlet_servlet_api_2_5.xml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/libraries/Gradle__javax_servlet_servlet_api_2_5.xml" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/modules/bbmh-infogathering.iml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/modules/bbmh-infogathering.iml" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/workspace.xml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.nb-gradle/profiles/private/aux-config" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.nb-gradle/profiles/private/aux-config" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/gradle/wrapper/gradle-wrapper.properties" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/gradle/wrapper/gradle-wrapper.properties" />
+      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__blackboard_platform_bb_platform_9_1_100401_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__blackboard_platform_bb_platform_9_1_100401_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__blackboard_platform_bb_taglibs_9_1_100401_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__blackboard_platform_bb_taglibs_9_1_100401_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_servlet_jsp_jsp_api_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_servlet_jsp_jsp_api_2_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_servlet_servlet_api_2_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_servlet_servlet_api_2_5.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/bbmh-infogathering.iml" afterPath="$PROJECT_DIR$/.idea/modules/bbmh-infogathering.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="bbmh-infogathering.iws" />
@@ -65,8 +51,18 @@
       <file leaf-file-name="bb-manifest.xml" pinned="false" current-in-tab="true">
         <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1605">
-              <caret line="139" column="12" selection-start-line="139" selection-start-column="12" selection-end-line="139" selection-end-column="12" />
+            <state relative-caret-position="165">
+              <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DbServerInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1305">
+              <caret line="96" column="36" selection-start-line="96" selection-start-column="36" selection-end-line="96" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -311,8 +307,8 @@
         <option value="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2HelperFactoryAdvanced.java" />
         <option value="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/Db.java" />
         <option value="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/Logging.java" />
-        <option value="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java" />
         <option value="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/mainReport.jsp" />
+        <option value="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java" />
         <option value="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml" />
       </list>
     </option>
@@ -478,6 +474,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bbmh-infogathering" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bbmh-infogathering" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bbmh" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -980,7 +1006,7 @@
         <state relative-caret-position="75">
           <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
           <folding>
-            <element signature="e#0#8389#0" expanded="false" />
+            <element signature="e#0#8388#0" expanded="false" />
             <element signature="imports" expanded="false" />
           </folding>
         </state>
@@ -1083,7 +1109,7 @@
         <state relative-caret-position="75">
           <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
           <folding>
-            <element signature="e#0#8389#0" expanded="false" />
+            <element signature="e#0#8388#0" expanded="false" />
             <element signature="imports" expanded="false" />
           </folding>
         </state>
@@ -1186,7 +1212,7 @@
         <state relative-caret-position="75">
           <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
           <folding>
-            <element signature="e#0#8389#0" expanded="false" />
+            <element signature="e#0#8388#0" expanded="false" />
             <element signature="imports" expanded="false" />
           </folding>
         </state>
@@ -1321,17 +1347,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="204" column="90" selection-start-line="204" selection-start-column="90" selection-end-line="204" selection-end-column="90" />
-          <folding>
-            <element signature="e#0#8389#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/index.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -1374,10 +1389,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/DbServerInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1305">
+          <caret line="96" column="36" selection-start-line="96" selection-start-column="36" selection-end-line="96" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/WEB-INF/bb-manifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1605">
-          <caret line="139" column="12" selection-start-line="139" selection-start-column="12" selection-end-line="139" selection-end-column="12" />
+        <state relative-caret-position="165">
+          <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
           <folding />
         </state>
       </provider>

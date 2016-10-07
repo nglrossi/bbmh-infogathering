@@ -94,7 +94,7 @@ public class DbServerInfo {
                 qrystr = "select * from sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb')";
                 break;
             case "pgsql":
-                qrystr = "SELECT username FROM pg_user order by pg_user";
+                qrystr = "SELECT usename FROM pg_user order by pg_user";
                 break;
             default:
             // nothing to do
