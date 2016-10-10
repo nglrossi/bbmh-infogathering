@@ -63,7 +63,7 @@ String CMSdocstores="Unknown";
 String docstoreqrystr = "";
 switch (dbType) {
     case "oracle":
-        docstoreqrystr = "select count(*) from dba_users username like '%CMS%'";
+        docstoreqrystr = "select count(*) from dba_users where username like '%CMS%'";
         break;
     case "mssql":
         docstoreqrystr = "select count(*) from sys.databases WHERE name like '%CMS%'";
