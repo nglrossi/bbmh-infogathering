@@ -58,6 +58,60 @@ String dbMainSchema = DbServerInfo.getMainSchema();
 double dbSize = -1;
 List<String> dbListSchemas = DbServerInfo.getAllSchemas();
 
+// Merged docstores
+String CMSdocstores="Unknown";
+String docstoreqrystr = "";
+switch (dbType) {
+    case "oracle":
+        docstoreqrystr = "select count(*) from dba_users username like '%CMS%'";
+        break;
+    case "mssql":
+        docstoreqrystr = "select count(*) from sys.databases WHERE name like '%CMS%'";
+        break;
+    case "pgsql":
+        docstoreqrystr = "SELECT count(*) FROM pg_database where datname like '%cms%'";
+        break;
+    default:
+    // nothing to do
+}
+
+// TODO: move to class
+Connection dbConnection = Db.getConnection();
+Statement dbStatement = Db.createStatement(dbConnection);
+ResultSet rs = null;
+try {
+    try {
+        boolean wasExecuted = dbStatement.execute(docstoreqrystr);
+        if (wasExecuted) {
+            rs = dbStatement.getResultSet();   
+            if (rs.next()) {
+               int docstorecount=rs.getInt(1);
+                if (docstorecount==2) {
+                    CMSdocstores=docstorecount+" (Merged Docstores)";
+                } else if (docstorecount==7){
+                    CMSdocstores=docstorecount+" (Unmerged Docstores)";
+                } 
+            }
+        }
+    } finally {
+        if (rs != null) {
+            rs.close();
+        }
+        if (dbStatement != null) {
+            dbStatement.close();
+        }
+        if(dbConnection != null){
+            dbConnection.close();
+        }
+    }
+} catch (Exception e) {
+    // TODO: log in logs
+    //dbVersion = "exception " + e + " " ;
+}
+    
+    
+    
+    
 // User info
 int totalCoursesCount = -1;
 int activeCoursesCount = -1;
@@ -131,7 +185,9 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
             <bbNG:dataElement label="Database main schema" isRequired="yes" labelFor="dbMainSchema">
                 <%=dbMainSchema%>
             </bbNG:dataElement>
-
+            <bbNG:dataElement label="CMS schemas" isRequired="yes" labelFor="CMSdocstores">
+                <%=CMSdocstores%>
+            </bbNG:dataElement>
         </bbNG:step>
 
 
