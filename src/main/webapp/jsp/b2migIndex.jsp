@@ -18,12 +18,17 @@ String pageInstructions =   "Some Building Block vendors (including Blackboard) 
 
 String thisPage = "B2 Migration Exports";
 String cancelUrl = "index.jsp";
+   
+   
+
+
+
 %>
 
 
 
 
-<bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
+<bbNG:genericPage ctxId="ctx" entitlement="system.buildingblocks.VIEW">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
         <bbNG:breadcrumb title="Learn Migration Information Gathering" href="<%= cancelUrl %>" />
         <bbNG:breadcrumb><%=thisPage%></bbNG:breadcrumb>
@@ -41,11 +46,17 @@ String cancelUrl = "index.jsp";
                         <li><a href="b2migcsv.jsp?req=userPK1s">Generic User IDs and PK1 values</a></li>
                     </ul>
                 </bbNG:landingPageSection>
-                <bbNG:landingPageSection title="Safeassign" instructions="For Safeassign, you will need to provide the three reports below:">
+                <bbNG:landingPageSection title="Safeassign" instructions="For Safeassign, you will need to provide the three reports below where requested:">
                     <ul>
                         <li><a href="b2migcsv.jsp?req=safeassignments">SafeAssignment List</a></li>
                         <li><a href="b2migcsv.jsp?req=coursePK1sSafeassign">Safeassign Course IDs and PK1 values</a></li>
                         <li><a href="b2migcsv.jsp?req=userPK1s">Generic User IDs and PK1 values* </a></li>
+                    </ul>
+                </bbNG:landingPageSection>
+                <bbNG:landingPageSection title="Assignments (Crocodoc)" instructions="To migrate in-line markup on assignments, you will need to provide the files below when requested:">
+                    <ul>
+                        <li><a href="b2migcsv.jsp?req=crocodocLicense">Crocodoc License key</a></li>
+                        <li><a href="b2migcsv.jsp?req=crocodocAnnotations">Annotated Assignment Attempts</a></li>
                     </ul>
                 </bbNG:landingPageSection>
             </bbNG:landingPageColumn>
