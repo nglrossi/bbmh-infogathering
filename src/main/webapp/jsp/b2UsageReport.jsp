@@ -56,7 +56,7 @@ try {
 }
 
 %>
-<bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
+<bbNG:genericPage ctxId="ctx" entitlement="system.buildingblocks.VIEW">
     <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main">
         <bbNG:breadcrumb title="Learn Migration Information Gathering" href="<%= cancelUrl %>" />
         <bbNG:breadcrumb><%=thisPage%></bbNG:breadcrumb>

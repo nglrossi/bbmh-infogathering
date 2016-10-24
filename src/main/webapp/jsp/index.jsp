@@ -48,7 +48,7 @@ pageContext.setAttribute("dbType", DbServerInfo.getDatabaseType());
 
 
 
-<bbNG:genericPage ctxId="ctx" entitlement="system.plugin.CREATE">
+<bbNG:genericPage ctxId="ctx" entitlement="system.buildingblocks.VIEW">
     <bbNG:pageHeader instructions="<%=pageInstructions%>">
        <bbNG:breadcrumbBar environment="SYS_ADMIN" navItem="admin_main"  isContent="true">
             <bbNG:breadcrumb><%=pageTitle%></bbNG:breadcrumb>

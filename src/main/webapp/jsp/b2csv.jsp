@@ -5,6 +5,7 @@
          blackboard.bbmh.*,
          java.text.SimpleDateFormat,
          java.io.File,
+         blackboard.platform.security.SecurityUtil,
          blackboard.platform.plugin.*"
          pageEncoding="UTF-8"
          %>
@@ -12,6 +13,11 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
+// Entitlement check - fail if user it not system admin.  TODO: This is working in that it stops non-admin from viewing the page, but it is generating an error itself
+// access denied ("blackboard.data.AttributePermission" "user.authinfo" "get")
+blackboard.platform.security.SecurityUtil.checkEntitlement("system.buildingblocks.VIEW","System Admin permissions are required");
+
+   
 // Filename
 SimpleDateFormat appFormatter = new SimpleDateFormat("yyyy-MM-dd");
 java.util.Date dtAppServerTime = new java.util.Date();
