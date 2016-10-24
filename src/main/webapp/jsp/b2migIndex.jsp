@@ -53,7 +53,7 @@ String cancelUrl = "index.jsp";
                         <li><a href="b2migcsv.jsp?req=userPK1s">Generic User IDs and PK1 values* </a></li>
                     </ul>
                 </bbNG:landingPageSection>
-                <bbNG:landingPageSection title="Assignments (Crocodoc)" instructions="To migrate in-line markup on assignments, you will need to provide the files below when requested:">
+                <bbNG:landingPageSection title="Assignments (Crocodoc)" instructions="To migrate inline markup on assignments, you will need to provide the files below when requested:">
                     <ul>
                         <li><a href="b2migcsv.jsp?req=crocodocLicense">Crocodoc License key</a></li>
                         <li><a href="b2migcsv.jsp?req=crocodocAnnotations">Annotated Assignment Attempts</a></li>
