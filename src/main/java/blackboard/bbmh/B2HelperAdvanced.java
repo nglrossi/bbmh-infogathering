@@ -13,9 +13,7 @@ package blackboard.bbmh;
 public class B2HelperAdvanced extends B2Helper {
     
     public int hits = -1;
-    
 
-    
     public B2HelperAdvanced(String vendor_id, String handle)
     {
         super(vendor_id, handle);

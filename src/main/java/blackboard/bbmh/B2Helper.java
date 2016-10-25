@@ -11,6 +11,7 @@ import blackboard.platform.intl.BbResourceBundle;
 import blackboard.platform.plugin.PlugIn;
 import blackboard.platform.plugin.PlugInManager;
 import blackboard.platform.plugin.PlugInManagerFactory;
+import blackboard.platform.plugin.Version;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -27,12 +28,10 @@ public class B2Helper {
     public String vendorName = "";
     public String handle = "";    
     public String status = "";
-    public String availableFlag = "";    
-    public String version = "";
+    public String availableFlag = "";
     public String dateModified = "";
-   
+    public Version version;
 
-    
     public B2Helper(String vendor_id, String handle)
     {
         this.vendor_id = vendor_id;
@@ -75,14 +74,16 @@ public class B2Helper {
     public void setLocalizedName(String key) {
         this.localizedName = getLocalisationString(key, this.vendor_id, this.handle);
     }
-    
-    public void setVersion(int major, int minor, int patch, int build) {
-        this.version = major + "." + minor;
-        if ( patch != -1 ) this.version += "." + patch;
-        if ( build != -1 ) this.version += "." + build;
+
+    public void setVersion() {
+        PlugInManager pluginMgr = PlugInManagerFactory.getInstance();
+        PlugIn plugin = pluginMgr.getPlugIn(vendor_id, handle);
+        this.version = plugin.getVersion();
     }
     
+    /*
     public String getLocalisationString(String key) {
+
         PlugInManager pluginMgr = PlugInManagerFactory.getInstance();
     
         PlugIn plugin = pluginMgr.getPlugIn(vendor_id, handle);
@@ -92,6 +93,7 @@ public class B2Helper {
 
         return bundle.getStringWithFallback(key, key);
     }
+    */
     
     public static String getLocalisationString(String key, String vendor_id, String handle) {
         PlugInManager pluginMgr = PlugInManagerFactory.getInstance();

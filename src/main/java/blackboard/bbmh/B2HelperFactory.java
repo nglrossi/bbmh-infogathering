@@ -30,15 +30,13 @@ public class B2HelperFactory {
         String qrystr = "";
         switch (DbServerInfo.getDatabaseType()) {
             case "oracle":
-                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified " +
-"  FROM plugins "  +
-"ORDER BY Name";
+                qrystr = "SELECT name, vendor_id, handle, vendor_name, available_flag, dtmodified FROM plugins ORDER BY name";
                 break;
             case "mssql":
-                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified from plugins order by name";
+                qrystr = "SELECT name, vendor_id, handle, vendor_name, available_flag, dtmodified FROM plugins ORDER BY name";
                 break;
             case "pgsql":
-                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified from plugins order by name";
+                qrystr = "SELECT name, vendor_id, handle, vendor_name, available_flag, dtmodified FROM plugins ORDER BY name";
                 break;
             default:
             // nothing to do
@@ -55,7 +53,7 @@ public class B2HelperFactory {
                         b2local.setName(rs.getString("name"));
                         b2local.setLocalizedName(rs.getString("name"));
                         b2local.setVendorName(rs.getString("vendor_name"));
-                        b2local.setVersion(rs.getInt("version_major"), rs.getInt("version_minor"), rs.getInt("version_patch"), rs.getInt("version_build"));
+                        b2local.setVersion();
                         b2local.setAvailableFlag(rs.getString("available_flag"));
                         b2local.setDateModified(anotherdbformatter.parse(rs.getString("dtmodified")));
 
