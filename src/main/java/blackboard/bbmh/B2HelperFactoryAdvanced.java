@@ -30,7 +30,7 @@ public class B2HelperFactoryAdvanced {
         String qrystr = "";
         switch (DbServerInfo.getDatabaseType()) {
             case "oracle":
-                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified, " +
+                qrystr = "select name, vendor_id, handle, vendor_name, available_flag, dtmodified, " +
 "  NVL(mycount,0) hits_last_year " +
 "FROM plugins " +
 "LEFT OUTER JOIN " +
@@ -46,7 +46,7 @@ public class B2HelperFactoryAdvanced {
 "ORDER BY hits_last_year desc";
                 break;
             case "mssql":
-                qrystr = "SELECT name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_prerelease as version_build, available_flag, dtmodified, " +
+                qrystr = "SELECT name, vendor_id, handle, vendor_name, available_flag, dtmodified, " +
                         "coalesce(mycount,0) hits_last_year " +
                         "from plugins left outer join " +
                         "(select count(1) mycount, substring(data,1,charindex('-',substring(data,1,charindex('/',data,10)),-1) ) mydata " +
@@ -58,7 +58,7 @@ public class B2HelperFactoryAdvanced {
                         "ORDER BY Name;";
                 break;
             case "pgsql":
-                qrystr = "select name, vendor_id, handle, vendor_name, version_major, version_minor, version_patch, version_build, available_flag, dtmodified, 1 as hits_last_year from plugins order by name";
+                qrystr = "select name, vendor_id, handle, vendor_name, available_flag, dtmodified, 123 as hits_last_year from plugins order by name";
                 break;
             default:
             // nothing to do
@@ -75,7 +75,6 @@ public class B2HelperFactoryAdvanced {
                         b2local.setName(rs.getString("name"));
                         b2local.setLocalizedName(rs.getString("name"));
                         b2local.setVendorName(rs.getString("vendor_name"));
-                        //b2local.setVersion(rs.getInt("version_major"), rs.getInt("version_minor"), rs.getInt("version_patch"), rs.getInt("version_build"));
                         b2local.setVersion();
                         b2local.setAvailableFlag(rs.getString("available_flag"));
                         b2local.setDateModified(anotherdbformatter.parse(rs.getString("dtmodified")));

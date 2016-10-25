@@ -65,7 +65,7 @@ pageContext.setAttribute("dbType", DbServerInfo.getDatabaseType());
 
             <bbNG:landingPageColumn>
                 <bbNG:landingPageSection title="<%=uniqueLoginsTitle%>" instructions="<%=uniqueLoginsInstruction%>" />
-                <c:if test="${dbType == 'oracle'}">
+                <c:if test="${dbType != 'pgsql'}">
                     <bbNG:landingPageSection title="<%=b2Title%>" instructions="<%=b2Instruction%>" />
                 </c:if> 
             </bbNG:landingPageColumn>

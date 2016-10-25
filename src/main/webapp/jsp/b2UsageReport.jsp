@@ -41,19 +41,9 @@ double dbSize = -1;
 List<String> dbListSchemas = DbServerInfo.getAllSchemas();
 
 List<B2HelperAdvanced> b2s = new ArrayList<B2HelperAdvanced>();
+b2s = B2HelperFactoryAdvanced.getB2s();
 
 
-// Pull info from the DB and then close connections
-try {
-        // Db server information - left this in in case we need it
-        dbVersion = DbServerInfo.getDatabaseVersion();
-        
-        // Building Blocks
-        b2s = B2HelperFactoryAdvanced.getB2s();
-
-} catch(Exception e) {
-        // TODO: write in logs
-}
 
 %>
 <bbNG:genericPage ctxId="ctx" entitlement="system.buildingblocks.VIEW">
