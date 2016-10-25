@@ -13,6 +13,7 @@ import blackboard.platform.plugin.PlugInManager;
 import blackboard.platform.plugin.PlugInManagerFactory;
 import blackboard.platform.plugin.Version;
 import java.util.Date;
+import java.io.File;
 import java.text.SimpleDateFormat;
 
 
@@ -31,6 +32,7 @@ public class B2Helper {
     public String availableFlag = "";
     public String dateModified = "";
     public Version version;
+    public boolean hasWarFile;
 
     public B2Helper(String vendor_id, String handle)
     {
@@ -80,7 +82,15 @@ public class B2Helper {
         PlugIn plugin = pluginMgr.getPlugIn(vendor_id, handle);
         this.version = plugin.getVersion();
     }
-    
+
+    public void setHasWarFile() {
+        PlugInManager pluginMgr = PlugInManagerFactory.getInstance();
+        PlugIn plugin = pluginMgr.getPlugIn(vendor_id, handle);
+        File pidir = pluginMgr.getPlugInDir(plugin);
+        File warfile =  new File (pidir.getAbsolutePath() + File.separator + vendor_id+"-"+handle+".war");
+        this.hasWarFile = warfile.exists();
+    }
+
     /*
     public String getLocalisationString(String key) {
 
