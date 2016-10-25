@@ -8,7 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="61ee5658-ab07-40cf-8ab6-6a3aacee3ca4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/workspace.xml" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2Helper.java" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2Helper.java" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/b2csv.jsp" afterPath="$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/b2csv.jsp" />
     </list>
     <ignored path="bbmh-infogathering.iws" />
@@ -55,8 +54,18 @@
       <file leaf-file-name="mainReport.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/mainReport.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="310" column="50" selection-start-line="310" selection-start-column="47" selection-end-line="310" selection-end-column="50" />
+            <state relative-caret-position="200">
+              <caret line="324" column="39" selection-start-line="324" selection-start-column="26" selection-end-line="324" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/index.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="37" column="82" selection-start-line="37" selection-start-column="82" selection-end-line="37" selection-end-column="82" />
               <folding />
             </state>
           </provider>
@@ -65,8 +74,8 @@
       <file leaf-file-name="b2csv.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/b2csv.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+            <state relative-caret-position="471">
+              <caret line="38" column="47" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -75,8 +84,8 @@
       <file leaf-file-name="B2Helper.java" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2Helper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="32" column="30" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="30" />
+            <state relative-caret-position="-780">
+              <caret line="31" column="31" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -838,7 +847,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="37" y="63" width="1400" height="805" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -846,7 +855,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32880434" sideWeight="0.5285714" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32880434" sideWeight="0.47142857" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32880434" sideWeight="0.47142857" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32880434" sideWeight="0.49714285" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32880434" sideWeight="0.49714285" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1195,13 +1204,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/index.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/Logging.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1324,14 +1326,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/mainReport.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="310" column="50" selection-start-line="310" selection-start-column="47" selection-end-line="310" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2HelperFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -1342,10 +1336,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/index.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="37" column="82" selection-start-line="37" selection-start-column="82" selection-end-line="37" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/mainReport.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="324" column="39" selection-start-line="324" selection-start-column="26" selection-end-line="324" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/java/blackboard/bbmh/B2Helper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="32" column="30" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="30" />
+        <state relative-caret-position="-780">
+          <caret line="31" column="31" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1354,8 +1364,8 @@
     </entry>
     <entry file="file://$USER_HOME$/Documents/devel/bbmh-infogathering/src/main/webapp/jsp/b2csv.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state relative-caret-position="471">
+          <caret line="38" column="47" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
           <folding />
         </state>
       </provider>

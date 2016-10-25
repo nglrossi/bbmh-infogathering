@@ -36,7 +36,7 @@ while (b2s.size()> index) {
     b2csv = b2csv +  "\"" + curB2.vendorName + "\",";
     b2csv = b2csv +  "\"" + curB2.vendor_id + "\",";
     b2csv = b2csv +  "\"" + curB2.handle + "\",";
-    b2csv = b2csv +  "\"" + curB2.status + "\",";
+    b2csv = b2csv +  "\"" + curB2.availableFlag + "\",";
     b2csv = b2csv +  "\"" + curB2.hasWarFile + "\",";
     b2csv = b2csv +  "\"" + curB2.dateModified + "\"";
     b2csv = b2csv + "\n";
