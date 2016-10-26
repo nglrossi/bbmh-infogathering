@@ -9,7 +9,7 @@
         <description value="b2.description" />
         <default-locale value="en_US" />
 
-        <version value="0.98.0" />
+        <version value="0.98.1" />
         <requires>
             <bbversion value="9.1.110082.0" />
         </requires>
