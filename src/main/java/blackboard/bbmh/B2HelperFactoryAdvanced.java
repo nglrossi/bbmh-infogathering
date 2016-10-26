@@ -114,7 +114,10 @@ public class B2HelperFactoryAdvanced {
         ResultSet rs = null;
         try {
             try {
-                boolean wasExecuted = dbStatement.execute(funcQrystr);
+                // function create or replace for pgsql only
+                if ( DbServerInfo.getDatabaseType() == "pgsql" ) {
+                    dbStatement.execute(funcQrystr);
+                }
 
                 rs = dbStatement.executeQuery(qrystr);
                 while (rs.next()) {
