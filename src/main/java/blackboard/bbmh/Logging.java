@@ -86,10 +86,11 @@ public class Logging {
     */
     
     public static void writeLog(String message) {
+
         /*
-        
         !!! potential memory leak, leaving this off for now
-        
+        */
+
         Log theLog;
         
         LogService ls = LogServiceFactory.getInstance();
@@ -100,7 +101,7 @@ public class Logging {
         }
         theLog = ls.getConfiguredLog("bbmhdebug");
         theLog.logWarning("DEBUG: " + message);
-        */
+
         
 }
     
