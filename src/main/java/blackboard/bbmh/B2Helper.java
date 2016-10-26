@@ -90,20 +90,6 @@ public class B2Helper {
         File warfile =  new File (pidir.getAbsolutePath() + File.separator + vendor_id+"-"+handle+".war");
         this.hasWarFile = warfile.exists();
     }
-
-    /*
-    public String getLocalisationString(String key) {
-
-        PlugInManager pluginMgr = PlugInManagerFactory.getInstance();
-    
-        PlugIn plugin = pluginMgr.getPlugIn(vendor_id, handle);
-
-        BundleManager bm = BundleManagerFactory.getInstance();
-        BbResourceBundle bundle = bm.getPluginBundle(plugin.getId());
-
-        return bundle.getStringWithFallback(key, key);
-    }
-    */
     
     public static String getLocalisationString(String key, String vendor_id, String handle) {
         PlugInManager pluginMgr = PlugInManagerFactory.getInstance();

@@ -28,24 +28,28 @@ public class B2HelperFactoryAdvanced {
         List<B2HelperAdvanced> b2s = new ArrayList<B2HelperAdvanced>();
         SimpleDateFormat anotherdbformatter = new SimpleDateFormat("yyyy-MM-dd");
         String qrystr = "";
+        String funcQrystr = "";
+
         switch (DbServerInfo.getDatabaseType()) {
             case "oracle":
+                funcQrystr = "";
                 qrystr = "select name, vendor_id, handle, vendor_name, available_flag, dtmodified, " +
-"  NVL(mycount,0) hits_last_year " +
-"FROM plugins " +
-"LEFT OUTER JOIN " +
-"  (SELECT COUNT(1) mycount, " +
-"    SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) mydata " +
-"  FROM activity_accumulator " +
-"  WHERE TIMESTAMP >= sysdate -365 " +
-"  AND data LIKE '/webapps/%-%/%' " +
-"  GROUP BY SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) " +
-"  ) aa " +
-"ON aa.mydata= '/webapps/' " +
-"  || Vendor_ID  || '-'  || Handle " +
-"ORDER BY hits_last_year desc";
+                        "  NVL(mycount,0) hits_last_year " +
+                        "FROM plugins " +
+                        "LEFT OUTER JOIN " +
+                        "  (SELECT COUNT(1) mycount, " +
+                        "    SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) mydata " +
+                        "  FROM activity_accumulator " +
+                        "  WHERE TIMESTAMP >= sysdate -365 " +
+                        "  AND data LIKE '/webapps/%-%/%' " +
+                        "  GROUP BY SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) " +
+                        "  ) aa " +
+                        "ON aa.mydata= '/webapps/' " +
+                        "  || Vendor_ID  || '-'  || Handle " +
+                        "ORDER BY hits_last_year desc";
                 break;
             case "mssql":
+                funcQrystr = "";
                 qrystr = "SELECT name, vendor_id, handle, vendor_name, available_flag, dtmodified, " +
                         "coalesce(mycount,0) hits_last_year " +
                         "from plugins left outer join " +
@@ -58,7 +62,50 @@ public class B2HelperFactoryAdvanced {
                         "ORDER BY Name;";
                 break;
             case "pgsql":
-                qrystr = "select name, vendor_id, handle, vendor_name, available_flag, dtmodified, 123 as hits_last_year from plugins order by name";
+                funcQrystr = "create or replace function bbmhgatheringinstr(str text, sub text, startpos int = 1, occurrence int = 1) " +
+                        "returns int language plpgsql " +
+                        "as $$ " +
+                        "declare " +
+                        "tail text; " +
+                        "shift int; " +
+                        "pos int; " +
+                        "i int; " +
+                        "begin " +
+                        "shift:= 0; " +
+                        "if startpos = 0 or occurrence <= 0 then " +
+                        "return 0; " +
+                        "end if; " +
+                        "if startpos < 0 then " +
+                        "str:= reverse(str); " +
+                        "sub:= reverse(sub); " +
+                        "pos:= -startpos; " +
+                        "else " +
+                        "pos:= startpos; " +
+                        "end if; " +
+                        "for i in 1..occurrence loop " +
+                        "shift:= shift+ pos; " +
+                        "tail:= substr(str, shift); " +
+                        "pos:= strpos(tail, sub); " +
+                        "if pos = 0 then " +
+                        "return 0; " +
+                        "end if; " +
+                        "end loop; " +
+                        "if startpos > 0 then " +
+                        "return pos+ shift- 1; " +
+                        "else " +
+                        "return length(str)- pos- shift+ 1; " +
+                        "end if; " +
+                        "end $$; ";
+                qrystr ="SELECT name, vendor_id, handle, vendor_name, available_flag, dtmodified, " +
+                        "coalesce(mycount,0) Hits_Last_Year " +
+                        "from plugins left outer join " +
+                        "(select count(1) mycount, substr(data,1,bbmhgatheringinstr(substr(data,1,bbmhgatheringinstr(data,'/',10,1)),'-',-1,1) -1 ) mydata " +
+                        "from activity_accumulator " +
+                        "where timestamp >= clock_timestamp()::timestamp - interval '365 days' " +
+                        "and data like '/webapps/%-%/%' " +
+                        "group by substr(data,1,bbmhgatheringinstr(substr(data,1,bbmhgatheringinstr(data,'/',10,1)),'-',-1,1) -1 )) aa " +
+                        "on aa.mydata= '/webapps/'|| vendor_id || '-' || handle " +
+                        "ORDER BY Name";
                 break;
             default:
             // nothing to do
@@ -67,21 +114,20 @@ public class B2HelperFactoryAdvanced {
         ResultSet rs = null;
         try {
             try {
-                boolean wasExecuted = dbStatement.execute(qrystr);
-                if (wasExecuted) {
-                    rs = dbStatement.getResultSet();
-                    while (rs.next()) {
-                        B2HelperAdvanced b2local = new B2HelperAdvanced(rs.getString("vendor_id"), rs.getString("handle"));
-                        b2local.setName(rs.getString("name"));
-                        b2local.setLocalizedName(rs.getString("name"));
-                        b2local.setVendorName(rs.getString("vendor_name"));
-                        b2local.setVersion();
-                        b2local.setAvailableFlag(rs.getString("available_flag"));
-                        b2local.setDateModified(anotherdbformatter.parse(rs.getString("dtmodified")));
-                        b2local.setHits(rs.getInt("hits_last_year"));
+                boolean wasExecuted = dbStatement.execute(funcQrystr);
 
-                        b2s.add(b2local);
-                    }
+                rs = dbStatement.executeQuery(qrystr);
+                while (rs.next()) {
+                    B2HelperAdvanced b2local = new B2HelperAdvanced(rs.getString("vendor_id"), rs.getString("handle"));
+                    b2local.setName(rs.getString("name"));
+
+                    b2local.setLocalizedName(rs.getString("name"));
+                    b2local.setVendorName(rs.getString("vendor_name"));
+                    b2local.setVersion();
+                    b2local.setAvailableFlag(rs.getString("available_flag"));
+                    b2local.setDateModified(anotherdbformatter.parse(rs.getString("dtmodified")));
+                    b2local.setHits(rs.getInt("hits_last_year"));
+                    b2s.add(b2local);
                 }
             } finally {
                 if (rs != null) {
@@ -96,7 +142,7 @@ public class B2HelperFactoryAdvanced {
             }
         } catch (Exception e) {
             // TODO: log in logs
-            //dbVersion = "exception " + e + " " ;
+            Logging.writeLog("Exception: " + e + "\n");
         }
         Logging.writeLog("End: getB2s");
         return b2s;
