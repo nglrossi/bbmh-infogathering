@@ -56,6 +56,7 @@ public class B2HelperFactory {
                         b2local.setVersion();
                         b2local.setAvailableFlag(rs.getString("available_flag"));
                         b2local.setDateModified(anotherdbformatter.parse(rs.getString("dtmodified")));
+                        b2local.setHasWarFile();
 
                         b2s.add(b2local);
                     }
