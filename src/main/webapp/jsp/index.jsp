@@ -65,7 +65,9 @@ pageContext.setAttribute("dbType", DbServerInfo.getDatabaseType());
 
             <bbNG:landingPageColumn>
                 <bbNG:landingPageSection title="<%=uniqueLoginsTitle%>" instructions="<%=uniqueLoginsInstruction%>" />
-                <bbNG:landingPageSection title="<%=b2Title%>" instructions="<%=b2Instruction%>" />
+                <c:if test="${dbType != 'mssql'}">
+                    <bbNG:landingPageSection title="<%=b2Title%>" instructions="<%=b2Instruction%>" />
+                </c:if> 
             </bbNG:landingPageColumn>
         </bbNG:landingPage>
 </bbNG:genericPage>
