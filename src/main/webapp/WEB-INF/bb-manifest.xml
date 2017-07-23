@@ -9,9 +9,9 @@
         <description value="b2.description" />
         <default-locale value="en_US" />
 
-        <version value="0.98.1" />
+        <version value="1.0.6" />
         <requires>
-            <bbversion value="9.1.110082.0" />
+            <bbversion value="9.1.201404.0" />
         </requires>
 
         <vendor>
@@ -25,12 +25,11 @@
         <!-- These two JSPs are displayed when the "remove" and "properties" buttons --> 
         <!-- are pressed on the Building Blocks administration page. -->
     
-        <!--
+      
             <http-actions>
-              <config value="admin/configure.jsp"/>
-              <remove value="admin/remove.jsp"/> 
+              <config value="jsp/settings.jsp"/>
             </http-actions>
-        -->
+     
      
         <application-defs>
             <application handle="bbmh-infogathering-manage" type="shared"
