@@ -44,7 +44,7 @@ switch (req) {
         mssql = orasql;
         pgsql = orasql;
         break;
-// SAFFEASSIGN
+// SAFFEASSIGN - DEPRECATED
     case "safeassignments":
         // Course PK1s. Needed for many B2s.
         header = "\"Content Item PK1\",\"Content Item Title\",\"Course ID\",\"Parent Content Item Title\",\"Position\"";
