@@ -44,9 +44,7 @@ pageContext.setAttribute("dbType", DbServerInfo.getDatabaseType());
                 <c:if test="${dbType == 'mssql'}">
                     <bbNG:landingPageSection title="SQL Server SQL" instructions="">
 <pre>
-SELECT Name, Vendor_Name,
-Vendor_ID + '-' + Handle Handle, cast (Version_Major as varchar) + '.' + cast(Version_Minor as varchar)+ '.' + cast(Version_Patch as varchar) Version, Available_Flag,
-coalesce(mycount,0) Hits_Last_Year
+SELECT Name,Vendor_ID, Handle, Available_Flag,coalesce(mycount,0) Hits_Last_Year
 from plugins left outer join
 (select count(1) mycount, substring(data,1,charindex('-',substring(data,1,charindex('/',data,10)),-1) ) mydata
 from activity_accumulator
