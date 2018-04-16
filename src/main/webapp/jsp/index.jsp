@@ -30,7 +30,7 @@ String b2csvInstruction="This will download a CSV file listing all installed Bui
    String b2migTitle="3. <a href=\"b2migIndex.jsp\">Building Block Migration Exports</a>";
 String b2migInstruction="Some Building Block vendors (including Blackboard) may request data from the source and target system to assist with re-mapping data following a course-based migration. This section allows you to easily download common types of export requested. \n<br /><br />";
    
-   String uniqueLoginsTitle="4. <a href=\"uniqueLoginsReport.jsp\">Unique Logins Report</a>";
+   String uniqueLoginsTitle="<a href=\"uniqueLoginsReport.jsp\">Unique Logins Report</a>";
 String uniqueLoginsInstruction="This report lists unique logins on the system during the past few months based on information in the Activity Accumulator.\n<br /><br />"
         +"<strong>Note:</strong> The run time for this report is dependent on the volume of historical activity on the system and system resources available.   To reduce run time on larger systems, consider running during a period of low anticipated end-user activity."
    +" You can also <strong><a href=\"uniqueLoginsSQL.jsp\">get the SQL query here</a></strong>, to run it directly on the database. ";
@@ -45,6 +45,10 @@ String b2SQLTitle="5. <a href=\"b2UsageSQL.jsp\">Building Block Usage SQL</a>";
 String b2SQLInstruction="This SQL query will lists all installed Building Blocks. It includes an extra column to indicate usage based on the number of hits recorded in Activity Accumulator in the last year.\n<br /><br />"
         +"<strong>Note:</strong> This report is not available through the browser for SQL Server, but you can get the SQL query here to run it directly on the database. The run time for this report is dependent on the volume of historical activity on the system and system resources available.   To reduce run time on larger systems, consider running during a period of low anticipated end-user activity.";
 
+String courseListTitle="6. <a href=\"courseListIndex.jsp\">Export Course Lists</a>";
+String courseListInstruction="This section allows you to easily download a list of courses from your system and is useful when planning a course archive, to prepare batch files.";
+
+   
 // getting db type so we can hide B2 Usage on SQL Server. Remmove this + inclusion of bbmh import when fixed
 pageContext.setAttribute("dbType", DbServerInfo.getDatabaseType());
 
@@ -76,6 +80,8 @@ pageContext.setAttribute("dbType", DbServerInfo.getDatabaseType());
                <c:if test="${dbType == 'mssql'}">
                     <bbNG:landingPageSection title="<%=b2SQLTitle%>" instructions="<%=b2SQLInstruction%>" />
                 </c:if> 
+                 <bbNG:landingPageSection title="<%=courseListTitle%>" instructions="<%=courseListInstruction%>" />
+
             </bbNG:landingPageColumn>
         </bbNG:landingPage>
 </bbNG:genericPage>

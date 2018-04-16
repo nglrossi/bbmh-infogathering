@@ -48,10 +48,31 @@ switch (req) {
         mssql = orasql;
         pgsql = orasql;
         break;
-// CROCODOC ASSIGNMENTS
+// NEW BOX VIEW ASSIGNMENTS
+      case "nbv-assignmentFiles":
+        header = "files_pk1|file_name|file_size|link_name|attempt_pk1|attempt_date|course_id|user_id";
+        sep="|";
+        filename = "nbv-assignmentFiles";
+        orasql = "SELECT f.pk1 AS files_pk1,f.file_name AS file_name,f.file_size AS file_size,f.link_name AS link_name,a.pk1 AS attempt_pk1, TO_CHAR(a.attempt_date, 'YYYY-MM-DD HH24:MI:SS') AS attempt_date,cm.course_id AS course_id,u.user_id AS user_id"
+        +" FROM files f LEFT JOIN attempt_files af ON af.files_pk1 = f.pk1 LEFT JOIN attempt a ON a.pk1 = af.attempt_pk1 LEFT JOIN gradebook_grade gg ON gg.pk1 = a.gradebook_grade_pk1"
+        + " LEFT JOIN course_users cu ON cu.pk1 = gg.course_users_pk1 LEFT JOIN course_main cm ON cm.pk1 = cu.crsmain_pk1 LEFT JOIN users u ON u.pk1 = cu.users_pk1";
+       mssql = "SELECT f.pk1 AS files_pk1,f.file_name AS file_name,f.file_size AS file_size,f.link_name AS link_name,a.pk1 AS attempt_pk1, CONVERT(CHAR(19), a.attempt_date, 20) AS attempt_date,cm.course_id AS course_id,u.user_id AS user_id"
+        +" FROM files f LEFT JOIN attempt_files af ON af.files_pk1 = f.pk1 LEFT JOIN attempt a ON a.pk1 = af.attempt_pk1 LEFT JOIN gradebook_grade gg ON gg.pk1 = a.gradebook_grade_pk1"
+        + " LEFT JOIN course_users cu ON cu.pk1 = gg.course_users_pk1 LEFT JOIN course_main cm ON cm.pk1 = cu.crsmain_pk1 LEFT JOIN users u ON u.pk1 = cu.users_pk1";
+        pgsql = orasql;
+        break;
+// NEW BOX VIEW FILES
+    case "nbv-boxFiles":
+        sep="|";
+        filename = "nbv-boxFiles";
+        header = "pk1|files_pk1|uuid|status|annotatable_uuid|rawdoc_uuid|raw_status";
+        orasql = "SELECT pk1, files_pk1, uuid, status, annotatable_uuid, rawdoc_uuid, raw_status FROM files_crocodoc_data";
+        mssql = orasql;
+        pgsql = orasql;
+        break;
+   // CROCODOC ASSIGNMENTS
     case "crocodocLicense":
         // Course PK1s, only courses that have Safeassignment (submissions?).
-        header = "\"Crocodoc License Key\"";
         sep=": ";
         filename = "crocodocLicense";
         header = "# registry_key: registry_value";
@@ -154,7 +175,46 @@ switch (req) {
         mssql = orasql;
         pgsql = orasql;
         break;   
-    default:
+// COURSE LISTS
+// Not really B2 migration related 
+    case "courseids-allactive":
+        // All enabled and active courses
+        header = "Course ID";
+        sep=",";
+        filename = "courseids-allactive";
+        orasql = "select course_id from course_main where row_status=0 and available_ind='Y' order by course_id asc";
+        mssql = orasql;
+        pgsql = orasql;
+        break;
+    case "coursedetails-allnotactive":
+        // All inactive or disabled courses
+        header = "\"Course ID\",\"Course Name\",\"Row Status\",\"Available Ind\"";
+        sep=",";txtqual="\""; 
+        filename = "coursedetails-allnotactive";
+        orasql = "select course_id,course_name,row_status,available_ind from course_main where row_status!=0 or available_ind!='Y' order by course_id asc";
+        mssql = orasql;
+        pgsql = orasql;
+        break;    
+case "coursedetails-allactive":
+         // All  courses
+        header = "\"Course ID\",\"Course Name\",\"Row Status\",\"Available Ind\"";
+        sep=",";txtqual="\""; 
+        filename = "coursedetails-allactive";
+        orasql = "select course_id,course_name,row_status,available_ind from course_main where row_status=0 and available_ind='Y' order by course_id asc";
+        mssql = orasql;
+        pgsql = orasql;
+        break; 
+   case "coursedetails-all":
+         // All  courses
+        header = "\"Course ID\",\"Course Name\",\"Row Status\",\"Available Ind\"";
+        sep=",";txtqual="\""; 
+        filename = "coursedetails-all";
+        orasql = "select course_id,course_name,row_status,available_ind from course_main order by course_id asc";
+        mssql = orasql;
+        pgsql = orasql;
+        break;    
+      
+   default:
         // nothing to do
         // page ends up giving a generic error
 }

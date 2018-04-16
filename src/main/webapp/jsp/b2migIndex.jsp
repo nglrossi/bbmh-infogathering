@@ -51,7 +51,13 @@ String cancelUrl = "index.jsp";
                 </bbNG:landingPageSection>
             </bbNG:landingPageColumn>
              <bbNG:landingPageColumn>
-               <bbNG:landingPageSection title="Assignments (Crocodoc)" instructions="To migrate inline markup on assignments, you will need to provide the files below when requested:">
+    <bbNG:landingPageSection title="Assignments (New Box View)" instructions="To migrate inline markup on assignments, you will need to provide the files below when requested:">
+                    <ul>
+                        <li><a href="b2migcsv.jsp?req=nbv-assignmentFiles">New Box View Assignments</a></li>
+                        <li><a href="b2migcsv.jsp?req=nbv-boxFiles">New Box View Files</a></li>
+                    </ul>
+              </bbNG:landingPageSection>               
+            <bbNG:landingPageSection title="Assignments (Legacy: Crocodoc)" instructions="The legacy queries below may be requested if you are still using Crocodoc. ">
                     <ul>
                         <li><a href="b2migcsv.jsp?req=crocodocLicense">Crocodoc License key</a></li>
                         <li><a href="b2migcsv.jsp?req=crocodocAnnotations">Annotated Assignment Attempts</a></li>
