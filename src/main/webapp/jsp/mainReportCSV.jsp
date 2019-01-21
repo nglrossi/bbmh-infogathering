@@ -195,9 +195,9 @@ response.setHeader("Content-Disposition", "attachment; filename="+outputFileName
 "CMS schemas","<%=CMSdocstores%>"
 ,,
 "STORAGE USAGE","--------------------"
-label="Base dir disk usage","<%=baseDirDiskUsage%> GB"
- "Content dir path" ,"<%=contentDirLabel%>"
- "Content disk usage","<%=contentDirDiskUsage%> GB"
+"Base dir disk usage","<%=baseDirDiskUsage%> GB"
+"Content dir path","<%=contentDirLabel%>"
+"Content disk usage","<%=contentDirDiskUsage%> GB"
 "Database size","<c:choose>
                 <c:when test="${dbType2 != 'mssql'}"><%=dbSize%> GB</c:when> 
                 <c:otherwise>Unknown</c:otherwise>
@@ -214,13 +214,14 @@ label="Base dir disk usage","<%=baseDirDiskUsage%> GB"
 ,,
 "DATABASE SERVER DETAIL","--------------------"
 "Database Schemas"<%=schemaCSV%>
+,,
 "Database server version","<%=dbVersion%>"
 "Server time and timezone","<%=dbServerTime%>"
 ,,
 "COURSES INFORMATION","--------------------"
 "Total Courses","<%=totalCoursesCount%>"
-"Active Courses","<%=activeCoursesCount%>
-Accessed in the last year","<%=accessedLastYearCoursesCount%>"
+"Active Courses","<%=activeCoursesCount%>"
+"Accessed in the last year","<%=accessedLastYearCoursesCount%>"
 "Courses with large number of enrollments"<%=largeCoursesCSV%>
 ,,
 "AUTHENTICATION","--------------------"
