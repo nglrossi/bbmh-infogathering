@@ -61,10 +61,10 @@ ORDER BY Hits_Last_Year desc;
 <pre>
 select name, vendor_id, handle, vendor_name, available_flag, dtmodified, NVL(mycount,0) hits_last_year
 FROM plugins LEFT OUTER JOIN (SELECT COUNT(1) mycount, SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) mydata
-FROM activity_accumulator WHERE TIMESTAMP >= sysdate -365 " AND data LIKE '/webapps/%-%/%' "
-GROUP BY SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) " ) aa
-ON aa.mydata= '/webapps/' || Vendor_ID  || '-'  || Handle "
-ORDER BY hits_last_year desc";
+FROM activity_accumulator WHERE TIMESTAMP >= sysdate -365 " AND data LIKE '/webapps/%-%/%'
+GROUP BY SUBSTR(data,1,instr(SUBSTR(data,1,instr(data,'/',10,1)),'-',-1,1) -1 ) ) aa
+ON aa.mydata= '/webapps/' || Vendor_ID  || '-'  || Handle 
+ORDER BY hits_last_year desc;
 </pre>
                      </bbNG:landingPageSection>
                </c:if> 

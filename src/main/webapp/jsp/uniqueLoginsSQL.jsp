@@ -42,16 +42,16 @@ pageContext.setAttribute("dbType", DbServerInfo.getDatabaseType());
             
         <bbNG:landingPage>
             <bbNG:landingPageColumn>
-                <c:if test="${dbType == 'mssql'}">
+                <c:if test="${dbType == 'oracle'}">
                     <bbNG:landingPageSection title="SQL Server SQL" instructions="">
 <pre>
 SELECT count(distinct (user_pk1)) valuen 
 from activity_accumulator where event_type = 'LOGIN_ATTEMPT'
-and data = 'Login succeeded.' and timestamp >= sysdate-30";
+and data = 'Login succeeded.' and timestamp >= sysdate-30;
 </pre>
                     </bbNG:landingPageSection>
                 </c:if> 
-                <c:if test="${dbType == 'oracle'}">
+                <c:if test="${dbType == 'mssql'}">
                     <bbNG:landingPageSection title="Oracle SQL" instructions="">
 <pre>
 SELECT count(distinct (user_pk1)) valuen
