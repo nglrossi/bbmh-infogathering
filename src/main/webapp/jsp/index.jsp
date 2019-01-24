@@ -22,11 +22,11 @@ String mainTitle="1. <a href=\"mainReport.jsp\">Main Report - View online</a>";
 String mainInstructions="Use this report to view (within Learn) basic information about their system and building blocks, to go along with information gathering.\n<br /><br />"
         +"This report can be run at any time as it checks basic system settings and is not resource-intensive.\n";
 
-String b2csvTitle="2. Main Report - CSV download";
-String b2csvInstruction="Download the main report as two CSV files using the links below, for import into the Information Gathering workbook or for B2 comparison. These contain basic system information and details of Building Blocks status. \n<br />"
-   +"a. <strong><a href=\"mainReportCSV.jsp\">Main System Report</a></strong><br />"
-   +"b. <strong><a href=\"b2csv.jsp\">Building Blocks</a></strong><br /><br />"
-        +"This report can be run at any time as it checks basic system settings and is not resource-intensive.\n";
+String b2csvTitle="2. Main Report - CSV download\n"
+      +"a. <strong><a href=\"mainReportCSV.jsp\">Main System Report</a></strong><br />"
+   +"b. <strong><a href=\"b2csv.jsp\">Building Blocks</a></strong><br /><br />";
+String b2csvInstruction="Download the main report as two CSV files using the links above, for import into the Information Gathering workbook or for B2 comparison. These contain basic system information and details of Building Blocks status. \n<br />"
++"This report can be run at any time as it checks basic system settings and is not resource-intensive.\n";
 
    
    String b2migTitle="3. <a href=\"b2migIndex.jsp\">Building Block Migration Exports</a>";
