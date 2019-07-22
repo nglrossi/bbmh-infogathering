@@ -17,15 +17,15 @@ String pageTitle = "Learn Migration Information Gathering";
 String pageInstructions = "This tool will gather statistical data about your Blackboard Learn environment for use by you and Blackboard as a baseline for scoping and planning a potential move to Blackboard Managed Hosting or SaaS. There are also other reports and data extracts that may be requested during your migration.\n"
                         + "You will have an opportunity to review and print the results after running the report. No data is automatically sent to Blackboard.<br /><br />"
                         + "Additional information about this tool, and the supporting files, can be found in <a target=\"_blank\" href=\"https://help.blackboard.com/Learn/Administrator/Hosting/Migration_Planning/Information_Gathering_for_Blackboard_Learn_Migration\">Blackboard Help</a>.<br /><br />"
-                        + "<strong>Note:</strong> during information gathering, you will typically only be asked for reports 1 and 2. You do not need to send the other reports unless requested.";
+                        + "<strong>Note:</strong> during information gathering, you will typically only be asked for the CSVs from item 2 below. You do not need to send the other reports unless requested.";
 String mainTitle="1. <a href=\"mainReport.jsp\">Main Report - View online</a>";
-String mainInstructions="Use this report to view (within Learn) basic information about their system and building blocks, to go along with information gathering.\n<br /><br />"
+String mainInstructions="Use this report to view (within Learn) basic information about the system and building block status/compatability, to go along with information gathering.\n<br /><br />"
         +"This report can be run at any time as it checks basic system settings and is not resource-intensive.\n";
 
-String b2csvTitle="2. Main Report - CSV download\n"
+String b2csvTitle="2. Main Report - CSV download<br />\n"
       +"a. <strong><a href=\"mainReportCSV.jsp\">Main System Report</a></strong><br />"
    +"b. <strong><a href=\"b2csv.jsp\">Building Blocks</a></strong><br /><br />";
-String b2csvInstruction="Download the main report as two CSV files using the links above, for import into the Information Gathering workbook or for B2 comparison. These contain basic system information and details of Building Blocks status. \n<br />"
+String b2csvInstruction="Download the main report as two CSV files using the links above, for import into the Information Gathering workbook or for B2 comparison. These contain basic system information and details of Building Blocks status and compatability. \n<br />"
 +"This report can be run at any time as it checks basic system settings and is not resource-intensive.\n";
 
    
