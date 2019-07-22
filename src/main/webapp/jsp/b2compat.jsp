@@ -19,6 +19,6 @@ List<String> b2compatdefault = Arrays.asList("Unknown","Unknown","Check with ven
 Map<String,List<String>> b2compat = new HashMap<String,List<String>>();
 String compatdate="B2 Compatibility dummy data.";
 
-b2compat.put("bbmh-info-gathering",Arrays.asList("Yes","--","--",Not applicable for SaaS"));
+b2compat.put("bbmh-info-gathering",Arrays.asList("Yes","--","--","Admin Panel tool"));
 
 %>
