@@ -15,7 +15,7 @@
 blackboard.platform.security.SecurityUtil.checkEntitlement("system.buildingblocks.VIEW","System Admin permissions are required");
 
  
-List<String> b2compatdefault = Arrays.asList("Unknown","Unknown","Check with vendor");
+List<String> b2compatdefault = Arrays.asList("Unknown","Unknown","Unknown","Check with vendor");
 Map<String,List<String>> b2compat = new HashMap<String,List<String>>();
 String compatdate="B2 Compatibility dummy data.";
 
