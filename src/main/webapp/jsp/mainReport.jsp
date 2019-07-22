@@ -8,6 +8,7 @@
          %>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@include file="b2compat.jsp" %> 
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
 
 <%
@@ -307,8 +308,12 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
             </bbNG:inventoryList>
         </bbNG:step>
 
-        <bbNG:step title="Building Blocks"> 
+        <bbNG:step title="Building Blocks" instructions="<%=compatdate%>"> 
             <bbNG:inventoryList collection="<%=b2s%>" objectVar="ux" className="B2Helper" description="Building Blocks" emptyMsg="No plugins found" showAll="true" displayPagingControls="false">
+                <% 
+                   String vendorhandle=ux.vendor_id + "-" + ux.handle;
+                    vendorhandle = vendorhandle.toLowerCase();
+                   %>
                 <bbNG:listElement isRowHeader="true" label="Name" name="b2Name">
                     <%=ux.localizedName%>
                 </bbNG:listElement>
@@ -327,7 +332,16 @@ pageContext.setAttribute("dbListSchemas", dbListSchemas);
                 <bbNG:listElement isRowHeader="false" label="Last Modified" name="lastmodified">
                     <%=ux.dateModified%>
                 </bbNG:listElement>
-            </bbNG:inventoryList>
+                <bbNG:listElement isRowHeader="false" label="SaaS Compatible?" name="saascompat">
+                    <%=b2compat.getOrDefault(vendorhandle,b2compatdefault).get(0)%>
+                </bbNG:listElement>
+                <bbNG:listElement isRowHeader="false" label="Ultra Compatible?" name="ultracompat">
+                    <%=b2compat.getOrDefault(vendorhandle,b2compatdefault).get(1)%>
+                </bbNG:listElement>       
+                <bbNG:listElement isRowHeader="false" label="Compatibility Notes" name="compatnotes">
+                    <%=b2compat.getOrDefault(vendorhandle,b2compatdefault).get(2)%>
+                </bbNG:listElement>  
+                </bbNG:inventoryList>
         </bbNG:step>
 <% /* commenting out for now, until we remove the word doc entirely
         <bbNG:step title="Additional Comments" instructions="expected usage growth, major changes occurring during the next 12 months or any comments relevant to a transition to Managed Hosting or Saas">
